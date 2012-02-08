@@ -9,4 +9,11 @@
         android:layout_height="wrap_content"
         android:text="@string/hello" />
 
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_weight="0.60" />
+
 </LinearLayout>
