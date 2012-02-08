@@ -11,7 +11,7 @@ public class ProjectActivity extends Activity {
         setContentView(R.layout.main);
         
         //this is a change from david!!
-        
+        //This is a change from Shaun.
         
     }
 }
