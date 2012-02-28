@@ -11,7 +11,12 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
+        public static final int comparescreen=0x7f020000;
+        public static final int ic_launcher=0x7f020001;
+        public static final int photogalleryscreen=0x7f020002;
+        public static final int slideshowscreen=0x7f020003;
+        public static final int taggalleryscreen=0x7f020004;
+        public static final int viewscreen=0x7f020005;
     }
     public static final class id {
         public static final int progressBar1=0x7f050000;
