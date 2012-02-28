@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" size="1275,475" id="ca.ualberta" metadata="uml2-1.0" initialized="true" tag="1000" key="32303037303533312D31303030203330315F70726F6A6563742F636F6E6E6F726D">
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.3/@sourceConnections.0" name="SCModel" location="147,75" size="145,122" id="ca.ualberta/SCModel" runTimeClassModel="notifyViews(),deleteView(LV;),SCModel(),addView(LV;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="93,72">
+      <children xsi:type="editmodel:MethodEditModel" name="SCModel" id="ca.ualberta/SCModel#SCModel()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addView" id="ca.ualberta/SCModel#addView(LV;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="deleteView" id="ca.ualberta/SCModel#deleteView(LV;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="notifyViews" id="ca.ualberta/SCModel#notifyViews()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" name="SCView" location="690,75" size="138,81" id="ca.ualberta/SCView" runTimeClassModel="update(LM;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="69,18">
+      <children xsi:type="editmodel:MethodEditModel" name="update" id="ca.ualberta/SCView#update(LM;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.4/@sourceConnections.0" name="SCController" location="420,77" size="165,117" id="ca.ualberta/SCController" runTimeClassModel="getAllPhotosWithTag(Ljava.lang.String;),getAllTags(),deleteTagAndPhotos(Ljava.lang.String;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="142,54">
+      <children xsi:type="editmodel:MethodEditModel" name="getAllTags" id="ca.ualberta/SCController#getAllTags()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getAllPhotosWithTag" id="ca.ualberta/SCController#getAllPhotosWithTag(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="deleteTagAndPhotos" id="ca.ualberta/SCController#deleteTagAndPhotos(Ljava.lang.String;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="SqlPhotoStorage" location="135,255" size="197,230" id="ca.ualberta/SqlPhotoStorage" runTimeClassModel="getPhotoEntry(J),getAllPhotoEntriesWithTag(Ljava.lang.String;),kEY_ID,deletePhotoEntry(J),open(),close(),getAllTags(),kEY_FILENAME,kEY_TAG,SqlPhotoStorage(Landroid.content.Context;),insertPhotoEntry(Ljava.lang.String;Ljava.lang.String;Ljava.lang.String;),kEY_TIMESTAMP,deleteTagAndPhotoEntries(Ljava.lang.String;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="145,90">
+      <children xsi:type="editmodel:AttributeEditModel" name="mDb" id="ca.ualberta/SqlPhotoStorage#mDb"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="174,162">
+      <children xsi:type="editmodel:MethodEditModel" name="SqlPhotoStorage" id="ca.ualberta/SqlPhotoStorage#SqlPhotoStorage(Landroid.content.Context;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="open" id="ca.ualberta/SqlPhotoStorage#open()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="close" id="ca.ualberta/SqlPhotoStorage#close()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPhotoEntry" id="ca.ualberta/SqlPhotoStorage#getPhotoEntry(J)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="insertPhotoEntry" id="ca.ualberta/SqlPhotoStorage#insertPhotoEntry(Ljava.lang.String;Ljava.lang.String;Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="deletePhotoEntry" id="ca.ualberta/SqlPhotoStorage#deletePhotoEntry(J)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getAllPhotoEntriesWithTag" id="ca.ualberta/SqlPhotoStorage#getAllPhotoEntriesWithTag(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getAllTags" id="ca.ualberta/SqlPhotoStorage#getAllTags()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="deleteTagAndPhotoEntries" id="ca.ualberta/SqlPhotoStorage#deleteTagAndPhotoEntries(Ljava.lang.String;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="ca.ualberta/SCModel&lt;-ca.ualberta/SqlPhotoStorage" source="//@children.3" target="//@children.0" targetEnd="//@children.3/@sourceConnections.0/@children.1" sourceEnd="//@children.3/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="84,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="72,122"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="MainController" location="420,255" size="169,158" id="ca.ualberta/MainController" runTimeClassModel="getLastPhotoWithTag(Ljava.lang.String;),getAllPhotosWithTag(Ljava.lang.String;),getAllTags(),getPhotoPath(J),deleteTagAndPhotos(Ljava.lang.String;),getFirstPhotoWithTag(Ljava.lang.String;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="146,108">
+      <children xsi:type="editmodel:MethodEditModel" name="deleteTagAndPhotos" id="ca.ualberta/MainController#deleteTagAndPhotos(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getAllPhotosWithTag" id="ca.ualberta/MainController#getAllPhotosWithTag(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getAllTags" id="ca.ualberta/MainController#getAllTags()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getFirstPhotoWithTag" id="ca.ualberta/MainController#getFirstPhotoWithTag(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getLastPhotoWithTag" id="ca.ualberta/MainController#getLastPhotoWithTag(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPhotoPath" id="ca.ualberta/MainController#getPhotoPath(J)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="ca.ualberta/SCController&lt;-ca.ualberta/MainController" source="//@children.4" target="//@children.2" targetEnd="//@children.4/@sourceConnections.0/@children.1" sourceEnd="//@children.4/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="82,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="82,117"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <diagramOptions xsi:type="options:ClassDiagramOptions" properties="wireOptions=1;Product=eUML2" autoName="false"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="15,15" gridOrigin="0,0" rulerUnit="pixel" gridVisibility="false">
+    <leftRuler/>
+    <topRuler/>
+  </boardSetting>
+  <classDiagramPreferences xsi:type="editmodel:UMLClassDiagramPreference" showPopupBars="true" showConnectionHandles="true" attributeSorter="Natural" methodSorter="Natural" showClassStereotype="true" showPackageStereotype="true" showDependencyStereotype="true" showInterfaceStereotype="true" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+</editmodel:ClassDiagramEditModel>
