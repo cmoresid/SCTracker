@@ -10,10 +10,5 @@ public class ProjectActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-        //this is a change from david!!
-        //This is a change from Shaun.
-        //I see dead people
-        //then we'll have a zonbie fighe
-        
     }
 }
