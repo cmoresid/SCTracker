@@ -1,4 +1,8 @@
-package ca.ualberta;
+package ca.ualberta.views;
+
+import ca.ualberta.models.SCModel;
+
+
 
 /**
  * Provides a common interface for all the views

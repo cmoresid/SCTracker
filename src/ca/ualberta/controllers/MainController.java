@@ -1,4 +1,5 @@
-package ca.ualberta;
+package ca.ualberta.controllers;
+
 
 import android.database.Cursor;
 
@@ -9,7 +10,11 @@ import android.database.Cursor;
  * managing tags.
  */
 public class MainController implements SCController {
-
+	
+	public MainController() {
+		
+	}
+	
 	@Override
 	public Cursor getAllPhotosWithTag(String tag) {
 		// TODO Auto-generated method stub

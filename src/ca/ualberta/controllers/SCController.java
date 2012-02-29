@@ -1,4 +1,4 @@
-package ca.ualberta;
+package ca.ualberta.controllers;
 
 import android.database.Cursor;
 

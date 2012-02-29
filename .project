@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
 	<name>301_project</name>
-	<comment></comment>
+	<comment>@key 32303037303533312D31303030203330315F70726F6A6563742F636F6E6E6F726D </comment>
 	<projects>
 	</projects>
 	<buildSpec>
@@ -25,9 +25,15 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
+		<buildCommand>
+			<name>com.soyatec.additional.Builder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 	</buildSpec>
 	<natures>
 		<nature>com.android.ide.eclipse.adt.AndroidNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
+		<nature>com.soyatec.additional.Nature</nature>
 	</natures>
 </projectDescription>
