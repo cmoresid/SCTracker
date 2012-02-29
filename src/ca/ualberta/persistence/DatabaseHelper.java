@@ -4,9 +4,17 @@ import ca.ualberta.SCApplication;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ * Deals with the initial creation of the database, as
+ * well as dealing with upgrading the schema. i.e. if
+ * the schema needs to be changed for some reason.
+ */
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
+	/** Name of the database file. */
 	private static final String DATABASE_NAME = "photo_db";
+	/** Version of the database schema. */
 	private static final int DATABASE_VERSION = 1;
 	
 	public DatabaseHelper() {

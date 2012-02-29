@@ -3,26 +3,14 @@ package ca.ualberta.persistence;
 import java.util.ArrayList;
 
 import ca.ualberta.models.PhotoEntry;
-import ca.ualberta.models.SCModel;
-
-
-import android.database.SQLException;
 
 /**
  * <p>
  * Responsible for managing the storage of the skin condition
- * photos. Provides methods to insert and delete
- * photo entries. A photo entry consists of a time stamp of 
- * when the photo was taken, a tag that describes which skin 
- * condition the photo is associated with, and the file path 
- * of where the photo is stored.
- * </p>
- * <p>
- * This class serves as the main model in the MVC paradigm.
- * @see SCModel
+ * PhotoEntry objects. The data will be extracted from {@link PhotoEntry}
+ * objects and will be serialized in a row in the appplication's database.
  * </p>
  */
-@SuppressWarnings("rawtypes")
 public class SqlPhotoStorage {
 	
 	/** Key that refers to the '_id' column in the database table */

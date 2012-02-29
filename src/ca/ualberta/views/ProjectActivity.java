@@ -1,7 +1,6 @@
 package ca.ualberta.views;
 
 import ca.ualberta.R;
-import ca.ualberta.R.layout;
 import android.app.Activity;
 import android.os.Bundle;
 

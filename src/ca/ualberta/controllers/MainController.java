@@ -1,7 +1,9 @@
 package ca.ualberta.controllers;
 
 
-import android.database.Cursor;
+import java.util.ArrayList;
+
+import ca.ualberta.models.PhotoEntry;
 
 /**
  * Implementation of the {@link SCController} interface. Acts
@@ -11,12 +13,23 @@ import android.database.Cursor;
  */
 public class MainController implements SCController {
 	
-	public MainController() {
-		
+	/** Contains all the PhotoEntry objects */
+	private ArrayList<PhotoEntry> photos;
+	
+	/** 
+	 * Instantiates a new {@code MainController} with a list
+	 * of {@link PhotoEntry} objects.
+	 * 
+	 * @param photos
+	 * 		{@link java.util.ArrayList} containing the PhotoEntry
+	 * 		objects.
+	 */
+	public MainController(ArrayList<PhotoEntry> photos) {
+		this.photos = photos;
 	}
 	
 	@Override
-	public Cursor getAllPhotosWithTag(String tag) {
+	public ArrayList<PhotoEntry> getAllPhotosWithTag(String tag) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -43,7 +56,7 @@ public class MainController implements SCController {
 	 * 		The file path of the first photo taken with
 	 * 		given tag.
 	 */
-	public String getFirstPhotoWithTag(String tag) {
+	public String getFirstPhotoPathWithTag(String tag) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -58,7 +71,7 @@ public class MainController implements SCController {
 	 * 		The file path of the latest photo taken with
 	 * 		given tag.
 	 */
-	public String getLastPhotoWithTag(String tag) {
+	public String getLastPhotoPathWithTag(String tag) {
 		// TODO Auto-generated method stub
 		return null;
 	}
