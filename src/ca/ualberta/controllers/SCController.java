@@ -1,6 +1,7 @@
-package ca.ualberta;
+package ca.ualberta.controllers;
 
-import android.database.Cursor;
+import java.util.ArrayList;
+import ca.ualberta.models.PhotoEntry;
 
 /**
  * A class can implement the {@code SCController} interface
@@ -14,10 +15,11 @@ public interface SCController {
 	 * @param tag
 	 * 		The tag's photo entries to get.
 	 * @return
-	 * 		A cursor containing all the photo entries
+	 * 		An {@link java.util.ArrayList} containing all the
+	 * 		{@link PhotoEntry} objects
 	 * 		associated with the given tag.
 	 */
-	public Cursor getAllPhotosWithTag(String tag);
+	public ArrayList<PhotoEntry> getAllPhotosWithTag(String tag);
 	
 	/**
 	 * Retrieves a list of all the tags that
