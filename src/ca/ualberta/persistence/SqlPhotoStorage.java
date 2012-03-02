@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import ca.ualberta.models.PhotoEntry;
 
+
 /**
  * <p>
  * Responsible for managing the storage of the skin condition

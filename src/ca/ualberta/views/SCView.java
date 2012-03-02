@@ -4,6 +4,7 @@ import ca.ualberta.models.SCModel;
 
 
 
+
 /**
  * Provides a common interface for all the views
  * in this application. This interface is basically

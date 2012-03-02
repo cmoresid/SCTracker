@@ -1,3 +1,6 @@
 /gen
 /bin
 /doc
+.umlproject
+.classpath
+.euml2

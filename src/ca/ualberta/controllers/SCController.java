@@ -1,7 +1,9 @@
 package ca.ualberta.controllers;
 
 import java.util.ArrayList;
+
 import ca.ualberta.models.PhotoEntry;
+
 
 /**
  * A class can implement the {@code SCController} interface

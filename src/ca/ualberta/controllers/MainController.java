@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import ca.ualberta.models.PhotoEntry;
 
+
 /**
  * Implementation of the {@link SCController} interface. Acts
  * as the main controller for the application. Provides methods
