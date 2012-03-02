@@ -2,45 +2,47 @@ package ca.ualberta.controllers;
 
 import java.util.ArrayList;
 
-import ca.ualberta.models.PhotoEntry;
+import android.os.Handler;
+import android.os.Message;
 
 
 /**
+ * <p>
  * A class can implement the {@code SCController} interface
- * if it wants to act as a controller for this application.
+ * if it wants to act as a controller for this application. 
+ * </p>
+ * <p>
+ * The controller makes use of a class called {@link android.os.Handler}. It
+ * allows one to "to schedule messages to be executed at some point
+ * in the future." (Credit: Android Documentation). It will help with
+ * a few things, one in particular is updating the model objects without
+ * blocking the UI thread. I was playing around with just doing all the
+ * updating on the UI thread, but it would freeze up every now and then...
+ * 
+ * @see android.os.Handler
+ * @see android.os.Message
+ * </p>
  */
-public interface SCController {
-	/**
-	 * Retrieves all the photo entries with the
-	 * given tag.
-	 * 
-	 * @param tag
-	 * 		The tag's photo entries to get.
-	 * @return
-	 * 		An {@link java.util.ArrayList} containing all the
-	 * 		{@link PhotoEntry} objects
-	 * 		associated with the given tag.
-	 */
-	public ArrayList<PhotoEntry> getAllPhotosWithTag(String tag);
+public abstract class SCController {
 	
-	/**
-	 * Retrieves a list of all the tags that
-	 * currently exist in the application database.
-	 * 
-	 * @return
-	 * 		An array containing all known tags.
-	 */
-	public String[] getAllTags();
+	private final ArrayList<Handler> handlers = new ArrayList<Handler>();
 	
-	/**
-	 * Deletes all photos associated with given tag and also
-	 * the tag itself. Useful for when a user wishes to stop
-	 * tracking a given condition.
-	 * 
-	 * @param tag
-	 * 		The tag to be deleted.
-	 * @return
-	 * 		Whether or not the operation was successful.
-	 */
-	public boolean deleteTagAndPhotos(String tag);
+	protected abstract boolean handleMessage(SCCommand c);
+	
+	public void addHandler(Handler h) {
+		handlers.add(h);
+	}
+	
+	public void removeHandler(Handler h) {
+		handlers.remove(h);
+	}
+	
+	protected void notifyHandlers(SCCommand c) {
+		if (!handlers.isEmpty()) {
+			for (Handler h : handlers) {
+				Message msg = Message.obtain(h, c.getMessage(), 0, 0, c.getData());
+				msg.sendToTarget();
+			}
+		}
+	}
 }
