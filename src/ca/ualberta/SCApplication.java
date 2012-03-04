@@ -1,6 +1,3 @@
-/**
- * 
- */
 package ca.ualberta;
 
 
@@ -9,15 +6,14 @@ import android.app.Application;
 import android.content.Context;
 
 /**
- * Provides a way to share global state. This is  required in order to have global controller and  for the       {@link SqlPhotoStorage}       to have a parent context.
+ * Provides a way to share global state. This is
+ * required in order to have global controller and 
+ * for an {@link SqlPhotoStorage} to have a parent
+ * context.
  */
 public class SCApplication extends Application {
 	
-	/**
-	 * Reference to the appliction
-	 * @uml.property  name="instance"
-	 * @uml.associationEnd  
-	 */
+	/** Reference to the global {@code SCApplication} object. */
 	private static SCApplication instance;
 	
 	@Override

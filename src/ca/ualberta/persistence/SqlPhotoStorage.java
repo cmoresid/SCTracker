@@ -1,7 +1,14 @@
 package ca.ualberta.persistence;
 
+import java.io.File;
 import java.util.ArrayList;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.test.AndroidTestCase;
+import ca.ualberta.SCApplication;
 import ca.ualberta.models.PhotoEntry;
 
 
@@ -14,6 +21,9 @@ import ca.ualberta.models.PhotoEntry;
  */
 public class SqlPhotoStorage {
 	
+	/** Helps to retrieve references to the database. */
+	private DatabaseHelper mDbHelper;
+	
 	/** Key that refers to the '_id' column in the database table */
 	public static final String KEY_ID = "_id";
 	/** Key that refers to the 'time_stamp' column in the database table */
@@ -24,10 +34,26 @@ public class SqlPhotoStorage {
 	public static final String KEY_FILENAME = "file_name";
 	
 	/**
-	 * Initializes a new SqlPhotoStorage.
+	 * Instantiates a new {@code SqlPhotoStorage} with the
+	 * given context. This constructor helps with dependency
+	 * injection in unit tests. The {@link AndroidTestCase}
+	 * provides its own context.
+	 * 
+	 * @param context
+	 * 		The parent context.
+	 * 		
+	 */
+	public SqlPhotoStorage(Context context) {
+		mDbHelper = new DatabaseHelper(context);
+	}
+	
+	/**
+	 * Instantiates a new {@code SqlPhotoStorage} with the 
+	 * application's context. This constructor will probably
+	 * be used the most. 
 	 */
 	public SqlPhotoStorage() {
-		
+		mDbHelper = new DatabaseHelper(SCApplication.getContext());
 	}
 
 	/**
@@ -36,15 +62,28 @@ public class SqlPhotoStorage {
 	 * @param e
 	 * 		The PhotoEntry object to insert.
 	 * @return
-	 * 		The ID of the PhotoEntry in the database.
+	 * 		The ID of the new created {@code PhotoEntry} 
+	 * 		in the database.
 	 */
 	public long insertPhotoEntry(PhotoEntry e) {
-		// TODO Auto-generated method stub
-		return 0;
+		SQLiteDatabase db = mDbHelper.getWritableDatabase();
+		
+		ContentValues vs = new ContentValues();
+		
+		vs.put(KEY_ID, e.getId());
+		vs.put(KEY_TIMESTAMP, e.getTimeStamp().toString());
+		vs.put(KEY_TAG, e.getTag());
+		vs.put(KEY_FILENAME, e.getFilePath());
+		
+		long newRowId = db.insert(DatabaseHelper.TABLE_NAME, null, vs);
+		db.close();
+		
+		return newRowId;
 	}
 
 	/**
-	 * Deletes a photo entry from the application database.
+	 * Deletes a photo entry from the application database. It
+	 * also deletes the associated image file.
 	 * 
 	 * @param id
 	 * 		The ID of the photo entry to delete.
@@ -53,8 +92,43 @@ public class SqlPhotoStorage {
 	 * 		successful.
 	 */
 	public boolean deletePhotoEntry(long id) {
-		// TODO Auto-generated method stub
-		return false;
+		SQLiteDatabase db = mDbHelper.getWritableDatabase();
+		
+		Cursor c = db.query(DatabaseHelper.TABLE_NAME, null, KEY_ID+"="+id, null, null, null, null);
+		File photoPath;
+		boolean deletedFile = false;
+		
+		if (c.moveToFirst()) {
+			photoPath = new File(c.getString(c.getColumnIndexOrThrow(KEY_FILENAME)));
+			deletedFile = photoPath.delete();
+		}
+		
+		int deletedEntry = db.delete(DatabaseHelper.TABLE_NAME, KEY_ID+"=?", new String[] {String.valueOf(id)});
+		c.close();
+		db.close();
+		
+		return (deletedEntry > 0) && deletedFile;
+	}
+	
+	/**
+	 * Deletes all photo entries from the database. This
+	 * method is mainly used in the {@code tearDown} method
+	 * in a unit test.
+	 */
+	public void deleteAllPhotoEntries() {
+		SQLiteDatabase db = mDbHelper.getWritableDatabase();
+		
+		Cursor c = db.query(DatabaseHelper.TABLE_NAME, new String[] {KEY_FILENAME}, null, null, null, null, null);
+		File f;
+		
+		while (c.moveToNext()) {
+			f = new File(c.getString(c.getColumnIndexOrThrow(KEY_FILENAME)));
+			f.delete();
+		}
+		
+		db.delete(DatabaseHelper.TABLE_NAME, null, null);
+		c.close();
+		db.close();
 	}
 
 	/**
@@ -68,8 +142,22 @@ public class SqlPhotoStorage {
 	 * 		photo entry.
 	 */
 	public PhotoEntry getPhotoEntry(long id) {
-		// TODO Auto-generated method stub
-		return null;
+		SQLiteDatabase db = mDbHelper.getReadableDatabase();
+		
+		Cursor c = db.query(DatabaseHelper.TABLE_NAME, null, KEY_ID+"="+id, null, null, null, null);
+		PhotoEntry e = new PhotoEntry();
+		
+		if (c.moveToFirst()) {
+			e.setId(c.getLong(c.getColumnIndexOrThrow(KEY_ID)));
+			e.setTimeStamp(c.getString(c.getColumnIndexOrThrow(KEY_TIMESTAMP)));
+			e.setTag(c.getString(c.getColumnIndexOrThrow(KEY_TAG)));
+			e.setFilePath(c.getString(c.getColumnIndexOrThrow(KEY_FILENAME)));
+		}
+		
+		c.close();
+		db.close();
+		
+		return e;
 	}
 	
 	/**
@@ -80,11 +168,28 @@ public class SqlPhotoStorage {
 	 * 		The tag 
 	 * @return
 	 * 		An {@link ArrayList} containing all the photo entries
-	 * 		with given tag.
+	 * 		with the given tag.
 	 */
 	public ArrayList<PhotoEntry> getAllPhotoEntriesWithTag(String tag) {
-		// TODO Auto-generated method stub
-		return null;
+		SQLiteDatabase db = mDbHelper.getReadableDatabase();
+		
+		Cursor c = db.query(DatabaseHelper.TABLE_NAME, null, KEY_TAG+"=?", new String[] {tag}, null, null, null);
+		ArrayList<PhotoEntry> entries = new ArrayList<PhotoEntry>();
+		
+		while (c.moveToNext()) {
+			PhotoEntry e = new PhotoEntry();
+			e.setId(c.getInt(c.getColumnIndexOrThrow(KEY_ID)));
+			e.setTimeStamp(c.getString((c.getColumnIndexOrThrow(KEY_TIMESTAMP))));
+			e.setTag(c.getString(c.getColumnIndexOrThrow(KEY_TAG)));
+			e.setFilePath(c.getString(c.getColumnIndexOrThrow(KEY_FILENAME)));
+			
+			entries.add(e);
+		}
+		
+		c.close();
+		db.close();
+		
+		return entries;
 	}
 
 	/**

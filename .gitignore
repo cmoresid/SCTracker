@@ -4,3 +4,5 @@
 .umlproject
 .classpath
 .euml2
+/tests/bin
+/tests/gen

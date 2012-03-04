@@ -24,7 +24,7 @@ public class PhotoEntry extends SCModel<SCView> {
 	/** Unique identifier of a photo entry. */
 	private long id;
 	/** Represents when the photo was taken. */
-	private Date timeStamp;
+	private String timeStamp;
 	/** Skin condition the photo is associated with. */
 	private String tag;
 	/** File path of the associated image file */ 
@@ -60,7 +60,7 @@ public class PhotoEntry extends SCModel<SCView> {
 	 * 		A {@link Date} object containing when
 	 * 		the photo was taken.
 	 */
-	public Date getTimeStamp() {
+	public String getTimeStamp() {
 		return timeStamp;
 	}
 	
@@ -73,7 +73,7 @@ public class PhotoEntry extends SCModel<SCView> {
 	 * 		A {@link Date} object containing when
 	 * 		the photo was taken.
 	 */
-	public void setTimeStamp(Date timeStamp) {
+	public void setTimeStamp(String timeStamp) {
 		this.timeStamp = timeStamp;
 		notifyViews();
 	}

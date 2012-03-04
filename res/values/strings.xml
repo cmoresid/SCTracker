@@ -3,5 +3,6 @@
 
     <string name="hello">Hello World, ProjectActivity!</string>
     <string name="app_name">301_project</string>
+    <string name="delete_menu">Delete Photo</string>
 
 </resources>
