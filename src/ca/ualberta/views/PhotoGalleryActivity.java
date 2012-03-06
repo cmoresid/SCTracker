@@ -25,7 +25,7 @@ import ca.ualberta.utils.ApplicationUtil;
 public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 
 	/**
-	 * Used as the main 'model'. This reference is shared between the controller
+	 * Used as the 'model'. This reference is shared between the controller
 	 * and the adapter.
 	 */
 	private ArrayList<PhotoEntry> mPhotos;
@@ -38,6 +38,10 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 	 * The controller that does all the work basically.
 	 */
 	private PhotoGalleryController mController;
+	/**
+	 * Reference to the {@code GridView} inflated from
+	 * the photogallery_grid.xml layout
+	 */
 	private GridView mGridView;
 	/**
 	 * Stores a reference to the {@code PhotoEntry} that a context menu was
@@ -56,7 +60,8 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 		// this implemented for real.
 		String tag = "mole on right hand";
 		
-		// Creates 2 sample photo entries in the database. After
+		// Creates 2 sample photo entries in the database for
+		// demonstration purposes. After
 		// this is run the first time, you will probably start
 		// getting errors in the log file about how it can't insert
 		// an entry. This is normal because it is trying to add
