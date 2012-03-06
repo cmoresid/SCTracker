@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import ca.ualberta.views.SCView;
 
 
-
 /**
  * Provides a way for a model to notify subscribed
  * views when its contents have been changed. A view

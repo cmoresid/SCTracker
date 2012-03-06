@@ -6,11 +6,25 @@ import ca.ualberta.views.SCView;
 
 
 
+/**
+ * POD (Plain Old Data) model that represents a
+ * photo that has been taken in the application. It
+ * has methods accessor methods for all its properties,
+ * which include a unique identifier, time stamp of
+ * when the photo was taken, a tag that is
+ * associated with a particular skin condition, and
+ * a file path that points to the actual image file. The
+ * setter methods notify any view that listens for
+ * changes in the {@code PhotoEntry}.
+ *
+ * Serves as the main model in the MVC paradigm.
+ * @see SCModel
+ */
 public class PhotoEntry extends SCModel<SCView> {
 	/** Unique identifier of a photo entry. */
 	private long id;
 	/** Represents when the photo was taken. */
-	private Date timeStamp;
+	private String timeStamp;
 	/** Skin condition the photo is associated with. */
 	private String tag;
 	/** File path of the associated image file */ 
@@ -46,7 +60,7 @@ public class PhotoEntry extends SCModel<SCView> {
 	 * 		A {@link Date} object containing when
 	 * 		the photo was taken.
 	 */
-	public Date getTimeStamp() {
+	public String getTimeStamp() {
 		return timeStamp;
 	}
 	
@@ -59,7 +73,7 @@ public class PhotoEntry extends SCModel<SCView> {
 	 * 		A {@link Date} object containing when
 	 * 		the photo was taken.
 	 */
-	public void setTimeStamp(Date timeStamp) {
+	public void setTimeStamp(String timeStamp) {
 		this.timeStamp = timeStamp;
 		notifyViews();
 	}
