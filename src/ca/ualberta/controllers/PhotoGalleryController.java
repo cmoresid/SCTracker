@@ -8,9 +8,10 @@ import ca.ualberta.models.PhotoEntry;
 import ca.ualberta.persistence.SqlPhotoStorage;
 
 /**
- * Implementation of the {@link SCController} interface. Acts as the main
- * controller for the application. Provides methods that deal with retrieving
- * file paths for photo entries and managing tags.
+ * Implementation of the {@link SCController} interface. Acts as the
+ * controller between the PhotoGalleryActivity and the persistence
+ * layer. Provides methods to retrieve all photo entries with a 
+ * particular tag, and can delete photo entry objects so far.
  */
 public class PhotoGalleryController extends SCController {
 
@@ -29,7 +30,7 @@ public class PhotoGalleryController extends SCController {
 	 * {@code PhotoEntry} object
 	 */
 	public static final int DELETE_ENTRY = 3;
-
+	
 	/** Reference to a persistence object. */
 	private SqlPhotoStorage mStorage;
 
@@ -42,19 +43,22 @@ public class PhotoGalleryController extends SCController {
 	/** Contains all the PhotoEntry objects related to particular tag. */
 	private ArrayList<PhotoEntry> mPhotos;
 	/**
-	 * Thread so any handlers can deal with messages, without blocking the
+	 * Thread that so any handlers can deal with messages, without blocking the
 	 * UI thread.
 	 */
-	private HandlerThread thread;
-	/** Used to post new messages to the view */
-	private Handler handler;
+	private HandlerThread inboxHandlerThread;
+	/** Used to post new messages to any class that  */
+	private Handler inboxHandler;
 
 	/**
-	 * Instantiates a new {@code MainController} with a list of
-	 * {@link PhotoEntry} objects and the name of the tag to display.
+	 * Instantiates a new {@code PhotoGalleryController} with a list of
+	 * {@link PhotoEntry} objects that will act as the shared 'model' 
+	 * between the {@code PhotoGalleryActivity} and {@code PhotoGalleryGridAdapter},
+	 * and also the name of the tag to display.
 	 * 
 	 * @param photos
-	 *            {@link java.util.ArrayList} containing the PhotoEntry objects.
+	 *            {@link java.util.ArrayList} containing the PhotoEntry objects. This
+	 *            array acts as the 'model' in this case.
 	 * @param photoTag
 	 *            Name of the tag to display.
 	 */
@@ -63,9 +67,15 @@ public class PhotoGalleryController extends SCController {
 		this.mStorage = new SqlPhotoStorage();
 		this.mPhotos = photos;
 
-		thread = new HandlerThread("Updater Thread");
-		thread.start();
-		handler = new Handler(thread.getLooper());
+		inboxHandlerThread = new HandlerThread("Message Thread");
+		// Start the thread that will handle messages
+		inboxHandlerThread.start();
+		inboxHandler = new Handler(inboxHandlerThread.getLooper());
+	}
+	
+	@Override
+	public void dispose() {
+		inboxHandlerThread.getLooper().quit();
 	}
 
 	/**
@@ -76,15 +86,15 @@ public class PhotoGalleryController extends SCController {
 	public void getAllPhotos() {
 		// Refresh the list of PhotoEntry objects
 		// on a separate thread.
-		handler.post(new Runnable() {
+		inboxHandler.post(new Runnable() {
 			@Override
 			public void run() {
 				ArrayList<PhotoEntry> photosLocal = mStorage
 						.getAllPhotoEntriesWithTag(mPhotoTag);
 
-				// Make sure only the updater thread can modify
-				// the ArrayList. Bad things happen (sometimes) 
-				// if you don't. Ask me how I know... haha
+				// Make sure only the message thread can modify
+				// the ArrayList, since mPhotos is shared with the UI
+				// thread as well
 				synchronized (mPhotos) {
 					while (mPhotos.size() > 0) {
 						mPhotos.remove(0);
@@ -94,7 +104,12 @@ public class PhotoGalleryController extends SCController {
 						mPhotos.add(photo);
 					}
 
-					notifyHandlers(new SCCommand(UPDATED_ENTRIES, null));
+					// This is actually what sends a message to the
+					// PhotoGalleryActivity, in this case. When
+					// this method is called, it causes the
+					// handleMessage(Message msg) callback method
+					// to be called in the PhotoGalleryActivity.
+					notifyOutboxHandlers(UPDATED_ENTRIES, null);
 				}
 			}
 		});
@@ -109,28 +124,25 @@ public class PhotoGalleryController extends SCController {
 	 * 		The ID of the {@code PhotoEntry} object to delete.
 	 */
 	private void deletePhotoEntry(final long id) {
-		handler.post(new Runnable() {
+		inboxHandler.post(new Runnable() {
 			@Override
 			public void run() {
 				mStorage.deletePhotoEntry(id);
 			}
 		});
 	}
-
 	/**
 	 * Responds to messages, and calls appropriate method to deal with the
 	 * message.
-	 * 
-	 * @return Whether or not the particular message was handled.
 	 */
 	@Override
-	public boolean handleMessage(SCCommand c) {
-		switch (c.getMessage()) {
+	public boolean handleMessage(int what, Object data) {
+		switch (what) {
 		case GET_PHOTO_ENTRIES:
 			getAllPhotos();
 			return true;
 		case DELETE_ENTRY:
-			deletePhotoEntry((Long) c.getData());
+			deletePhotoEntry((Long) data);
 			getAllPhotos(); // Make sure to refresh list
 							// of PhotoEntry objects.
 			return true;

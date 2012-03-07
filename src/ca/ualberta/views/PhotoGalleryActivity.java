@@ -18,10 +18,12 @@ import android.widget.Toast;
 import ca.ualberta.R;
 import ca.ualberta.adapters.PhotoGalleryGridAdapter;
 import ca.ualberta.controllers.PhotoGalleryController;
-import ca.ualberta.controllers.SCCommand;
 import ca.ualberta.models.PhotoEntry;
 import ca.ualberta.utils.ApplicationUtil;
-
+/**
+ * Tutorial on GridViews:
+ * http://developer.android.com/resources/tutorials/views/hello-gridview.html
+ */
 public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 
 	/**
@@ -114,8 +116,8 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 	 * with {@code PhotoEntry} objects.
 	 */
 	private void retrieveData() {
-		mController.handleMessage(new SCCommand(
-				PhotoGalleryController.GET_PHOTO_ENTRIES, null));
+		mController.handleMessage(
+				PhotoGalleryController.GET_PHOTO_ENTRIES, null);
 	}
 
 	@Override
@@ -123,6 +125,7 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 		// TODO Auto-generated method stub
 		super.onDestroy();
 		ApplicationUtil.deleteAllPhotoEntries();
+		mController.dispose();
 	}
 
 	@Override
@@ -147,9 +150,9 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 		// compare, update tag, etc... functionalities.
 		switch (item.getItemId()) {
 		case PhotoGalleryActivity.MENU_DELETE_ENTRY:
-			return mController.handleMessage(new SCCommand(
+			return mController.handleMessage(
 					PhotoGalleryController.DELETE_ENTRY, mContextPhotoEntry
-							.getId()));
+							.getId());
 		default:
 			return super.onContextItemSelected(item);
 

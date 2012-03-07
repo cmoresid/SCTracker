@@ -32,7 +32,7 @@ public abstract class SCController {
 	 * the controller will send out. Normally the handlers will
 	 * be activities.
 	 */
-	private final ArrayList<Handler> handlers = new ArrayList<Handler>();
+	private final ArrayList<Handler> outboxHandlers = new ArrayList<Handler>();
 	
 	/**
 	 * Allows a subclass of {@code SCController} to respond to
@@ -47,7 +47,14 @@ public abstract class SCController {
 	 * 		does not necessarily have to handle every message that
 	 * 		is sent to it. It can ignore a message.
 	 */
-	protected abstract boolean handleMessage(SCCommand c);
+	protected abstract boolean handleMessage(int what, Object data);
+	
+	/**
+	 * Method will be called when the controller is to be
+	 * destroyed. Basically what will happen is here is disposing
+	 * of any {@code HandlerThread} objects.
+	 */
+	protected abstract void dispose();
 	
 	/**
 	 * Adds a handler to the list of handlers.
@@ -56,7 +63,7 @@ public abstract class SCController {
 	 * 		The handler.
 	 */
 	public void addHandler(Handler h) {
-		handlers.add(h);
+		outboxHandlers.add(h);
 	}
 	
 	/**
@@ -66,22 +73,25 @@ public abstract class SCController {
 	 * 		The handler.
 	 */
 	public void removeHandler(Handler h) {
-		handlers.remove(h);
+		outboxHandlers.remove(h);
 	}
 	
 	/**
-	 * Notifies handlers that a particular event has occurred. The
-	 * {@code SCCommand} object contains the message that is to
-	 * be sent out to all handlers.
+	 * Notifies handlers through a {@code Message} that a particular 
+	 * event has occurred. When this method is called, it triggers
+	 * the interface {@link Handler.Callback#handleMessage(Message)}
+	 * method.
 	 * 
-	 * @param c
-	 * 		Contains the message to be sent out and also any
-	 * 		accompanying data.
+	 * @param what
+	 * 		The message code to be sent the the handler.
+	 * @param data
+	 * 		Any extra data that is required for the handler
+	 * 		to properly respond to the message.
 	 */
-	protected void notifyHandlers(SCCommand c) {
-		if (!handlers.isEmpty()) {
-			for (Handler h : handlers) {
-				Message msg = Message.obtain(h, c.getMessage(), 0, 0, c.getData());
+	protected void notifyOutboxHandlers(int what, Object data) {
+		if (!outboxHandlers.isEmpty()) {
+			for (Handler h : outboxHandlers) {
+				Message msg = Message.obtain(h, what, 0, 0, data);
 				msg.sendToTarget();
 			}
 		}

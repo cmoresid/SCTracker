@@ -14,10 +14,16 @@ import ca.ualberta.persistence.SqlPhotoStorage;
 import android.os.Environment;
 import android.util.Log;
 
+/**
+ * This is just for testing purposes!!
+ * @author connorm
+ */
+
 public class ApplicationUtil {
 	
 	private static int image_count = 0;
 	
+	// Way to check if sd card is mounted
 	private static void checkSdCard() {
 		if (!Environment.MEDIA_MOUNTED.equals(Environment
 				.getExternalStorageState())) {
@@ -34,6 +40,7 @@ public class ApplicationUtil {
 		}
 	}
 	
+	// 
 	public static File copyPhotoToSDCard(int imageResource) throws Exception {
 		checkSdCard();
 
