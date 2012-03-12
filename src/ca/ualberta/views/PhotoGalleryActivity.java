@@ -51,7 +51,12 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 	 */
 	private PhotoEntry mContextPhotoEntry;
 
-	/** Refers to the context menu item for deleting entries. */
+	/** Refers to the context menu item for deleting entries. 
+	 * 
+	 * Can you expand on this? Does it hold the index of the photoEntry
+	 * that's passed to the delete menu? 
+	 * ~David
+	 */
 	public static final int MENU_DELETE_ENTRY = 0;
 
 	@Override
