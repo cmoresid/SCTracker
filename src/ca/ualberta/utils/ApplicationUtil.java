@@ -25,6 +25,8 @@ public class ApplicationUtil {
 	
 	// Way to check if sd card is mounted
 	//should this be a boolean function or throw an exception? ~David
+	//I think either one would work. Less overhead if it is just
+	//a boolean function though ~Connor
 	private static void checkSdCard() {
 		if (!Environment.MEDIA_MOUNTED.equals(Environment
 				.getExternalStorageState())) {

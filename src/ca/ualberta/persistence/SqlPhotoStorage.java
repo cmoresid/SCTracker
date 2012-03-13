@@ -1,6 +1,8 @@
 package ca.ualberta.persistence;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import android.content.ContentValues;
@@ -194,8 +196,19 @@ public class SqlPhotoStorage {
 	 * @return A list of all the tags in the database.
 	 */
 	public String[] getAllTags() {
-		// TODO Auto-generated method stub
-		return null;
+		SQLiteDatabase db = mDbHelper.getReadableDatabase();
+		
+		Cursor c = db.query(true, DatabaseHelper.TABLE_NAME, new String[] {KEY_TAG}, null, null, null, null, null, null);
+		ArrayList<String> allTags = new ArrayList<String>();
+		
+		while (c.moveToNext()) {
+			allTags.add(c.getString(c.getColumnIndexOrThrow(KEY_TAG)));
+		}
+		
+		c.close();
+		db.close();
+		
+		return allTags.toArray(new String[c.getCount()]);
 	}
 
 	/**
@@ -207,8 +220,57 @@ public class SqlPhotoStorage {
 	 *            The tag to be removed.
 	 * @return Returns whether or not the operation was successful or not.
 	 */
-	public boolean deleteTagAndPhotoEntries(String tag) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean deleteTagAndPhotoEntries(String tag) throws IOException {
+		SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+		Cursor c = db.query(DatabaseHelper.TABLE_NAME, new String[] {KEY_FILENAME}, 
+				KEY_TAG+"=?", new String[] {tag}, null, null, null);
+		
+		File photoPath;
+		boolean deletedFile = false;
+		int rowCount = 0;
+		
+		while (c.moveToFirst()) {
+			photoPath = new File(c.getString(c
+					.getColumnIndexOrThrow(KEY_FILENAME)));
+			deletedFile = photoPath.delete(); // delete image file first
+			
+			if (!deletedFile) {
+				throw new IOException("Could not delete file: " 
+						+ photoPath.getAbsolutePath());
+			}
+		}
+		// Delete entry in database now
+		int deletedEntries = db.delete(DatabaseHelper.TABLE_NAME, KEY_TAG+"=?", new String[] {tag});
+		c.close();
+		db.close();
+
+		return (deletedEntries == rowCount);
+	}
+	
+	/**
+	 * Retrieves the next available ID for a {@code PhotoEntry} object. If the
+	 * database is empty (i.e. no {@code PhotoEntry} objects are being stored),
+	 * then the next available ID is 0. The method will retrieve the ID of
+	 * the last {@code PhotoEntry} object, and return that value plus 1.
+	 * 
+	 * @return
+	 * 		The next available {@code PhotoEntry} ID.
+	 */
+	public long getNextAvailableID() {
+		SQLiteDatabase db = mDbHelper.getReadableDatabase();
+		
+		// Ensure query is ordered, because the default may be unordered.
+		Cursor c = db.query(DatabaseHelper.TABLE_NAME, new String[] {KEY_ID}, null, null, null, null, KEY_ID + " DESC");
+		Long latestID = null;
+		
+		if (c.moveToFirst()) {
+			latestID = c.getLong(c.getColumnIndexOrThrow(KEY_ID));
+		}
+		
+		c.close();
+		db.close();
+		
+		return (latestID == null) ? 0 : (latestID + 1);
 	}
 }
