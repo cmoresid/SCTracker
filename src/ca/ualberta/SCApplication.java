@@ -1,15 +1,15 @@
 package ca.ualberta;
 
 
-import ca.ualberta.persistence.SqlPhotoStorage;
 import android.app.Application;
 import android.content.Context;
 
 /**
- * Provides a way to share global state. This is
- * required in order to have global controller and 
- * for an {@link SqlPhotoStorage} to have a parent
- * context.
+ * Provides a way to share global state, mainly
+ * to retrieve the application's context. This
+ * is required for the 
+ * {@link ca.ualberta.persistence.DatabaseHelper},
+ * since it requires a context object to operate.
  */
 public class SCApplication extends Application {
 	
@@ -23,7 +23,7 @@ public class SCApplication extends Application {
 	}
 	
 	/**
-	 * Provides access to the global context
+	 * Provides access to the appliction's context
 	 * 
 	 * @return
 	 * 		The application's context.

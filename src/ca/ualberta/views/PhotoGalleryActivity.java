@@ -18,10 +18,12 @@ import android.widget.Toast;
 import ca.ualberta.R;
 import ca.ualberta.adapters.PhotoGalleryGridAdapter;
 import ca.ualberta.controllers.PhotoGalleryController;
-import ca.ualberta.controllers.SCCommand;
 import ca.ualberta.models.PhotoEntry;
 import ca.ualberta.utils.ApplicationUtil;
-
+/**
+ * Tutorial on GridViews:
+ * http://developer.android.com/resources/tutorials/views/hello-gridview.html
+ */
 public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 
 	/**
@@ -49,7 +51,42 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 	 */
 	private PhotoEntry mContextPhotoEntry;
 
-	/** Refers to the context menu item for deleting entries. */
+	/** Refers to the context menu item for deleting entries. 
+	 * 
+	 * Can you expand on this? Does it hold the index of the photoEntry
+	 * that's passed to the delete menu? 
+	 * ~David
+	 * 
+	 * -----
+	 * If you're referring to the MENU_DELETE_ENTRY constant, all this
+	 * does is give a name to the Delete Entry button in the context
+	 * menu. It is helpful when dealing with events pertaining to context
+	 * menus (i.e. in the onContextItemSelected method). One could perform
+	 * a switch/case statement on the different menu constants.
+	 * 
+	 * If you're meant the mContextPhotoEntry reference, it refers to the
+	 * particular PhotoEntry object that the context menu was created on
+	 * (i.e. the picture you performed the long click on). Note the actual
+	 * PhotoEntry object is returned, not just the index. If you look 
+	 * at the lines following lines in the onCreateContextMenu method:
+	 * 
+	 * ...
+	 * AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) 
+	 * 				menuInfo;
+	 * mContextPhotoEntry = (PhotoEntry) mGridAdapter
+	 *				.getItem(info.position);
+	 *
+	 * ...
+	 * 
+	 * The PhotoEntry object is retrieved via the mGridAdapter. The 'info'
+	 * parameter contains the information pertaining to which entry was
+	 * selected (info.position). If you're wondering why we're storing
+	 * a reference to which entry the context menu is created on, it
+	 * will be passed to the controller as an extra parameter. See the
+	 * rest of onCreateContextMenu to see an example.
+	 * 
+	 * ~Connor
+	 */
 	public static final int MENU_DELETE_ENTRY = 0;
 
 	@Override
@@ -114,8 +151,8 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 	 * with {@code PhotoEntry} objects.
 	 */
 	private void retrieveData() {
-		mController.handleMessage(new SCCommand(
-				PhotoGalleryController.GET_PHOTO_ENTRIES, null));
+		mController.handleMessage(
+				PhotoGalleryController.GET_PHOTO_ENTRIES, null);
 	}
 
 	@Override
@@ -123,6 +160,7 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 		// TODO Auto-generated method stub
 		super.onDestroy();
 		ApplicationUtil.deleteAllPhotoEntries();
+		mController.dispose();
 	}
 
 	@Override
@@ -147,9 +185,9 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 		// compare, update tag, etc... functionalities.
 		switch (item.getItemId()) {
 		case PhotoGalleryActivity.MENU_DELETE_ENTRY:
-			return mController.handleMessage(new SCCommand(
+			return mController.handleMessage(
 					PhotoGalleryController.DELETE_ENTRY, mContextPhotoEntry
-							.getId()));
+							.getId());
 		default:
 			return super.onContextItemSelected(item);
 

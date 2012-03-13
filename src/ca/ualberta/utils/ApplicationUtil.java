@@ -14,10 +14,19 @@ import ca.ualberta.persistence.SqlPhotoStorage;
 import android.os.Environment;
 import android.util.Log;
 
+/**
+ * This is just for testing purposes!!
+ * @author connorm
+ */
+
 public class ApplicationUtil {
 	
 	private static int image_count = 0;
 	
+	// Way to check if sd card is mounted
+	//should this be a boolean function or throw an exception? ~David
+	//I think either one would work. Less overhead if it is just
+	//a boolean function though ~Connor
 	private static void checkSdCard() {
 		if (!Environment.MEDIA_MOUNTED.equals(Environment
 				.getExternalStorageState())) {
@@ -34,31 +43,48 @@ public class ApplicationUtil {
 		}
 	}
 	
+	/**
+	 * takes in an image and writes it to the SD card. 
+	 * returns the file object created while doing that. 
+	 */
 	public static File copyPhotoToSDCard(int imageResource) throws Exception {
 		checkSdCard();
-
+		
+		//create the new file/file path on the sd card
 		File f = new File(Environment.getExternalStorageDirectory().getPath()
 				+ "/SqlPhotoStorageTest/" + "img_" + image_count++ + ".jpg");
-
+		
+		//create a stream of bytes from the image in the R directory. Image
+		//was passed into function
 		InputStream in = SCApplication.getContext().getResources().openRawResource(
 				imageResource);
+		
+		//create a stream of bytes to the new file on the sc card
 		OutputStream out = new FileOutputStream(f);
+		
+		//buffer to transfer bits from the InputStream to the OutputStream
 		byte[] buffer = new byte[1024];
 		int length;
 
 		if (in != null) {
+			
+			//shouldn't this line be in the else?
 			Log.i("SqlPhotoStorage", "Input photo stream is null");
-
+			
+			//transfer the photo from R to SD card
 			while ((length = in.read(buffer)) > 0) {
 				out.write(buffer, 0, length);
 			}
 
 			in.close();
+		}else{
+			//throw some error here. Pop up message?
 		}
 
 		out.close();
-
-		return f;
+		
+		//send back the new file we just loaded.
+		return f; 
 	}
 	
 	public static void createSampleObjects(String tag) throws Exception {

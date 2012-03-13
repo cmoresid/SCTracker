@@ -19,7 +19,7 @@ import ca.ualberta.models.PhotoEntry;
  * <a href="http://goo.gl/qLEHW">this</a> tutorial
  * on grid views. Now when we implement this for real
  * should use a {@link android.view.LayoutInflator} in order
- * in create a cell that would contain the time stamp plus
+ * to create a cell that would contain the time stamp plus
  * the {@link android.view.ImageView} with the photo. The
  * following code is just a proof of concept.
  * 
