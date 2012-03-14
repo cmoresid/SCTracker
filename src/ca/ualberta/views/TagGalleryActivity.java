@@ -11,13 +11,14 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.Toast;
 import ca.ualberta.R;
-import ca.ualberta.adapters.PhotoGalleryGridAdapter;
-import ca.ualberta.controllers.PhotoGalleryController;
+import ca.ualberta.adapters.TagGalleryListAdapter;
+import ca.ualberta.controllers.TagGalleryController;
 import ca.ualberta.models.PhotoEntry;
 import ca.ualberta.utils.ApplicationUtil;
 /**
@@ -25,26 +26,34 @@ import ca.ualberta.utils.ApplicationUtil;
  * http://developer.android.com/resources/tutorials/views/hello-gridview.html
  */
 public class TagGalleryActivity extends Activity implements Handler.Callback {
-
+	
+	/**
+	 *The button pressed to take a new photo
+	 */
+	private Button newPhotoButton;
+	
 	/**
 	 * Used as the 'model'. This reference is shared between the controller
 	 * and the adapter.
 	 */
 	private ArrayList<PhotoEntry> mPhotos;
+	
 	/**
 	 * Responsible for populating the grid view with the {@code PhotoEntry}
 	 * objects.
 	 */
-	private PhotoGalleryGridAdapter mGridAdapter;
+	private TagGalleryListAdapter mGridAdapter;
+	
 	/**
 	 * The controller that does all the work basically.
 	 */
-	private PhotoGalleryController mController;
+	private TagGalleryController mController;
+	
 	/**
 	 * Reference to the {@code GridView} inflated from
 	 * the photogallery_grid.xml layout
 	 */
-	private GridView mGridView;
+	private ListView mListView;
 	/**
 	 * Stores a reference to the {@code PhotoEntry} that a context menu was
 	 * created on.
@@ -109,20 +118,25 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 			e.printStackTrace();
 		}
 
-		setContentView(R.layout.photogallery_grid);
-
+		setContentView(R.layout.taggallery);
+		
+		
+		//assign the newPhotoButton to the button in the layout
+		newPhotoButton = (Button) this.findViewById(R.id.takenewphotobutton);
+		
 		// Initialize an empty list.
 		mPhotos = new ArrayList<PhotoEntry>();
 
 		// The controller shares the reference to the mPhotos
 		// list.
-		mController = new PhotoGalleryController(mPhotos, tag);
+		mController = new TagGalleryController(mPhotos, tag);
+		
 		// This allows the activity to respond to messages passed
 		// to the view from the controller (i.e. calls the
 		// handleMessage(Message msg) callback method).
 		mController.addHandler(new Handler(this));
 		// Uses the mPhotos list as it's data source
-		mGridAdapter = new PhotoGalleryGridAdapter(this, mPhotos);
+		mGridAdapter = new TagGalleryListAdapter(this, mPhotos);
 
 		mGridView = (GridView) this.findViewById(R.id.photogallery_gridview);
 		// Uses the adapter to populate itself.

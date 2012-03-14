@@ -12,12 +12,12 @@
         android:text="@string/project_name"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <TableLayout
-        android:id="@+id/tableLayout1"
+    <ListView
+        android:id="@+id/table"
         android:layout_width="fill_parent"
         android:layout_height="0dip"
         android:layout_weight="0.5" >
-    </TableLayout>
+    </ListView>
 
     <Button
         android:id="@+id/takenewphotobutton"

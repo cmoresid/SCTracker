@@ -6,5 +6,7 @@
     <string name="delete_menu">Delete Photo</string>
     <string name="project_name">Skin Condition Tracker</string>
     <string name="takenewphoto">Take A New Photo</string>
+    <string name="tmp">tmptmptmp</string>
+    <string name="space">" "</string>
 
 </resources>
