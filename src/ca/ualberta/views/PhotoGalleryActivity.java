@@ -94,9 +94,6 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		//Intent i = new Intent(this, TaggingScreenActivity.class);
-		//startActivity(i);
-		
 		// The tag should properly grabbed from an intent when
 		// this implemented for real.
 		String tag = "mole on right hand";
