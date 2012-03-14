@@ -4,5 +4,8 @@
     <string name="hello">Hello World, ProjectActivity!</string>
     <string name="app_name">301_project</string>
     <string name="delete_menu">Delete Photo</string>
+    <string name="tag_instructions">Please enter a tag for the new photo:</string>
+    <string name="ok_button">OK</string>
+    <string name="tag_completion_hint">e.g. mole on right hand</string>
 
 </resources>

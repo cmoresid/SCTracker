@@ -20,6 +20,7 @@
             android:name=".views.ProjectActivity"
             android:label="@string/app_name" >
         </activity>
+        <activity android:name=".views.TaggingScreenActivity"></activity>
         
     </application>
 

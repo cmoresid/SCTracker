@@ -83,7 +83,7 @@ public class PhotoGalleryController extends SCController {
 	 * {@code PhotoEntry} objects. Notifies any handlers that the list has been
 	 * updated.
 	 */
-	public void getAllPhotos() {
+	private void getAllPhotos() {
 		// Refresh the list of PhotoEntry objects
 		// on a separate thread.
 		inboxHandler.post(new Runnable() {

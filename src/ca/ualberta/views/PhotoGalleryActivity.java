@@ -3,6 +3,7 @@ package ca.ualberta.views;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -92,6 +93,9 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		//Intent i = new Intent(this, TaggingScreenActivity.class);
+		//startActivity(i);
 		
 		// The tag should properly grabbed from an intent when
 		// this implemented for real.
