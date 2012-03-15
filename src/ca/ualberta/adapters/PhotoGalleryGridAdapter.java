@@ -3,6 +3,7 @@ package ca.ualberta.adapters;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,7 +84,7 @@ public class PhotoGalleryGridAdapter extends BaseAdapter {
 			ImageView iv = (ImageView) v.findViewById(R.id.grid_item_image);
 
 			// this line need to be changed to the URL of the image.
-			iv.setImageResource(R.drawable.sample_0);
+			iv.setImageBitmap(BitmapFactory.decodeFile(e.getFilePath()));
 			/*
 			 * File imageFile = new File(e.getFilePath()); Uri imageFileUri;
 			 * 
