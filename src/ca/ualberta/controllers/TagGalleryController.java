@@ -37,14 +37,8 @@ public class TagGalleryController extends SCController {
 	/** Reference to a persistence object. */
 	private SqlPhotoStorage mStorage;
 
-	/**
-	 * Reference to the name of the tag to display, since the photo gallery
-	 * activity will only display photos with one particular tag at a time.
-	 */
-	private String mPhotoTag;
-
 	/** Contains all the PhotoEntry objects related to particular tag. */
-	private ArrayList<TagGroup> mPhotos;
+	private ArrayList<TagGroup> mTags;
 	
 	/**
 	 * Thread that so any handlers can deal with messages, without blocking the
@@ -64,13 +58,10 @@ public class TagGalleryController extends SCController {
 	 * @param photos
 	 *            {@link java.util.ArrayList} containing the PhotoEntry objects. This
 	 *            array acts as the 'model' in this case.
-	 * @param photoTag
-	 *            Name of the tag to display.
 	 */
-	public TagGalleryController(ArrayList<TagGroup> tags, String photoTag) {
-		this.mPhotoTag = photoTag;
+	public TagGalleryController(ArrayList<TagGroup> tags) {
 		this.mStorage = new SqlPhotoStorage();
-		this.mPhotos = tags;
+		this.mTags = tags;
 
 		inboxHandlerThread = new HandlerThread("Message Thread");
 		// Start the thread that will handle messages
@@ -88,38 +79,42 @@ public class TagGalleryController extends SCController {
 	 * {@code PhotoEntry} objects. Notifies any handlers that the list has been
 	 * updated.
 	 */
-	public void getAllPhotos() {
-		// Refresh the list of PhotoEntry objects
+	public void getAllTags() {
+		// Refresh the list of TagGroup objects
 		// on a separate thread.
 		inboxHandler.post(new Runnable() {
 			@Override
 			public void run() {
-				ArrayList<TagGroup> tagsLocal = mStorage
-						.getAllTags(mPhotoTag);
+				String[] allTags = mStorage.getAllTags();
+				ArrayList<TagGroup> tagsLocal = new ArrayList<TagGroup>();
+				
+				for(int i = 0; i < allTags.length; i++)
+					tagsLocal.add(new TagGroup(allTags[i]));
 
 				// Make sure only the message thread can modify
 				// the ArrayList, since mPhotos is shared with the UI
 				// thread as well
-				synchronized (mPhotos) {
-					while (mPhotos.size() > 0) {
-						mPhotos.remove(0);
+				synchronized (mTags) {
+					while (mTags.size() > 0) {
+						mTags.remove(0);
 					}
 
-					for (PhotoEntry photo : photosLocal) {
-						mPhotos.add(tagGroup);
+					for (TagGroup tag : tagsLocal) {
+						mTags.add(tag);
 					}
 
 					// This is actually what sends a message to the
 					// PhotoGalleryActivity, in this case. When
 					// this method is called, it causes the
 					// handleMessage(Message msg) callback method
-					// to be called in the PhotoGalleryActivity.
+					// to be called in the TagGalleryActivity.
 					notifyOutboxHandlers(UPDATED_ENTRIES, null);
 				}
 			}
 		});
 	}
 
+	
 	/**
 	 * Deletes a {@code PhotoEntry} object from the application's database with
 	 * the given ID. This is done on a separate thread to avoid blocking the UI
@@ -128,6 +123,7 @@ public class TagGalleryController extends SCController {
 	 * @param id
 	 * 		The ID of the {@code PhotoEntry} object to delete.
 	 */
+	/*
 	private void deletePhotoEntry(final long id) {
 		inboxHandler.post(new Runnable() {
 			@Override
@@ -136,6 +132,8 @@ public class TagGalleryController extends SCController {
 			}
 		});
 	}
+	*/
+	
 	/**
 	 * Responds to messages, and calls appropriate method to deal with the
 	 * message.
@@ -144,12 +142,7 @@ public class TagGalleryController extends SCController {
 	public boolean handleMessage(int what, Object data) {
 		switch (what) {
 		case GET_PHOTO_ENTRIES:
-			getAllPhotos();
-			return true;
-		case DELETE_ENTRY:
-			deletePhotoEntry((Long) data);
-			getAllPhotos(); // Make sure to refresh list
-							// of PhotoEntry objects.
+			getAllTags();
 			return true;
 		}
 

@@ -6,26 +6,21 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 import ca.ualberta.R;
 import ca.ualberta.adapters.TagGalleryListAdapter;
 import ca.ualberta.controllers.TagGalleryController;
-import ca.ualberta.models.PhotoEntry;
+import ca.ualberta.models.TagGroup;
 import ca.ualberta.utils.ApplicationUtil;
 /**
  * Tutorial on GridViews:
  * http://developer.android.com/resources/tutorials/views/hello-gridview.html
  */
-public class TagGalleryActivity extends Activity implements Handler.Callback {
+public class TagGalleryActivity extends Activity implements Handler.Callback{
 	
 	/**
 	 *The button pressed to take a new photo
@@ -36,13 +31,13 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 	 * Used as the 'model'. This reference is shared between the controller
 	 * and the adapter.
 	 */
-	private ArrayList<PhotoEntry> mPhotos;
+	private ArrayList<TagGroup> mTags;
 	
 	/**
 	 * Responsible for populating the grid view with the {@code PhotoEntry}
 	 * objects.
 	 */
-	private TagGalleryListAdapter mGridAdapter;
+	private TagGalleryListAdapter mListAdapter;
 	
 	/**
 	 * The controller that does all the work basically.
@@ -54,12 +49,15 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 	 * the photogallery_grid.xml layout
 	 */
 	private ListView mListView;
+	
 	/**
 	 * Stores a reference to the {@code PhotoEntry} that a context menu was
 	 * created on.
 	 */
-	private PhotoEntry mContextPhotoEntry;
-
+	//private PhotoEntry mContextPhotoEntry;
+	
+	private OnItemClickListener clickListener;
+	
 	/** Refers to the context menu item for deleting entries. 
 	 * 
 	 * Can you expand on this? Does it hold the index of the photoEntry
@@ -117,7 +115,19 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		
+		
+		//this isn't working. Has problems with passing the context to the intent constructor.
+		clickListener = new OnItemClickListener() {  
+			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+				/*//
+				Intent i = new Intent(this, PhotoGalleryActivity.class);
+				i.putExtra("tag", mTags.get(position).getTag());
+				startActivity(i);
+				*/
+			}
+		};
+		
 		setContentView(R.layout.taggallery);
 		
 		
@@ -125,32 +135,42 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 		newPhotoButton = (Button) this.findViewById(R.id.takenewphotobutton);
 		
 		// Initialize an empty list.
-		mPhotos = new ArrayList<PhotoEntry>();
+		mTags = new ArrayList<TagGroup>();
 
 		// The controller shares the reference to the mPhotos
 		// list.
-		mController = new TagGalleryController(mPhotos, tag);
+		mController = new TagGalleryController(mTags);
 		
 		// This allows the activity to respond to messages passed
 		// to the view from the controller (i.e. calls the
 		// handleMessage(Message msg) callback method).
 		mController.addHandler(new Handler(this));
 		// Uses the mPhotos list as it's data source
-		mGridAdapter = new TagGalleryListAdapter(this, mPhotos);
+		mListAdapter = new TagGalleryListAdapter(this, mTags);
 
-		mGridView = (GridView) this.findViewById(R.id.photogallery_gridview);
+		mListView = (ListView) this.findViewById(R.id.photogallery_gridview);
 		// Uses the adapter to populate itself.
-		mGridView.setAdapter(mGridAdapter);
-
-		// When a photo is clicked, just creates a toast message
-		// containing the time stamp.
+		mListView.setAdapter(mListAdapter);
 		
-
-		// Registers a context menu for the grid view.
-		this.registerForContextMenu(mGridView);
+		//launches the intent to the PhotoGalleryActivity
+		mListView.setOnItemClickListener(clickListener);
+		
 		// Populates the mPhotos with the PhotoEntry objects
 		// from the database.
 		this.retrieveData();
+		
+		//launches the intent to the CamereActivity
+		newPhotoButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Perform action on click
+            	//@TODO launch the Camera Activity
+            	
+            }
+        });
+
+		
+		
+		
 	}
 
 	/**
@@ -159,7 +179,7 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 	 */
 	private void retrieveData() {
 		mController.handleMessage(
-				PhotoGalleryController.GET_PHOTO_ENTRIES, null);
+				TagGalleryController.GET_PHOTO_ENTRIES, null);
 	}
 
 	@Override
@@ -170,6 +190,7 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 		mController.dispose();
 	}
 
+/*//shouldn't need the context menu
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
@@ -200,6 +221,8 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 
 		}
 	}
+*/
+
 
 	/**
 	 * This method is called after the controller updates
@@ -211,11 +234,11 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 	@Override
 	public boolean handleMessage(Message msg) {
 		switch (msg.what) {
-		case PhotoGalleryController.UPDATED_ENTRIES:
+		case TagGalleryController.UPDATED_ENTRIES:
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					mGridAdapter.notifyDataSetChanged();
+					mListAdapter.notifyDataSetChanged();
 				}
 			});
 			return true;

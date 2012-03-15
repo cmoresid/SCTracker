@@ -5,7 +5,7 @@
         android:layout_height="fill_parent" >
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/tag"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:gravity="center_vertical"
@@ -13,19 +13,21 @@
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <ImageView
-            android:id="@+id/imageView1"
+            android:id="@+id/firstPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher" 
+            android:layout_weight="0.5"
+            android:contentDescription="@string/space"
             android:gravity="center_vertical"
-            android:contentDescription="@string/space"/>
+            android:src="@drawable/ic_launcher" />
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/lastPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher" 
+            android:layout_weight="0.5"
+            android:contentDescription="@string/space"
             android:gravity="center_vertical"
-            android:contentDescription="@string/space"/>
+            android:src="@drawable/ic_launcher" />
 
     </LinearLayout>

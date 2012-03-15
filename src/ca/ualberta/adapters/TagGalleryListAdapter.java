@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.ImageView;
+import android.widget.TextView;
+import ca.ualberta.R;
 import ca.ualberta.models.TagGroup;
 
 /**
@@ -57,28 +59,17 @@ public class TagGalleryListAdapter extends BaseAdapter {
 		
 		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View rowView = inflater.inflate(R.layout.taggallerycell, parent, false);
-
 		
-		// When we get around to actually implementing this, use
-		// a LayoutInflator instead of just displaying the photo.
-		ImageView imageView;
-		TagGroup e = (TagGroup) this.getItem(position);
-
-		if (convertView == null) { // if it's not recycled, initialize some
-									// attributes
-			imageView = new ImageView(mContext);
-			imageView.setLayoutParams(new ListView.LayoutParams(85, 85));
-			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-			imageView.setPadding(8, 8, 8, 8);
-		} else {
-			imageView = (ImageView) convertView;
-		}
+		ImageView firstImage = (ImageView)rowView.findViewById(R.id.firstPhoto);
+		ImageView lastImage = (ImageView)rowView.findViewById(R.id.lastPhoto);
+		TextView tag = (TextView)rowView.findViewById(R.id.tag);
 		
-		// Note: BitmapFactor.decodeFile(...) is how we get a bitmap image
-		// from just a file path.
-		//imageView.setImageBitmap(BitmapFactory.decodeFile(e.getFilePath()));
+		tag.setText(mTags.get(position).getTag());
+		firstImage.setImageBitmap(BitmapFactory.decodeFile(mTags.get(position).getFirstImage().getFilePath()));
+		lastImage.setImageBitmap(BitmapFactory.decodeFile(mTags.get(position).getLastImage().getFilePath()));
 		
-		return imageView;
+		
+		return rowView;
 	}
 
 	/*
