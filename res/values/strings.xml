@@ -8,5 +8,9 @@
     <string name="takenewphoto">Take A New Photo</string>
     <string name="tmp">tmptmptmp</string>
     <string name="space">" "</string>
+    <string name="tag_instructions">Please enter a tag for the new photo:</string>
+    <string name="ok_button">OK</string>
+    <string name="tag_completion_hint">e.g. mole on right hand</string>
+    
 
 </resources>
