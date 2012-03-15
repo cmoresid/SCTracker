@@ -12,6 +12,8 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" android:name="SCApplication">
         <activity android:name=".views.TagGalleryActivity">
+            <intent-filter></intent-filter>
+        </activity><activity android:name=".views.TagGalleryActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -20,9 +22,7 @@
             android:name=".views.ProjectActivity"
             android:label="@string/app_name" >
         </activity>
-        <activity android:name=".views.TagGalleryActivity">
-            <intent-filter></intent-filter>
-        </activity>
+        
         
     </application>
 
