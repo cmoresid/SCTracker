@@ -3,6 +3,7 @@ package ca.ualberta.views;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -56,7 +57,6 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 	 */
 	//private PhotoEntry mContextPhotoEntry;
 	
-	private OnItemClickListener clickListener;
 	
 	/** Refers to the context menu item for deleting entries. 
 	 * 
@@ -95,7 +95,8 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 	 * ~Connor
 	 */
 	public static final int MENU_DELETE_ENTRY = 0;
-
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -116,23 +117,22 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 			e.printStackTrace();
 		}
 		
-		
-		//this isn't working. Has problems with passing the context to the intent constructor.
-		clickListener = new OnItemClickListener() {  
-			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				/*//
-				Intent i = new Intent(this, PhotoGalleryActivity.class);
-				i.putExtra("tag", mTags.get(position).getTag());
-				startActivity(i);
-				*/
-			}
-		};
-		
 		setContentView(R.layout.taggallery);
-		
 		
 		//assign the newPhotoButton to the button in the layout
 		newPhotoButton = (Button) this.findViewById(R.id.takenewphotobutton);
+		
+		//launches the intent to the PhotoGalleryActivity
+		mListView.setOnItemClickListener(new OnItemClickListener() {  
+			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+				//*
+				Intent i = new Intent(TagGalleryActivity.this, PhotoGalleryActivity.class);
+				i.putExtra("tag", mTags.get(position).getTag());
+				startActivity(i);
+				//*/
+			}
+		});
+		
 		
 		// Initialize an empty list.
 		mTags = new ArrayList<TagGroup>();
@@ -152,8 +152,7 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 		// Uses the adapter to populate itself.
 		mListView.setAdapter(mListAdapter);
 		
-		//launches the intent to the PhotoGalleryActivity
-		mListView.setOnItemClickListener(clickListener);
+
 		
 		// Populates the mPhotos with the PhotoEntry objects
 		// from the database.
@@ -162,8 +161,10 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 		//launches the intent to the CamereActivity
 		newPhotoButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Perform action on click
-            	//@TODO launch the Camera Activity
+            	
+            	//launch the camera activity
+            	Intent i = new Intent(TagGalleryActivity.this, CameraActivity.class);
+            	startActivity(i);
             	
             }
         });
@@ -184,13 +185,38 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 
 	@Override
 	protected void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
 		ApplicationUtil.deleteAllPhotoEntries();
 		mController.dispose();
 	}
 
-/*//shouldn't need the context menu
+
+
+
+	/**
+	 * This method is called after the controller updates
+	 * the list of {@code PhotoEntry} objects (i.e. when
+	 * the updater thread is finished). The main purpose
+	 * of this callback is to tell the adapter to refresh
+	 * itself.
+	 */
+	@Override
+	public boolean handleMessage(Message msg) {
+		switch (msg.what) {
+		case TagGalleryController.UPDATED_ENTRIES:
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					mListAdapter.notifyDataSetChanged();
+				}
+			});
+			return true;
+		}
+		return false;
+	}
+	
+	
+	/*//shouldn't need the context menu
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
@@ -222,28 +248,5 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 		}
 	}
 */
-
-
-	/**
-	 * This method is called after the controller updates
-	 * the list of {@code PhotoEntry} objects (i.e. when
-	 * the updater thread is finished). The main purpose
-	 * of this callback is to tell the adapter to refresh
-	 * itself.
-	 */
-	@Override
-	public boolean handleMessage(Message msg) {
-		switch (msg.what) {
-		case TagGalleryController.UPDATED_ENTRIES:
-			runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					mListAdapter.notifyDataSetChanged();
-				}
-			});
-			return true;
-		}
-		return false;
-	}
 
 }
