@@ -20,6 +20,7 @@ import ca.ualberta.R;
 import ca.ualberta.adapters.PhotoGalleryGridAdapter;
 import ca.ualberta.controllers.PhotoGalleryController;
 import ca.ualberta.models.PhotoEntry;
+import ca.ualberta.persistence.SqlPhotoStorage;
 import ca.ualberta.utils.ApplicationUtil;
 /**
  * Tutorial on GridViews:
@@ -90,6 +91,15 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 	 */
 	public static final int MENU_DELETE_ENTRY = 0;
 
+	/** Refers to the context menu item for compare photos. */
+	public static final int MENU_COMPARE_PHOTO = 1;
+
+	/** Refers to the context menu item for view photo. */
+	public static final int MENU_VIEW_PHOTO = 2;
+
+	/** Refers to the context menu item for rename photo. */
+	public static final int MENU_RENAME_PHOTO = 3;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -135,8 +145,8 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 			public void onItemClick(AdapterView<?> parent, View v,
 					int position, long id) {
 				Toast.makeText(PhotoGalleryActivity.this,
-						mPhotos.get(position).getTimeStamp(), Toast.LENGTH_LONG)
-						.show();
+						mPhotos.get(position).getTimeStamp(),
+						Toast.LENGTH_SHORT).show();
 			}
 		});
 
@@ -153,7 +163,8 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 	 */
 	private void retrieveData() {
 		mController.handleMessage(
-				PhotoGalleryController.GET_PHOTO_ENTRIES, null);
+PhotoGalleryController.GET_PHOTO_ENTRIES,
+				null);
 	}
 
 	@Override
@@ -175,8 +186,13 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 			mContextPhotoEntry = (PhotoEntry) mGridAdapter
 					.getItem(info.position);
 			menu.add(Menu.NONE, PhotoGalleryActivity.MENU_DELETE_ENTRY,
-					PhotoGalleryActivity.MENU_DELETE_ENTRY, getResources()
-							.getString(R.string.delete_menu));
+					PhotoGalleryActivity.MENU_DELETE_ENTRY, "Delete Photo");
+			menu.add(Menu.NONE, PhotoGalleryActivity.MENU_COMPARE_PHOTO,
+					PhotoGalleryActivity.MENU_COMPARE_PHOTO, "Compare Photo");
+			menu.add(Menu.NONE, PhotoGalleryActivity.MENU_VIEW_PHOTO,
+					PhotoGalleryActivity.MENU_VIEW_PHOTO, "View Photo");
+			menu.add(Menu.NONE, PhotoGalleryActivity.MENU_RENAME_PHOTO,
+					PhotoGalleryActivity.MENU_RENAME_PHOTO, "Rename Photo");
 		}
 	}
 
@@ -185,10 +201,27 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 		// There will be more 'cases' when we add the
 		// compare, update tag, etc... functionalities.
 		switch (item.getItemId()) {
-		case PhotoGalleryActivity.MENU_DELETE_ENTRY:
+		case MENU_DELETE_ENTRY:
 			return mController.handleMessage(
-					PhotoGalleryController.DELETE_ENTRY, mContextPhotoEntry
-							.getId());
+					PhotoGalleryController.DELETE_ENTRY,
+					mContextPhotoEntry.getId());
+		case PhotoGalleryActivity.MENU_COMPARE_PHOTO:
+			return mController.handleMessage(
+					PhotoGalleryController.GET_PHOTO_ENTRIES,
+					mContextPhotoEntry.getId());
+		case PhotoGalleryActivity.MENU_VIEW_PHOTO:
+			Intent i = new Intent(this, ViewPhotoActivity.class);
+			i.putExtra(SqlPhotoStorage.KEY_ID, mContextPhotoEntry.getId());
+			i.putExtra(SqlPhotoStorage.KEY_TAG, mContextPhotoEntry.getTag());
+			i.putExtra(SqlPhotoStorage.KEY_TIMESTAMP,
+					mContextPhotoEntry.getTimeStamp());
+			i.putExtra(SqlPhotoStorage.KEY_FILENAME,
+					mContextPhotoEntry.getFilePath());
+			startActivity(i);
+		case PhotoGalleryActivity.MENU_RENAME_PHOTO:
+			return mController.handleMessage(
+					PhotoGalleryController.UPDATED_ENTRIES,
+					mContextPhotoEntry.getId());
 		default:
 			return super.onContextItemSelected(item);
 

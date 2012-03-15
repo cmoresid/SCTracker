@@ -3,13 +3,15 @@ package ca.ualberta.adapters;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import ca.ualberta.R;
 import ca.ualberta.models.PhotoEntry;
 
 /**
@@ -58,22 +60,43 @@ public class PhotoGalleryGridAdapter extends BaseAdapter {
 		// a LayoutInflator instead of just displaying the photo.
 		ImageView imageView;
 		PhotoEntry e = (PhotoEntry) this.getItem(position);
-
+		View v;
 		if (convertView == null) { // if it's not recycled, initialize some
 									// attributes
-			imageView = new ImageView(mContext);
-			imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
-			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-			imageView.setPadding(8, 8, 8, 8);
+			// imageView = new ImageView(mContext);
+			// imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
+			// imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+			// imageView.setPadding(8, 8, 8, 8);
+
+			// inflate the layout.
+			LayoutInflater li = (LayoutInflater) mContext
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			v = li.inflate(R.layout.grid_item, null);
+
+			// Add the text.
+			TextView tv = (TextView) v.findViewById(R.id.grid_item_text);
+			if (tv != null) {
+
+				tv.setText(" " + e.getTimeStamp());
+			}
+
+			ImageView iv = (ImageView) v.findViewById(R.id.grid_item_image);
+
+			// this line need to be changed to the URL of the image.
+			iv.setImageResource(R.drawable.sample_0);
+			/*
+			 * File imageFile = new File(e.getFilePath()); Uri imageFileUri;
+			 * 
+			 * imageFileUri = Uri.fromFile(imageFile);
+			 * iv.setImageURI(imageFileUri);
+			 */
+
 		} else {
-			imageView = (ImageView) convertView;
+
+			v = convertView;
 		}
 		
-		// Note: BitmapFactor.decodeFile(...) is how we get a bitmap image
-		// from just a file path.
-		imageView.setImageBitmap(BitmapFactory.decodeFile(e.getFilePath()));
-		
-		return imageView;
+		return v;
 	}
 
 	/*

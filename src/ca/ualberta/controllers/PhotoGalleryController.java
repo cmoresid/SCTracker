@@ -30,7 +30,16 @@ public class PhotoGalleryController extends SCController {
 	 * {@code PhotoEntry} object
 	 */
 	public static final int DELETE_ENTRY = 3;
-	
+	/**
+	 * Message code which tells the controller to compare two particular
+	 * {@code PhotoEntry} objects
+	 */
+	public static final int COMPARE_PHOTO = 4;
+	/**
+	 * Message code which tells the controller to rename a particular
+	 * {@code PhotoEntry} object
+	 */
+	public static final int RENAME_PHOTO = 6;
 	/** Reference to a persistence object. */
 	private SqlPhotoStorage mStorage;
 
@@ -131,6 +140,46 @@ public class PhotoGalleryController extends SCController {
 			}
 		});
 	}
+	
+	/**
+	 * Compare two {@code PhotoEntry} object from the application's database
+	 * given IDs. This is done on a separate thread to avoid blocking the UI
+	 * thread.
+	 * 
+	 * @param id
+	 *            The ID of the {@code PhotoEntry} object selected.
+	 */
+	private void comparePhoto(final long id) {
+		inboxHandler.post(new Runnable() {
+
+			@Override
+			public void run() {
+
+			}
+
+		});
+	}
+
+	/**
+	 * Rename a {@code PhotoEntry} object from the application's database with
+	 * the given ID. This is done on a separate thread to avoid blocking the UI
+	 * thread.
+	 * 
+	 * @param id
+	 *            The ID of the {@code PhotoEntry} object to rename.
+	 */
+
+	private void renamePhoto(final long id) {
+		inboxHandler.post(new Runnable() {
+
+			@Override
+			public void run() {
+
+			}
+
+		});
+	}
+
 	/**
 	 * Responds to messages, and calls appropriate method to deal with the
 	 * message.
@@ -144,7 +193,15 @@ public class PhotoGalleryController extends SCController {
 		case DELETE_ENTRY:
 			deletePhotoEntry((Long) data);
 			getAllPhotos(); // Make sure to refresh list
-							// of PhotoEntry objects.
+			// of PhotoEntry objects.
+			return true;
+		case COMPARE_PHOTO:
+			comparePhoto((Long) data);
+			getAllPhotos();
+			return true;
+		case RENAME_PHOTO:
+			renamePhoto((Long) data);
+			getAllPhotos();
 			return true;
 		}
 

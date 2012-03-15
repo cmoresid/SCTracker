@@ -25,6 +25,7 @@
         <activity android:name=".views.CameraActivity"></activity>
         <activity android:name=".views.CompareActivity"></activity>
         <activity android:name=".views.TagGalleryActivity"></activity>
+        <activity android:name=".views.ViewPhotoActivity"></activity>
         
     </application>
 
