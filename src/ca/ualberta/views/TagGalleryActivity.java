@@ -137,8 +137,8 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 		// Initialize an empty list.
 		mTags = new ArrayList<TagGroup>();
 
-		// The controller shares the reference to the mPhotos
-		// list.
+		// The controller shares the reference to the mPhotos list.
+		// The controller will be responsible for updating mTags.
 		mController = new TagGalleryController(mTags);
 		
 		// This allows the activity to respond to messages passed
@@ -180,18 +180,14 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 	 */
 	private void retrieveData() {
 		mController.handleMessage(
-				TagGalleryController.GET_PHOTO_ENTRIES, null);
+				TagGalleryController.GET_TAGS, null);
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		ApplicationUtil.deleteAllPhotoEntries();
 		mController.dispose();
 	}
-
-
-
 
 	/**
 	 * This method is called after the controller updates
@@ -215,38 +211,4 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 		return false;
 	}
 	
-	
-	/*//shouldn't need the context menu
-	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
-		super.onCreateContextMenu(menu, v, menuInfo);
-		if (v.getId() == R.id.photogallery_gridview) {
-			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-			// Stores a reference to the photo that the context
-			// menu was created on. Used in the onContextItemSelected.
-			mContextPhotoEntry = (PhotoEntry) mGridAdapter
-					.getItem(info.position);
-			menu.add(Menu.NONE, PhotoGalleryActivity.MENU_DELETE_ENTRY,
-					PhotoGalleryActivity.MENU_DELETE_ENTRY, getResources()
-							.getString(R.string.delete_menu));
-		}
-	}
-
-	@Override
-	public boolean onContextItemSelected(MenuItem item) {
-		// There will be more 'cases' when we add the
-		// compare, update tag, etc... functionalities.
-		switch (item.getItemId()) {
-		case PhotoGalleryActivity.MENU_DELETE_ENTRY:
-			return mController.handleMessage(
-					PhotoGalleryController.DELETE_ENTRY, mContextPhotoEntry
-							.getId());
-		default:
-			return super.onContextItemSelected(item);
-
-		}
-	}
-*/
-
 }

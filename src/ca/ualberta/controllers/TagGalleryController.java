@@ -20,7 +20,7 @@ public class TagGalleryController extends SCController {
 	 * Message code that tells controller retrieve all the {@code PhotoEntry} 
 	 * objects with a particular tag.
 	 */
-	public static final int GET_PHOTO_ENTRIES = 1;
+	public static final int GET_TAGS = 1;
 	
 	/**
 	 * Message code that tells the controller to notify all associated message
@@ -113,26 +113,6 @@ public class TagGalleryController extends SCController {
 			}
 		});
 	}
-
-	
-	/**
-	 * Deletes a {@code PhotoEntry} object from the application's database with
-	 * the given ID. This is done on a separate thread to avoid blocking the UI
-	 * thread.
-	 * 
-	 * @param id
-	 * 		The ID of the {@code PhotoEntry} object to delete.
-	 */
-	/*
-	private void deletePhotoEntry(final long id) {
-		inboxHandler.post(new Runnable() {
-			@Override
-			public void run() {
-				mStorage.deletePhotoEntry(id);
-			}
-		});
-	}
-	*/
 	
 	/**
 	 * Responds to messages, and calls appropriate method to deal with the
@@ -141,7 +121,7 @@ public class TagGalleryController extends SCController {
 	@Override
 	public boolean handleMessage(int what, Object data) {
 		switch (what) {
-		case GET_PHOTO_ENTRIES:
+		case GET_TAGS:
 			getAllTags();
 			return true;
 		}
