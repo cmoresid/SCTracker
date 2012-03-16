@@ -158,7 +158,11 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 		// from the database.
 		this.retrieveData();
 	}
-
+	
+	//protected void onResume(){
+	//	mGridAdapter.notifyDataSetChanged();		
+	//}
+	
 	/**
 	 * Sends a message to the controller to populate the {@code mPhotos} list
 	 * with {@code PhotoEntry} objects.

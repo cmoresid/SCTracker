@@ -13,25 +13,31 @@
             android:text="@string/tmp"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
-        <ImageView
-            android:id="@+id/firstPhoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+            
+			<!-- The pictures aren't taking up the extra layout space with the layout_weight set to 1  -->
+			<!-- Can't seem to fix it -->
+            <ImageView
+                android:id="@+id/firstPhoto"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
 
-            android:paddingLeft="10dp"
-            android:paddingBottom="20dp"
-            android:contentDescription="@string/space"
-            android:gravity="center_vertical"
-            android:src="@drawable/ic_launcher" />
+                android:contentDescription="@string/space"
+                android:src="@drawable/ic_launcher" />
 
-        <ImageView
-            android:id="@+id/lastPhoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="50dp"
-            android:paddingBottom="20dp"
-            android:contentDescription="@string/space"
-            android:gravity="center_vertical"
-            android:src="@drawable/ic_launcher" />
+            <ImageView
+                android:id="@+id/lastPhoto"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+
+                android:contentDescription="@string/space"
+                android:src="@drawable/ic_launcher" />
+
+        </LinearLayout>
 
     </LinearLayout>
