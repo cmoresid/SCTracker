@@ -194,6 +194,26 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 		//**************************************************
 	}
 
+	@Override
+	protected void onRestart()
+	{
+
+		// TODO Auto-generated method stub
+		super.onRestart();
+	}
+
+	@Override
+	protected void onResume()
+	{
+
+		// TODO Auto-generated method stub
+		super.onResume();
+		
+		mController.handleMessage(TagGalleryController.GET_TAGS, null);
+		
+		
+	}
+
 	/**
 	 * This method is called after the controller updates the list of
 	 * {@code PhotoEntry} objects (i.e. when the updater thread is finished).
