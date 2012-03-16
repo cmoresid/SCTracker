@@ -182,12 +182,12 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 	}
 
 	@Override
-	protected void onDestroy()
-	{
-
+	protected void onDestroy(){
 		super.onDestroy();
 		mController.dispose();
-		new SqlPhotoStorage().deleteAllPhotoEntries();
+		//**************************************************
+		new SqlPhotoStorage().deleteAllPhotoEntries(); //TODO: take me out
+		//**************************************************
 	}
 
 	/**
@@ -197,19 +197,14 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 	 * itself.
 	 */
 	@Override
-	public boolean handleMessage(Message msg)
-	{
-
-		switch (msg.what)
-		{
+	public boolean handleMessage(Message msg){
+		switch (msg.what){
+			
 			case TagGalleryController.UPDATED_ENTRIES:
-				runOnUiThread(new Runnable()
-				{
-
+				runOnUiThread(new Runnable(){
 					@Override
 					public void run()
 					{
-
 						mListAdapter.notifyDataSetChanged();
 					}
 				});

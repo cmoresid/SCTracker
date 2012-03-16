@@ -17,18 +17,23 @@
             android:id="@+id/firstPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:paddingLeft="10dp"
             android:paddingBottom="20dp"
             android:contentDescription="@string/space"
             android:gravity="center_vertical"
             android:src="@drawable/ic_launcher" />
 
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/space"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
         <ImageView
             android:id="@+id/lastPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="50dp"
             android:paddingBottom="20dp"
             android:contentDescription="@string/space"
             android:gravity="center_vertical"
