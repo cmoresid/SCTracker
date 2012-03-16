@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Hello World, ProjectActivity!</string>
+    <string name="hello">Updating tag: </string>
     <string name="app_name">301_project</string>
     <string name="delete_menu">Delete Photo</string>
     <string name="project_name">Skin Condition Tracker</string>

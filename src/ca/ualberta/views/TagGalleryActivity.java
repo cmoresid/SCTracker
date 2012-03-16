@@ -1,12 +1,15 @@
 package ca.ualberta.views;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -99,14 +102,14 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 		// getting errors in the log file about how it can't insert
 		// an entry. This is normal because it is trying to add
 		// a duplicate entry (i.e. same ID number).
-		try
+		/*try
 		{
 			ApplicationUtil.createSampleObjects(tag);
 			ApplicationUtil.createSampleObjects("rash on left knee");
 		} catch (Exception e)
 		{
 			e.printStackTrace();
-		}
+		}*/
 		//********************************************************
 		setContentView(R.layout.taggallery);
 
@@ -163,7 +166,7 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 
 				// launch the camera activity
 				Intent i = new Intent(TagGalleryActivity.this,
-						CameraActivity.class);
+						TaggingScreenActivity.class);
 				startActivity(i);
 
 			}
@@ -181,12 +184,13 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 		mController.handleMessage(TagGalleryController.GET_TAGS, null);
 	}
 
+	
 	@Override
 	protected void onDestroy(){
 		super.onDestroy();
 		mController.dispose();
 		//**************************************************
-		new SqlPhotoStorage().deleteAllPhotoEntries(); //TODO: take me out
+		//new SqlPhotoStorage().deleteAllPhotoEntries(); //TODO: take me out
 		//**************************************************
 	}
 
