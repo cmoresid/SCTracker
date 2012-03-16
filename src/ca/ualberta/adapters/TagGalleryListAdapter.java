@@ -65,14 +65,18 @@ public class TagGalleryListAdapter extends BaseAdapter {
 		firstImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
 		firstImage.setLayoutParams(new LinearLayout.LayoutParams(85, 85));
 		ImageView lastImage = (ImageView)rowView.findViewById(R.id.lastPhoto);
+		
 		lastImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
 		lastImage.setLayoutParams(new LinearLayout.LayoutParams(85, 85));
 		TextView tag = (TextView)rowView.findViewById(R.id.tag);
 		
 		tag.setText(mTags.get(position).getTag());
 		firstImage.setImageBitmap(BitmapFactory.decodeFile(mTags.get(position).getFirstImage().getFilePath()));
-		lastImage.setImageBitmap(BitmapFactory.decodeFile(mTags.get(position).getLastImage().getFilePath()));
 		
+		if(mTags.get(position).getFirstImage().getId() != mTags.get(position).getLastImage().getId())
+			lastImage.setImageBitmap(BitmapFactory.decodeFile(mTags.get(position).getLastImage().getFilePath()));
+		else
+			lastImage.setAlpha(0);
 		
 		return rowView;
 	}
