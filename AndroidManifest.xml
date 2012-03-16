@@ -11,32 +11,24 @@
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" android:name="SCApplication">
-<<<<<<< HEAD
-        <activity android:name=".views.TagGalleryActivity">
-            <intent-filter></intent-filter>
-        </activity><activity android:name=".views.TagGalleryActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-=======
         <activity android:name=".views.ProjectActivity">
->>>>>>> branch 'master' of ssh://git@github.com/cs301w09/301_project.git
-        </activity><activity
+        </activity>
+        <activity
             android:name=".views.TaggingScreenActivity"
             android:label="@string/app_name" >
+            
         </activity>
         <activity android:name=".views.PhotoGalleryActivity">
-            <intent-filter>
+        </activity>
+        <activity android:name=".views.CameraActivity"></activity>
+        <activity android:name=".views.CompareActivity"></activity>
+        <activity android:name=".views.TagGalleryActivity">
+			<intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".views.CameraActivity"></activity>
-        <activity android:name=".views.CompareActivity"></activity>
-        <activity android:name=".views.TagGalleryActivity"></activity>
         <activity android:name=".views.ViewPhotoActivity"></activity>
-        
         
     </application>
 

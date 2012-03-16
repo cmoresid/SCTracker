@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -61,7 +62,11 @@ public class TagGalleryListAdapter extends BaseAdapter {
 		View rowView = inflater.inflate(R.layout.taggallerycell, parent, false);
 		
 		ImageView firstImage = (ImageView)rowView.findViewById(R.id.firstPhoto);
+		firstImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+		firstImage.setLayoutParams(new LinearLayout.LayoutParams(85, 85));
 		ImageView lastImage = (ImageView)rowView.findViewById(R.id.lastPhoto);
+		lastImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+		lastImage.setLayoutParams(new LinearLayout.LayoutParams(85, 85));
 		TextView tag = (TextView)rowView.findViewById(R.id.tag);
 		
 		tag.setText(mTags.get(position).getTag());

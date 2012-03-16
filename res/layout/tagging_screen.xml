@@ -32,8 +32,8 @@
             android:id="@+id/autoCompleteTextView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/tag_completion_hint" >
-
+            android:hint="@string/tag_completion_hint"
+            android:maxLength="20" >
         </AutoCompleteTextView>
 
     </LinearLayout>

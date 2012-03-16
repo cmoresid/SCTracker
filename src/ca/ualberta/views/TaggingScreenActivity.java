@@ -19,7 +19,6 @@ import ca.ualberta.persistence.SqlPhotoStorage;
  * Activity that provides the tagging functionality.
  */
 public class TaggingScreenActivity extends Activity implements Handler.Callback {
-	
 	/** Reference to the {@code AutoCompleteTextView} in the XML layout. */
 	private AutoCompleteTextView mAutoTagField;
 	/** Reference to the {@code Button} in the XML layout. */

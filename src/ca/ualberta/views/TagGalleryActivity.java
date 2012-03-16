@@ -16,6 +16,7 @@ import ca.ualberta.R;
 import ca.ualberta.adapters.TagGalleryListAdapter;
 import ca.ualberta.controllers.TagGalleryController;
 import ca.ualberta.models.TagGroup;
+import ca.ualberta.persistence.SqlPhotoStorage;
 import ca.ualberta.utils.ApplicationUtil;
 /**
  * Tutorial on GridViews:
@@ -26,7 +27,7 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 	/**
 	 *The button pressed to take a new photo
 	 */
-	private Button newPhotoButton;
+	private Button mNewPhotoButton;
 	
 	/**
 	 * Used as the 'model'. This reference is shared between the controller
@@ -94,7 +95,7 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 	 * 
 	 * ~Connor
 	 */
-	public static final int MENU_DELETE_ENTRY = 0;
+
 	
 	
 	@Override
@@ -113,6 +114,7 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 		// a duplicate entry (i.e. same ID number).
 		try {
 			ApplicationUtil.createSampleObjects(tag);
+			ApplicationUtil.createSampleObjects("rash on left knee");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -120,14 +122,16 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 		setContentView(R.layout.taggallery);
 		
 		//assign the newPhotoButton to the button in the layout
-		newPhotoButton = (Button) this.findViewById(R.id.takenewphotobutton);
+		mNewPhotoButton = (Button) this.findViewById(R.id.takenewphotobutton);
+		
+		mListView = (ListView) this.findViewById(R.id.table);
 		
 		//launches the intent to the PhotoGalleryActivity
 		mListView.setOnItemClickListener(new OnItemClickListener() {  
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 				//*
 				Intent i = new Intent(TagGalleryActivity.this, PhotoGalleryActivity.class);
-				i.putExtra("tag", mTags.get(position).getTag());
+				i.putExtra(SqlPhotoStorage.KEY_TAG, mTags.get(position).getTag());
 				startActivity(i);
 				//*/
 			}
@@ -148,7 +152,7 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 		// Uses the mPhotos list as it's data source
 		mListAdapter = new TagGalleryListAdapter(this, mTags);
 
-		mListView = (ListView) this.findViewById(R.id.photogallery_gridview);
+
 		// Uses the adapter to populate itself.
 		mListView.setAdapter(mListAdapter);
 		
@@ -159,7 +163,7 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 		this.retrieveData();
 		
 		//launches the intent to the CamereActivity
-		newPhotoButton.setOnClickListener(new View.OnClickListener() {
+		mNewPhotoButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	
             	//launch the camera activity
@@ -187,6 +191,7 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 	protected void onDestroy() {
 		super.onDestroy();
 		mController.dispose();
+		new SqlPhotoStorage().deleteAllPhotoEntries();
 	}
 
 	/**

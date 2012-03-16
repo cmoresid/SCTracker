@@ -95,7 +95,7 @@ public class ApplicationUtil {
 		Date d = new Date();
 		
 		PhotoEntry e1 = new PhotoEntry();
-		e1.setId(1);
+		e1.setId(image_count++);
 		e1.setTag(tag);
 		e1.setTimeStamp(d.toString());
 		e1.setFilePath(p1.getPath());
@@ -103,7 +103,7 @@ public class ApplicationUtil {
 		d = new Date();
 		
 		PhotoEntry e2 = new PhotoEntry();
-		e2.setId(2);
+		e2.setId(image_count++);
 		e2.setTag(tag);
 		e2.setTimeStamp(d.toString());
 		e2.setFilePath(p2.getPath());
