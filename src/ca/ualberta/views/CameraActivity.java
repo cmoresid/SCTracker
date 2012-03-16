@@ -163,7 +163,7 @@ public class CameraActivity extends Activity {
 		return file;*/
 		
 		Date currentDate = new Date();
-		SimpleDateFormat niceDateFormat = new SimpleDateFormat("ddMMyyyy", Locale.CANADA);
+		SimpleDateFormat niceDateFormat = new SimpleDateFormat("ddMMyyyyHHmmss", Locale.CANADA);
 		String currentDateString = niceDateFormat.format(currentDate);
 		
 		File f = new File(Environment.getExternalStorageDirectory().getPath()
