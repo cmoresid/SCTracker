@@ -15,13 +15,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-import android.widget.Toast;
+import android.widget.TextView;
 import ca.ualberta.R;
 import ca.ualberta.adapters.PhotoGalleryGridAdapter;
 import ca.ualberta.controllers.PhotoGalleryController;
 import ca.ualberta.models.PhotoEntry;
 import ca.ualberta.persistence.SqlPhotoStorage;
-import ca.ualberta.utils.ApplicationUtil;
+
 /**
  * Tutorial on GridViews:
  * http://developer.android.com/resources/tutorials/views/hello-gridview.html
@@ -29,8 +29,8 @@ import ca.ualberta.utils.ApplicationUtil;
 public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 
 	/**
-	 * Used as the 'model'. This reference is shared between the controller
-	 * and the adapter.
+	 * Used as the 'model'. This reference is shared between the controller and
+	 * the adapter.
 	 */
 	private ArrayList<PhotoEntry> mPhotos;
 	/**
@@ -43,49 +43,52 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 	 */
 	private PhotoGalleryController mController;
 	/**
-	 * Reference to the {@code GridView} inflated from
-	 * the photogallery_grid.xml layout
+	 * Reference to the {@code GridView} inflated from the photogallery_grid.xml
+	 * layout
 	 */
 	private GridView mGridView;
+	
+	private TextView mTagTextView;
+	
 	/**
 	 * Stores a reference to the {@code PhotoEntry} that a context menu was
 	 * created on.
 	 */
 	private PhotoEntry mContextPhotoEntry;
+	
+	/** The tag. */
+	private String mTag;
 
-	/** Refers to the context menu item for deleting entries. 
+	/**
+	 * Refers to the context menu item for deleting entries.
 	 * 
-	 * Can you expand on this? Does it hold the index of the photoEntry
-	 * that's passed to the delete menu? 
-	 * ~David
+	 * Can you expand on this? Does it hold the index of the photoEntry that's
+	 * passed to the delete menu? ~David
 	 * 
-	 * -----
-	 * If you're referring to the MENU_DELETE_ENTRY constant, all this
-	 * does is give a name to the Delete Entry button in the context
-	 * menu. It is helpful when dealing with events pertaining to context
-	 * menus (i.e. in the onContextItemSelected method). One could perform
-	 * a switch/case statement on the different menu constants.
+	 * ----- If you're referring to the MENU_DELETE_ENTRY constant, all this
+	 * does is give a name to the Delete Entry button in the context menu. It is
+	 * helpful when dealing with events pertaining to context menus (i.e. in the
+	 * onContextItemSelected method). One could perform a switch/case statement
+	 * on the different menu constants.
 	 * 
 	 * If you're meant the mContextPhotoEntry reference, it refers to the
-	 * particular PhotoEntry object that the context menu was created on
-	 * (i.e. the picture you performed the long click on). Note the actual
-	 * PhotoEntry object is returned, not just the index. If you look 
-	 * at the lines following lines in the onCreateContextMenu method:
+	 * particular PhotoEntry object that the context menu was created on (i.e.
+	 * the picture you performed the long click on). Note the actual PhotoEntry
+	 * object is returned, not just the index. If you look at the lines
+	 * following lines in the onCreateContextMenu method:
 	 * 
-	 * ...
-	 * AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) 
-	 * 				menuInfo;
-	 * mContextPhotoEntry = (PhotoEntry) mGridAdapter
-	 *				.getItem(info.position);
-	 *
+	 * ... AdapterView.AdapterContextMenuInfo info =
+	 * (AdapterView.AdapterContextMenuInfo) menuInfo; mContextPhotoEntry =
+	 * (PhotoEntry) mGridAdapter .getItem(info.position);
+	 * 
 	 * ...
 	 * 
 	 * The PhotoEntry object is retrieved via the mGridAdapter. The 'info'
-	 * parameter contains the information pertaining to which entry was
-	 * selected (info.position). If you're wondering why we're storing
-	 * a reference to which entry the context menu is created on, it
-	 * will be passed to the controller as an extra parameter. See the
-	 * rest of onCreateContextMenu to see an example.
+	 * parameter contains the information pertaining to which entry was selected
+	 * (info.position). If you're wondering why we're storing a reference to
+	 * which entry the context menu is created on, it will be passed to the
+	 * controller as an extra parameter. See the rest of onCreateContextMenu to
+	 * see an example.
 	 * 
 	 * ~Connor
 	 */
@@ -94,31 +97,17 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 	/** Refers to the context menu item for compare photos. */
 	public static final int MENU_COMPARE_PHOTO = 1;
 
-	/** Refers to the context menu item for view photo. */
-	public static final int MENU_VIEW_PHOTO = 2;
-
 	/** Refers to the context menu item for rename photo. */
-	public static final int MENU_RENAME_PHOTO = 3;
+	public static final int MENU_RETAG_PHOTO = 3;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		// The tag should properly grabbed from an intent when
 		// this implemented for real.
-		String tag = "mole on right hand";
 		
-		// Creates 2 sample photo entries in the database for
-		// demonstration purposes. After
-		// this is run the first time, you will probably start
-		// getting errors in the log file about how it can't insert
-		// an entry. This is normal because it is trying to add
-		// a duplicate entry (i.e. same ID number).
-		try {
-			ApplicationUtil.createSampleObjects(tag);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		mTag = this.getIntent().getExtras().getString(SqlPhotoStorage.KEY_TAG);
 
 		setContentView(R.layout.photogallery_grid);
 
@@ -127,7 +116,7 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 
 		// The controller shares the reference to the mPhotos
 		// list.
-		mController = new PhotoGalleryController(mPhotos, tag);
+		mController = new PhotoGalleryController(mPhotos, mTag);
 		// This allows the activity to respond to messages passed
 		// to the view from the controller (i.e. calls the
 		// handleMessage(Message msg) callback method).
@@ -136,6 +125,11 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 		mGridAdapter = new PhotoGalleryGridAdapter(this, mPhotos);
 
 		mGridView = (GridView) this.findViewById(R.id.photogallery_gridview);
+		mTagTextView = (TextView) this.findViewById(R.id.tag_text_view);
+		
+		// Set tag text
+		mTagTextView.setText(getIntent().getExtras().getString(SqlPhotoStorage.KEY_TAG));
+		
 		// Uses the adapter to populate itself.
 		mGridView.setAdapter(mGridAdapter);
 
@@ -144,9 +138,17 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 		mGridView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v,
 					int position, long id) {
-				Toast.makeText(PhotoGalleryActivity.this,
-						mPhotos.get(position).getTimeStamp(),
-						Toast.LENGTH_SHORT).show();
+
+				Intent i = new Intent(PhotoGalleryActivity.this,
+						ViewPhotoActivity.class);
+
+				PhotoEntry e = mPhotos.get(position);
+
+				i.putExtra(SqlPhotoStorage.KEY_ID, e.getId());
+				i.putExtra(SqlPhotoStorage.KEY_TAG, e.getTag());
+				i.putExtra(SqlPhotoStorage.KEY_TIMESTAMP, e.getTimeStamp());
+				i.putExtra(SqlPhotoStorage.KEY_FILENAME, e.getFilePath());
+				startActivity(i);
 			}
 		});
 
@@ -162,8 +164,7 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 	 * with {@code PhotoEntry} objects.
 	 */
 	private void retrieveData() {
-		mController.handleMessage(
-PhotoGalleryController.GET_PHOTO_ENTRIES,
+		mController.handleMessage(PhotoGalleryController.GET_PHOTO_ENTRIES,
 				null);
 	}
 
@@ -171,7 +172,6 @@ PhotoGalleryController.GET_PHOTO_ENTRIES,
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		ApplicationUtil.deleteAllPhotoEntries();
 		mController.dispose();
 	}
 
@@ -189,10 +189,8 @@ PhotoGalleryController.GET_PHOTO_ENTRIES,
 					PhotoGalleryActivity.MENU_DELETE_ENTRY, "Delete Photo");
 			menu.add(Menu.NONE, PhotoGalleryActivity.MENU_COMPARE_PHOTO,
 					PhotoGalleryActivity.MENU_COMPARE_PHOTO, "Compare Photo");
-			menu.add(Menu.NONE, PhotoGalleryActivity.MENU_VIEW_PHOTO,
-					PhotoGalleryActivity.MENU_VIEW_PHOTO, "View Photo");
-			menu.add(Menu.NONE, PhotoGalleryActivity.MENU_RENAME_PHOTO,
-					PhotoGalleryActivity.MENU_RENAME_PHOTO, "Rename Photo");
+			menu.add(Menu.NONE, PhotoGalleryActivity.MENU_RETAG_PHOTO,
+					PhotoGalleryActivity.MENU_RETAG_PHOTO, "Retag Photo");
 		}
 	}
 
@@ -209,16 +207,7 @@ PhotoGalleryController.GET_PHOTO_ENTRIES,
 			return mController.handleMessage(
 					PhotoGalleryController.GET_PHOTO_ENTRIES,
 					mContextPhotoEntry.getId());
-		case PhotoGalleryActivity.MENU_VIEW_PHOTO:
-			Intent i = new Intent(this, ViewPhotoActivity.class);
-			i.putExtra(SqlPhotoStorage.KEY_ID, mContextPhotoEntry.getId());
-			i.putExtra(SqlPhotoStorage.KEY_TAG, mContextPhotoEntry.getTag());
-			i.putExtra(SqlPhotoStorage.KEY_TIMESTAMP,
-					mContextPhotoEntry.getTimeStamp());
-			i.putExtra(SqlPhotoStorage.KEY_FILENAME,
-					mContextPhotoEntry.getFilePath());
-			startActivity(i);
-		case PhotoGalleryActivity.MENU_RENAME_PHOTO:
+		case PhotoGalleryActivity.MENU_RETAG_PHOTO:
 			return mController.handleMessage(
 					PhotoGalleryController.UPDATED_ENTRIES,
 					mContextPhotoEntry.getId());
@@ -229,10 +218,9 @@ PhotoGalleryController.GET_PHOTO_ENTRIES,
 	}
 
 	/**
-	 * This method is called after the controller updates
-	 * the list of {@code PhotoEntry} objects (i.e. when
-	 * the updater thread is finished). The main purpose
-	 * of this callback is to tell the adapter to refresh
+	 * This method is called after the controller updates the list of
+	 * {@code PhotoEntry} objects (i.e. when the updater thread is finished).
+	 * The main purpose of this callback is to tell the adapter to refresh
 	 * itself.
 	 */
 	@Override
