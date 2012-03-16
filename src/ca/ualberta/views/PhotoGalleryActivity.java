@@ -103,22 +103,6 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		// The tag should properly grabbed from an intent when
-		// this implemented for real.
-		String tag = "mole on right hand";
-		
-		// Creates 2 sample photo entries in the database for
-		// demonstration purposes. After
-		// this is run the first time, you will probably start
-		// getting errors in the log file about how it can't insert
-		// an entry. This is normal because it is trying to add
-		// a duplicate entry (i.e. same ID number).
-		try {
-			ApplicationUtil.createSampleObjects(tag);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
 		setContentView(R.layout.photogallery_grid);
 
