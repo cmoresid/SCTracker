@@ -163,7 +163,7 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 
 				// launch the camera activity
 				Intent i = new Intent(TagGalleryActivity.this,
-						CameraActivity.class);
+						TaggingScreenActivity.class);
 				startActivity(i);
 
 			}
