@@ -8,12 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import ca.ualberta.R;
-import ca.ualberta.models.PhotoEntry;
+import ca.ualberta.models.TagGroup;
 
 /**
  * Sample data adapter that we can use to populate
@@ -28,55 +28,53 @@ import ca.ualberta.models.PhotoEntry;
  * 
  * @see android.view.BaseAdapter
  */
-public class PhotoGalleryGridAdapter extends BaseAdapter {
+public class TagGalleryListAdapter extends BaseAdapter {
 
 	/** The data source for the adapter. */
-	private ArrayList<PhotoEntry> mPhotos;
+	private ArrayList<TagGroup> mTags;
 	/** Reference to the parent context if we need it. */
 	private Context mContext;
 
 	/**
-	 * Instantiates a new {@code PhotoGalleryGridAdapter} that
+	 * Instantiates a new {@code TagGalleryListAdapter} that
 	 * contains the parent context and also a reference to an
-	 * {@code ArrayList} of {@code PhotoEntry} objects to be used as the
+	 * {@code ArrayList} of {@code TagGroup} objects to be used as the
 	 * data source object.
 	 * 
 	 * @param c
 	 * 		The parent context.
 	 * @param photos
-	 * 		A reference to an {@code ArrayList} containing {@code PhotoEntry}
+	 * 		A reference to an {@code ArrayList} containing {@code TagGroup}
 	 * 		objects. This reference will be the same for the view
-	 * 		(PhotoGalleryActivity) and the controller (PhotoGalleryController)
+	 * 		(TagGalleryActivity) and the controller (TagGalleryController)
 	 * 		in this particular case.
 	 */
-	public PhotoGalleryGridAdapter(Context c, ArrayList<PhotoEntry> photos) {
+	public TagGalleryListAdapter(Context c, ArrayList<TagGroup> tags) {
 		mContext = c;
-		mPhotos = photos;
+		mTags = tags;
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		
-		// When we get around to actually implementing this, use
-		// a LayoutInflator instead of just displaying the photo.
-		ImageView imageView;
-		PhotoEntry e = (PhotoEntry) this.getItem(position);
-
-		if (convertView == null) { // if it's not recycled, initialize some
-									// attributes
-			imageView = new ImageView(mContext);
-			imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
-			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-			imageView.setPadding(8, 8, 8, 8);
-		} else {
-			imageView = (ImageView) convertView;
-		}
 		
-		// Note: BitmapFactor.decodeFile(...) is how we get a bitmap image
-		// from just a file path.
-		imageView.setImageBitmap(BitmapFactory.decodeFile(e.getFilePath()));
+		LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View rowView = inflater.inflate(R.layout.taggallerycell, parent, false);
 		
-		return imageView;
+		ImageView firstImage = (ImageView)rowView.findViewById(R.id.firstPhoto);
+		firstImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+		firstImage.setLayoutParams(new LinearLayout.LayoutParams(85, 85));
+		ImageView lastImage = (ImageView)rowView.findViewById(R.id.lastPhoto);
+		lastImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+		lastImage.setLayoutParams(new LinearLayout.LayoutParams(85, 85));
+		TextView tag = (TextView)rowView.findViewById(R.id.tag);
+		
+		tag.setText(mTags.get(position).getTag());
+		firstImage.setImageBitmap(BitmapFactory.decodeFile(mTags.get(position).getFirstImage().getFilePath()));
+		lastImage.setImageBitmap(BitmapFactory.decodeFile(mTags.get(position).getLastImage().getFilePath()));
+		
+		
+		return rowView;
 	}
 
 	/*
@@ -93,12 +91,12 @@ public class PhotoGalleryGridAdapter extends BaseAdapter {
 	
 	@Override
 	public int getCount() {
-		return (mPhotos != null) ? mPhotos.size() : 0;
+		return (mTags != null) ? mTags.size() : 0;
 	}
 
 	@Override
 	public Object getItem(int idx) {
-		return (mPhotos != null) ? mPhotos.get(idx) : null;
+		return (mTags != null) ? mTags.get(idx) : null;
 	}
 
 	@Override

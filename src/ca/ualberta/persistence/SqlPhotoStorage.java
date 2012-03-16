@@ -1,7 +1,6 @@
 package ca.ualberta.persistence;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -160,6 +159,7 @@ public class SqlPhotoStorage {
 
 	/**
 	 * Retrieves all the photo entries associated with the particular tag.
+	 * They should be sorted with oldest at index 0.
 	 * 
 	 * @param tag
 	 *            The tag

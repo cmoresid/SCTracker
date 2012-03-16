@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import ca.ualberta.R;
 import ca.ualberta.SCApplication;
@@ -94,18 +96,21 @@ public class ApplicationUtil {
 		
 		Date d = new Date();
 		
+		SimpleDateFormat fm = new SimpleDateFormat("MM/dd/yyy", Locale.CANADA);
+		
 		PhotoEntry e1 = new PhotoEntry();
-		e1.setId(1);
+		e1.setId(image_count++);
 		e1.setTag(tag);
-		e1.setTimeStamp(d.toString());
+		e1.setTimeStamp(fm.format(d));
 		e1.setFilePath(p1.getPath());
 
 		d = new Date();
+		d.setDate(9);
 		
 		PhotoEntry e2 = new PhotoEntry();
-		e2.setId(2);
+		e2.setId(image_count++);
 		e2.setTag(tag);
-		e2.setTimeStamp(d.toString());
+		e2.setTimeStamp(fm.format(d));
 		e2.setFilePath(p2.getPath());
 		
 		SqlPhotoStorage ps = new SqlPhotoStorage();

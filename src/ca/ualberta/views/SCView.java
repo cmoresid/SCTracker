@@ -21,6 +21,8 @@ public interface SCView<M> {
 	 * 
 	 * @param model
 	 * 		The model that is updated.
+	 * 
+	 * So this does nothing?? ~David
 	 */
 	public void update(M model);
 }
