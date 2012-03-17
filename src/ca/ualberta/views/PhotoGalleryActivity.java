@@ -33,6 +33,7 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 	 * the adapter.
 	 */
 	private ArrayList<PhotoEntry> mPhotos;
+
 	/**
 	 * Responsible for populating the grid view with the {@code PhotoEntry}
 	 * objects.
@@ -171,7 +172,7 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 		mController.handleMessage(PhotoGalleryController.GET_PHOTO_ENTRIES,
 				null);
 	}
-
+	
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
@@ -234,6 +235,11 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
+					if (mPhotos.size() == 0) {
+						Intent i = new Intent(PhotoGalleryActivity.this, TagGalleryActivity.class);
+						startActivity(i);
+					}
+					
 					mGridAdapter.notifyDataSetChanged();
 				}
 			});
