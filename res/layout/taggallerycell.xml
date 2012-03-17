@@ -2,9 +2,10 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/linearLayout1"
         android:layout_width="fill_parent"
-
         android:layout_height="85dp"
-        android:paddingTop="10dp" >
+        android:layout_marginLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp" >
 
         <TextView
             android:id="@+id/tag"
@@ -12,22 +13,24 @@
             android:layout_height="fill_parent"
             android:gravity="center_vertical"
             android:text="@string/tmp"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="5dp"
+            android:minWidth="130dp"
+            android:maxWidth="130dp" />
 
         <LinearLayout
             android:id="@+id/linearLayout2"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" >
             
-			<!-- The pictures aren't taking up the extra layout space with the layout_weight set to 1  -->
-			<!-- Can't seem to fix it -->
             <ImageView
                 android:id="@+id/firstPhoto"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:maxWidth="100dp"
-
+                android:layout_marginRight="10dp"
                 android:contentDescription="@string/space"
                 android:src="@drawable/ic_launcher" />
 
@@ -37,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:maxWidth="100dp"
-
+                android:layout_marginRight="5dp"
                 android:contentDescription="@string/space"
                 android:src="@drawable/ic_launcher" />
 
