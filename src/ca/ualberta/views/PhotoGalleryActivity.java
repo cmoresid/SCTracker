@@ -154,10 +154,6 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 				startActivity(i);
 			}
 		});
-
-		if (!ApplicationUtil.checkSdCard()) {
-			Toast.makeText(this, "SD card not mounted! Please install SD card.", Toast.LENGTH_SHORT);
-		}
 		
 		// Registers a context menu for the grid view.
 		this.registerForContextMenu(mGridView);

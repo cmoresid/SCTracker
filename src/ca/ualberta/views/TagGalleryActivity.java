@@ -12,11 +12,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 import ca.ualberta.R;
 import ca.ualberta.adapters.TagGalleryListAdapter;
 import ca.ualberta.controllers.TagGalleryController;
 import ca.ualberta.models.TagGroup;
 import ca.ualberta.persistence.SqlPhotoStorage;
+import ca.ualberta.utils.ApplicationUtil;
 
 public class TagGalleryActivity extends Activity implements Handler.Callback{
 
@@ -107,6 +109,11 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 		}*/
 		//********************************************************
 		setContentView(R.layout.taggallery);
+		
+		// Checks to see if SD card is properly mounted.
+		if (!ApplicationUtil.checkSdCard()) {
+			Toast.makeText(this, "SD card not mounted! Please install SD card.", Toast.LENGTH_SHORT);
+		}
 
 		// assign the newPhotoButton to the button in the layout
 		mNewPhotoButton = (Button) this.findViewById(R.id.takenewphotobutton);
