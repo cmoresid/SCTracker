@@ -16,11 +16,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 import ca.ualberta.R;
 import ca.ualberta.adapters.PhotoGalleryGridAdapter;
 import ca.ualberta.controllers.PhotoGalleryController;
 import ca.ualberta.models.PhotoEntry;
 import ca.ualberta.persistence.SqlPhotoStorage;
+import ca.ualberta.utils.ApplicationUtil;
 
 /**
  * Tutorial on GridViews:
@@ -153,6 +155,10 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 			}
 		});
 
+		if (!ApplicationUtil.checkSdCard()) {
+			Toast.makeText(this, "SD card not mounted! Please install SD card.", Toast.LENGTH_SHORT);
+		}
+		
 		// Registers a context menu for the grid view.
 		this.registerForContextMenu(mGridView);
 		// Populates the mPhotos with the PhotoEntry objects

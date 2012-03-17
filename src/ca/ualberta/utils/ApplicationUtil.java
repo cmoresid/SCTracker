@@ -29,20 +29,25 @@ public class ApplicationUtil {
 	//should this be a boolean function or throw an exception? ~David
 	//I think either one would work. Less overhead if it is just
 	//a boolean function though ~Connor
-	private static void checkSdCard() {
+	public static boolean checkSdCard() {
+		
+		boolean value = true;
+		
 		if (!Environment.MEDIA_MOUNTED.equals(Environment
 				.getExternalStorageState())) {
-			Log.i("SqlPhotoStorageTest", "External SD card not mounted");
+			value = false;
 		}
 
 		File storage = new File(Environment.getExternalStorageDirectory(),
-				"SqlPhotoStorageTest");
+				"SqlPhotoStorage");
 
 		if (!storage.exists()) {
 			if (!storage.mkdirs()) {
-				Log.d("MyCameraApp", "failed to create directory");
+				value = false;
 			}
 		}
+		
+		return value;
 	}
 	
 	/**
