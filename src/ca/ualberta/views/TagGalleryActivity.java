@@ -1,26 +1,22 @@
 package ca.ualberta.views;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
 import ca.ualberta.R;
 import ca.ualberta.adapters.TagGalleryListAdapter;
 import ca.ualberta.controllers.TagGalleryController;
 import ca.ualberta.models.TagGroup;
 import ca.ualberta.persistence.SqlPhotoStorage;
-import ca.ualberta.utils.ApplicationUtil;
 
 public class TagGalleryActivity extends Activity implements Handler.Callback{
 
@@ -94,7 +90,6 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 		//*****************************************************
 		// The tag should properly grabbed from an intent when
 		// this implemented for real.
-		String tag = "mole on right hand";
 
 		// Creates 4 sample photo entries in the database for
 		// demonstration purposes. After
