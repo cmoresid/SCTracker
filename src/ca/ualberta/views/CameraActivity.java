@@ -80,22 +80,6 @@ public class CameraActivity extends Activity {
 		return;
 	}
 	
-	private static void checkSdCard() {
-		if (!Environment.MEDIA_MOUNTED.equals(Environment
-				.getExternalStorageState())) {
-			Log.i("SqlPhotoStorageTest", "External SD card not mounted");
-		}
-
-		File storage = new File(Environment.getExternalStorageDirectory(),
-				"SqlPhotoStorage");
-
-		if (!storage.exists()) {
-			if (!storage.mkdirs()) {
-				Log.d("MyCameraApp", "failed to create directory");
-			}
-		}
-	}
-	
 	//Gets the file path and saves the photo to file as a jpeg
 	protected void acceptGogoPic()
 	{
@@ -133,8 +117,6 @@ public class CameraActivity extends Activity {
 	//Saves out the photo to the given file path
 	private void saveBMP(File intentFile, Bitmap ourBMP2)
 	{
-		checkSdCard();
-		
 		try{
 			OutputStream out = new FileOutputStream(intentFile);
 			ourBMP.compress(Bitmap.CompressFormat.JPEG, 75, out);

@@ -7,14 +7,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 import ca.ualberta.R;
-import ca.ualberta.SCApplication;
 import ca.ualberta.controllers.TaggingScreenController;
 import ca.ualberta.persistence.SqlPhotoStorage;
 
@@ -46,26 +44,28 @@ public class TaggingScreenActivity extends Activity implements Handler.Callback 
 
 		mAutoTagField = (AutoCompleteTextView) this
 				.findViewById(R.id.autoCompleteTextView);
-		
+
 		mOkButton = (Button) this.findViewById(R.id.okButton);
 		mOkButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				String tagFromField = mAutoTagField.getText().toString();
-				
-				if (tagFromField.equals(""))
-				{
-					// Toast not working??
+
+				if (tagFromField.equals("")) {
+					Toast.makeText(TaggingScreenActivity.this,
+							"Please enter a tag name.", Toast.LENGTH_SHORT)
+							.show();
 					return;
 				}
-				
-				Intent i = new Intent(TaggingScreenActivity.this, CameraActivity.class);
+
+				Intent i = new Intent(TaggingScreenActivity.this,
+						CameraActivity.class);
 				i.putExtra(SqlPhotoStorage.KEY_TAG, tagFromField);
 				startActivity(i);
 				finish();
 			}
 		});
-		
+
 		mController.handleMessage(TaggingScreenController.GET_ALL_TAGS, null);
 	}
 

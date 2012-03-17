@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -112,7 +113,7 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 		
 		// Checks to see if SD card is properly mounted.
 		if (!ApplicationUtil.checkSdCard()) {
-			Toast.makeText(this, "SD card not mounted! Please install SD card.", Toast.LENGTH_SHORT);
+			Toast.makeText(TagGalleryActivity.this, "SD card not mounted! Please install SD card.", Toast.LENGTH_LONG).show();
 		}
 
 		// assign the newPhotoButton to the button in the layout

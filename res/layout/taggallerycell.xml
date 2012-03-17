@@ -41,8 +41,7 @@
                 android:layout_weight="1"
                 android:maxWidth="100dp"
                 android:layout_marginRight="5dp"
-                android:contentDescription="@string/space"
-                android:src="@drawable/ic_launcher" />
+                android:contentDescription="@string/space" />
 
         </LinearLayout>
 
