@@ -76,14 +76,18 @@ public class SqlPhotoStorage {
 
 		return newRowId;
 	}
-
+	
+	
+	
+	
+	
 	/**
 	 * Deletes a photo entry from the application database. It also deletes the
 	 * associated image file.
 	 * 
 	 * @param id
 	 *            The ID of the photo entry to delete.
-	 * @return Returns whether or not the deletion was successful.
+	 * @return Returns whether or not the deletion was successful. True=? False=?
 	 */
 	public boolean deletePhotoEntry(long id) {
 		SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -106,6 +110,30 @@ public class SqlPhotoStorage {
 		db.close();
 
 		return (deletedEntry > 0) && deletedFile;
+	}
+	
+	
+	/**
+	 * Deletes a photo entry from the application database. 
+	 * Exactly like deletePhotoEntry() without the deleting the
+	 * photo file.
+	 * @param id
+	 *            The ID of the photo entry to delete.
+	 * @return Returns whether or not the deletion was successful. True=? False=?
+	 */
+	public boolean deletePhotoDBEntry(long id) {
+		SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+		Cursor c = db.query(DatabaseHelper.TABLE_NAME, null, KEY_ID + "=" + id,
+				null, null, null, null);
+
+		// Delete entry in database now
+		int deletedEntry = db.delete(DatabaseHelper.TABLE_NAME, KEY_ID + "=?",
+				new String[] { String.valueOf(id) });
+		c.close();
+		db.close();
+
+		return (deletedEntry > 0);
 	}
 
 	/**
@@ -273,4 +301,21 @@ public class SqlPhotoStorage {
 		
 		return (latestID == null) ? 0 : (latestID + 1);
 	}
+	
+	public void retagPhoto(long id, String newTag){
+		
+		//the order these 4 things are done in is the proper order.
+		//If the power goes out between the insert() and delete()
+		//there'll be 2 photoEntries for the same photo instead of
+		//no photoEntry.
+		//Change this so that it only changes the tag attribute of the
+		//photo instead of making a new one and deleting the old one.
+		PhotoEntry photo = getPhotoEntry(id); //get the current photoEntry
+		photo.setTag(newTag);  //Set the new tag
+		insertPhotoEntry(photo); //copy the new photoEntry to DB
+		deletePhotoEntry(id); //delete the old photoEntry
+	}
+	
+	
+	
 }

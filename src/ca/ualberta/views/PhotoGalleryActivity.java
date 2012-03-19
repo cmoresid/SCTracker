@@ -74,7 +74,7 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 	 * onContextItemSelected method). One could perform a switch/case statement
 	 * on the different menu constants.
 	 * 
-	 * If you're meant the mContextPhotoEntry reference, it refers to the
+	 * If you meant the mContextPhotoEntry reference, it refers to the
 	 * particular PhotoEntry object that the context menu was created on (i.e.
 	 * the picture you performed the long click on). Note the actual PhotoEntry
 	 * object is returned, not just the index. If you look at the lines
