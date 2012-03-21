@@ -253,10 +253,31 @@ public class SqlPhotoStorage {
 
 		Cursor c = db.query(DatabaseHelper.TABLE_NAME, new String[] {KEY_FILENAME}, 
 				KEY_TAG+"=?", new String[] {tag}, null, null, null);
+		deleteFilesFromCursor(c);
+		
+		int rowCount = 0;
+		// Delete entry in database now
+		int deletedEntries = db.delete(DatabaseHelper.TABLE_NAME, KEY_TAG+"=?", new String[] {tag});
+		c.close();
+		db.close();
+
+		return (deletedEntries == rowCount);
+	}
+	
+	
+	/**
+	 * Deletes all the files pointed at by the cursors contents. Taken out
+	 * of deleteTagAndPhotoEntries(String tag) because it was a "Long Method"
+	 * detected by jDeodorant
+	 * 
+	 * @param Cursor c
+	 *            The cursor that folds the filepaths to be deleted
+	 */
+	
+	private void deleteFilesFromCursor(Cursor c) throws IOException{
 		
 		File photoPath;
-		boolean deletedFile = false;
-		int rowCount = 0;
+		boolean deletedFile = false;		
 		
 		while (c.moveToFirst()) {
 			photoPath = new File(c.getString(c
@@ -268,12 +289,6 @@ public class SqlPhotoStorage {
 						+ photoPath.getAbsolutePath());
 			}
 		}
-		// Delete entry in database now
-		int deletedEntries = db.delete(DatabaseHelper.TABLE_NAME, KEY_TAG+"=?", new String[] {tag});
-		c.close();
-		db.close();
-
-		return (deletedEntries == rowCount);
 	}
 	
 	/**
@@ -307,24 +322,10 @@ public class SqlPhotoStorage {
 		ContentValues cv = new ContentValues();
 		cv.put(KEY_TAG, newTag);
 		
-		
 		int numUpdated = db.update(DatabaseHelper.TABLE_NAME, cv, 
 				KEY_ID+"="+id, null);
 		
 		return(numUpdated > 0);
-		
-		//the order these 4 things are done in is the proper order.
-		//If the power goes out between the insert() and delete()
-		//there'll be 2 photoEntries for the same photo instead of
-		//no photoEntry.
-		//Change this so that it only changes the tag attribute of the
-		//photo instead of making a new one and deleting the old one.
-		/*
-		PhotoEntry photo = getPhotoEntry(id); //get the current photoEntry
-		photo.setTag(newTag);  //Set the new tag
-		insertPhotoEntry(photo); //copy the new photoEntry to DB
-		deletePhotoEntry(id); //delete the old photoEntry
-		*/
 	}
 	
 	
