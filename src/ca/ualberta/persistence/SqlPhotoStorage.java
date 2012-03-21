@@ -302,7 +302,16 @@ public class SqlPhotoStorage {
 		return (latestID == null) ? 0 : (latestID + 1);
 	}
 	
-	public void retagPhoto(long id, String newTag){
+	public boolean retagPhoto(long id, String newTag){
+		SQLiteDatabase db = mDbHelper.getReadableDatabase();
+		ContentValues cv = new ContentValues();
+		cv.put(KEY_TAG, newTag);
+		
+		
+		int numUpdated = db.update(DatabaseHelper.TABLE_NAME, cv, 
+				KEY_ID+"="+id, null);
+		
+		return(numUpdated > 0);
 		
 		//the order these 4 things are done in is the proper order.
 		//If the power goes out between the insert() and delete()
@@ -310,10 +319,12 @@ public class SqlPhotoStorage {
 		//no photoEntry.
 		//Change this so that it only changes the tag attribute of the
 		//photo instead of making a new one and deleting the old one.
+		/*
 		PhotoEntry photo = getPhotoEntry(id); //get the current photoEntry
 		photo.setTag(newTag);  //Set the new tag
 		insertPhotoEntry(photo); //copy the new photoEntry to DB
 		deletePhotoEntry(id); //delete the old photoEntry
+		*/
 	}
 	
 	

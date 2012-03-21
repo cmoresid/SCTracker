@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 import ca.ualberta.R;
 import ca.ualberta.models.BogoPicGen;
 import ca.ualberta.models.PhotoEntry;
@@ -47,9 +48,14 @@ public class CameraActivity extends Activity {
         OnClickListener aListener = new OnClickListener(){
 
 			@Override
-			public void onClick(View v)
-			{
-				acceptGogoPic();
+			public void onClick(View v){	
+				if(ourBMP == null){
+					//popup message telling them to generate photo.
+					Toast.makeText(CameraActivity.this,
+							"Please press the big button", Toast.LENGTH_SHORT).show();
+				}else{
+					acceptGogoPic();					
+				}
 			}
         	
         };
