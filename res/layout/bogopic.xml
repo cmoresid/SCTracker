@@ -14,7 +14,7 @@
         android:layout_width="fill_parent"
         android:layout_height="307dp"
         android:layout_weight="0.75"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/pressme" />
 	<LinearLayout 
 	    android:id="@+id/linearLayout2"
 	    android:layout_width="fill_parent"
