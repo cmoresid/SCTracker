@@ -76,14 +76,18 @@ public class SqlPhotoStorage {
 
 		return newRowId;
 	}
-
+	
+	
+	
+	
+	
 	/**
 	 * Deletes a photo entry from the application database. It also deletes the
 	 * associated image file.
 	 * 
 	 * @param id
 	 *            The ID of the photo entry to delete.
-	 * @return Returns whether or not the deletion was successful.
+	 * @return Returns whether or not the deletion was successful. True=? False=?
 	 */
 	public boolean deletePhotoEntry(long id) {
 		SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -106,6 +110,30 @@ public class SqlPhotoStorage {
 		db.close();
 
 		return (deletedEntry > 0) && deletedFile;
+	}
+	
+	
+	/**
+	 * Deletes a photo entry from the application database. 
+	 * Exactly like deletePhotoEntry() without the deleting the
+	 * photo file.
+	 * @param id
+	 *            The ID of the photo entry to delete.
+	 * @return Returns whether or not the deletion was successful. True=? False=?
+	 */
+	public boolean deletePhotoDBEntry(long id) {
+		SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+		Cursor c = db.query(DatabaseHelper.TABLE_NAME, null, KEY_ID + "=" + id,
+				null, null, null, null);
+
+		// Delete entry in database now
+		int deletedEntry = db.delete(DatabaseHelper.TABLE_NAME, KEY_ID + "=?",
+				new String[] { String.valueOf(id) });
+		c.close();
+		db.close();
+
+		return (deletedEntry > 0);
 	}
 
 	/**
@@ -225,10 +253,31 @@ public class SqlPhotoStorage {
 
 		Cursor c = db.query(DatabaseHelper.TABLE_NAME, new String[] {KEY_FILENAME}, 
 				KEY_TAG+"=?", new String[] {tag}, null, null, null);
+		deleteFilesFromCursor(c);
+		
+		int rowCount = 0;
+		// Delete entry in database now
+		int deletedEntries = db.delete(DatabaseHelper.TABLE_NAME, KEY_TAG+"=?", new String[] {tag});
+		c.close();
+		db.close();
+
+		return (deletedEntries == rowCount);
+	}
+	
+	
+	/**
+	 * Deletes all the files pointed at by the cursors contents. Taken out
+	 * of deleteTagAndPhotoEntries(String tag) because it was a "Long Method"
+	 * detected by jDeodorant
+	 * 
+	 * @param Cursor c
+	 *            The cursor that folds the filepaths to be deleted
+	 */
+	
+	private void deleteFilesFromCursor(Cursor c) throws IOException{
 		
 		File photoPath;
-		boolean deletedFile = false;
-		int rowCount = 0;
+		boolean deletedFile = false;		
 		
 		while (c.moveToFirst()) {
 			photoPath = new File(c.getString(c
@@ -240,12 +289,6 @@ public class SqlPhotoStorage {
 						+ photoPath.getAbsolutePath());
 			}
 		}
-		// Delete entry in database now
-		int deletedEntries = db.delete(DatabaseHelper.TABLE_NAME, KEY_TAG+"=?", new String[] {tag});
-		c.close();
-		db.close();
-
-		return (deletedEntries == rowCount);
 	}
 	
 	/**
@@ -273,4 +316,18 @@ public class SqlPhotoStorage {
 		
 		return (latestID == null) ? 0 : (latestID + 1);
 	}
+	
+	public boolean retagPhoto(long id, String newTag){
+		SQLiteDatabase db = mDbHelper.getReadableDatabase();
+		ContentValues cv = new ContentValues();
+		cv.put(KEY_TAG, newTag);
+		
+		int numUpdated = db.update(DatabaseHelper.TABLE_NAME, cv, 
+				KEY_ID+"="+id, null);
+		
+		return(numUpdated > 0);
+	}
+	
+	
+	
 }

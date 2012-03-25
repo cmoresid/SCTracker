@@ -179,6 +179,30 @@ public class PhotoGalleryController extends SCController {
 
 		});
 	}
+	
+	/**
+	 * Retags a {@code PhotoEntry} object from the application's database with
+	 * the given ID. This is done on a separate thread to avoid blocking the UI
+	 * thread. Calls the tagging 
+	 * 
+	 * @param id
+	 * 		The ID of the {@code PhotoEntry} object to retag.
+	 */
+	private void retagPhoto(final long id) {
+		inboxHandler.post(new Runnable() {
+			@Override
+			public void run() {
+				String newTag =new String("Hand");
+				
+				
+				
+				mStorage.retagPhoto(id,newTag);
+			}
+		});
+	}
+	
+	
+	
 
 	/**
 	 * Responds to messages, and calls appropriate method to deal with the
@@ -197,6 +221,10 @@ public class PhotoGalleryController extends SCController {
 			return true;
 		case COMPARE_PHOTO:
 			comparePhoto((Long) data);
+			getAllPhotos();
+			return true;
+		case UPDATED_ENTRIES:
+			retagPhoto((Long) data);
 			getAllPhotos();
 			return true;
 		case RENAME_PHOTO:

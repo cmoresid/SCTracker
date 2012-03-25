@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -30,11 +31,14 @@ public class TaggingScreenActivity extends Activity implements Handler.Callback 
 	private TaggingScreenController mController;
 	/** Contains all unique tags. */
 	private ArrayList<String> mTags;
-
+	
+	private String tagFromField;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+
 		this.setContentView(R.layout.tagging_screen);
 
 		mTags = new ArrayList<String>();
@@ -49,7 +53,7 @@ public class TaggingScreenActivity extends Activity implements Handler.Callback 
 		mOkButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				String tagFromField = mAutoTagField.getText().toString();
+				tagFromField = mAutoTagField.getText().toString();
 
 				if (tagFromField.equals("")) {
 					Toast.makeText(TaggingScreenActivity.this,
@@ -57,12 +61,25 @@ public class TaggingScreenActivity extends Activity implements Handler.Callback 
 							.show();
 					return;
 				}
-
-				Intent i = new Intent(TaggingScreenActivity.this,
+				
+				
+				Intent primeIntent = getIntent();
+				
+				if(primeIntent.getExtras() == null){
+					Intent i = new Intent(TaggingScreenActivity.this,
 						CameraActivity.class);
-				i.putExtra(SqlPhotoStorage.KEY_TAG, tagFromField);
-				startActivity(i);
-				finish();
+					i.putExtra(SqlPhotoStorage.KEY_TAG, tagFromField);
+					startActivity(i);
+					finish();
+				}else{
+					// Prepare data intent 
+					Intent data = new Intent();
+					data.putExtra("newTag", tagFromField);
+					
+					// Activity finished ok, return the data
+					setResult(RESULT_OK, data);
+					finish();					
+				}
 			}
 		});
 
@@ -90,4 +107,19 @@ public class TaggingScreenActivity extends Activity implements Handler.Callback 
 
 		return false;
 	}
+	
+	public void finish() {
+		// Prepare data intent 
+		Intent data = new Intent();
+		data.putExtra("newTag", tagFromField);
+		
+		// Activity finished ok, return the data
+		setResult(RESULT_OK, data);
+		super.finish();
+	}
+
+	
+	
+	
+	
 }
