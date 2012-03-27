@@ -4,10 +4,13 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -19,6 +22,7 @@ import ca.ualberta.adapters.TagGalleryListAdapter;
 import ca.ualberta.controllers.TagGalleryController;
 import ca.ualberta.models.TagGroup;
 import ca.ualberta.persistence.SqlPhotoStorage;
+import ca.ualberta.prefs.MainPreferenceActivity;
 import ca.ualberta.utils.ApplicationUtil;
 
 public class TagGalleryActivity extends Activity implements Handler.Callback{
@@ -27,6 +31,9 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 	 * The button pressed to take a new photo
 	 */
 	private Button mNewPhotoButton;
+	
+	/** Shared preference object. */
+	private SharedPreferences mPreferences;
 
 	/**
 	 * Used as the 'model'. This reference is shared between the controller and
@@ -115,6 +122,10 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 		if (!ApplicationUtil.checkSdCard()) {
 			Toast.makeText(TagGalleryActivity.this, "SD card not mounted! Please install SD card.", Toast.LENGTH_LONG).show();
 		}
+		
+		mPreferences = this.getPreferences(MODE_PRIVATE);
+		
+		checkFirstRun();
 
 		// assign the newPhotoButton to the button in the layout
 		mNewPhotoButton = (Button) this.findViewById(R.id.takenewphotobutton);
@@ -177,6 +188,42 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = this.getMenuInflater();
+		inflater.inflate(R.menu.main_menu, menu);
+		
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.menu_prefs) {
+			Intent i = new Intent(this, MainPreferenceActivity.class);
+			this.startActivityForResult(i, RESULT_OK);
+		}
+		
+		return super.onOptionsItemSelected(item);
+	}
+
+	/**
+	 * Checks to see if the this is the first time the application has ever
+	 * been run on the device. It checks the {@code SharedPreference} object
+	 * to see if the firstTime preference has been set. If it is true, the
+	 * help screen will not be shown, yes otherwise.
+	 */
+	private void checkFirstRun() {
+		boolean firstTime = mPreferences.getBoolean("firstTime", true);
+		
+		if (firstTime) {
+			SharedPreferences.Editor editor = mPreferences.edit();
+			editor.putBoolean("firstTime", false);
+			editor.commit();
+			
+			Toast.makeText(this, "First time run...", Toast.LENGTH_LONG).show();
+		}
+	}
+	
 	/**
 	 * Sends a message to the controller to populate the {@code mPhotos} list
 	 * with {@code PhotoEntry} objects.

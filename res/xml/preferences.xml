@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="sc_prefs_screen"
+    android:title="Skin Condition Preferences"
+    android:summary="Set your Preferences" >
+
+	<CheckBoxPreference
+	    android:key="password_preferences"
+	    android:title="Use Password"
+	    android:summary="Check to password protect photos" />
+    
+</PreferenceScreen>

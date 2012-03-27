@@ -36,7 +36,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".views.ViewPhotoActivity"></activity>
-        
+                <activity android:name=".prefs.MainPreferenceActivity">
+            <intent-filter>
+                <action android:name="ca.ualberta.intent.action.MainPreferenceActivity" />
+                <category android:name="android.intent.category.PREFERENCE" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".views.PasswordActivity"></activity>
     </application>
 
 </manifest>
