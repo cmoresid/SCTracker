@@ -19,10 +19,14 @@
         android:layout_weight="0.5" >
     </ListView>
 
-    <Button
-        android:id="@+id/takenewphotobutton"
-        android:layout_width="fill_parent"
+       <Button
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/takenewphoto" />
+        android:background="@drawable/take"
+        android:textColor="#FFFFFF"
+        android:id="@+id/takenewphotobutton"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="32sp"
+        android:drawablePadding="-15sp"></Button>
 
 </LinearLayout>

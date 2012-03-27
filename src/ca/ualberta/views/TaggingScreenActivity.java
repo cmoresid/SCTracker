@@ -13,6 +13,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 import ca.ualberta.R;
+import ca.ualberta.controllers.CameraController;
 import ca.ualberta.controllers.TaggingScreenController;
 import ca.ualberta.persistence.SqlPhotoStorage;
 
@@ -67,6 +68,7 @@ public class TaggingScreenActivity extends Activity implements Handler.Callback 
 		});
 
 		mController.handleMessage(TaggingScreenController.GET_ALL_TAGS, null);
+		
 	}
 
 	@Override
@@ -97,6 +99,7 @@ public class TaggingScreenActivity extends Activity implements Handler.Callback 
 		Intent data = new Intent();
 		data.putExtra("newTag", "Swinging on a star. ");
 		data.putExtra("returnKey2", "You could be better then you are. ");
+		//Toast.makeText(getApplicationContext(), "i want to see this toast", Toast.LENGTH_LONG).show();
 		// Activity finished ok, return the data
 		setResult(RESULT_OK, data);
 		super.finish();
