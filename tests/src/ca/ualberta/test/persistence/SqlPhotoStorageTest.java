@@ -164,21 +164,4 @@ public class SqlPhotoStorageTest extends AndroidTestCase {
 		
 		new SqlPhotoStorage(getContext()).deleteAllPhotoEntries();
 	}
-	
-	public void testGetNextAvailableID() {
-		long testNextID = new SqlPhotoStorage(getContext()).getNextAvailableID();
-		assertEquals(testNextID, 0);
-		
-		PhotoEntry testEntry1 = new PhotoEntry();
-		testEntry1.setId(new SqlPhotoStorage(getContext()).getNextAvailableID());
-		testEntry1.setTag("mole on right hand");
-		testEntry1.setTimeStamp(new Date().toString());
-		testEntry1.setFilePath("/some/file/img1.jpg");
-		new SqlPhotoStorage(getContext()).insertPhotoEntry(testEntry1);
-		
-		testNextID = new SqlPhotoStorage(getContext()).getNextAvailableID();
-		assertEquals(1, testNextID);
-		
-		new SqlPhotoStorage(getContext()).deleteAllPhotoEntries();
-	}
 }

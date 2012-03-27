@@ -12,6 +12,15 @@
     <string name="ok_button">OK</string>
     <string name="tag_completion_hint">e.g. mole on right hand</string>
     <string name="space5">"     "</string>
+    <string name="menu_prefs_title">Preferences</string>
+    <string name="first_time_dialog_title">Welcome to Skin Condition Tracker!</string>
+    <string name="first_time_dialog_set_password"></string>
+    <string name="first_time_message">
+        To begin using the application, first click the \'Take A New Photo Button\'. You
+        can also password protect your potentially nasty and/or private photos if you so
+        choose. Press Menu --> Preferences to manage your
+        password at later date too.
+    </string>
     
 
 </resources>

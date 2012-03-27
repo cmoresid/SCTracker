@@ -253,10 +253,31 @@ public class SqlPhotoStorage {
 
 		Cursor c = db.query(DatabaseHelper.TABLE_NAME, new String[] {KEY_FILENAME}, 
 				KEY_TAG+"=?", new String[] {tag}, null, null, null);
+		deleteFilesFromCursor(c);
+		
+		int rowCount = 0;
+		// Delete entry in database now
+		int deletedEntries = db.delete(DatabaseHelper.TABLE_NAME, KEY_TAG+"=?", new String[] {tag});
+		c.close();
+		db.close();
+
+		return (deletedEntries == rowCount);
+	}
+	
+	
+	/**
+	 * Deletes all the files pointed at by the cursors contents. Taken out
+	 * of deleteTagAndPhotoEntries(String tag) because it was a "Long Method"
+	 * detected by jDeodorant
+	 * 
+	 * @param Cursor c
+	 *            The cursor that folds the filepaths to be deleted
+	 */
+	
+	private void deleteFilesFromCursor(Cursor c) throws IOException{
 		
 		File photoPath;
-		boolean deletedFile = false;
-		int rowCount = 0;
+		boolean deletedFile = false;		
 		
 		while (c.moveToFirst()) {
 			photoPath = new File(c.getString(c
@@ -268,52 +289,17 @@ public class SqlPhotoStorage {
 						+ photoPath.getAbsolutePath());
 			}
 		}
-		// Delete entry in database now
-		int deletedEntries = db.delete(DatabaseHelper.TABLE_NAME, KEY_TAG+"=?", new String[] {tag});
-		c.close();
-		db.close();
-
-		return (deletedEntries == rowCount);
 	}
 	
-	/**
-	 * Retrieves the next available ID for a {@code PhotoEntry} object. If the
-	 * database is empty (i.e. no {@code PhotoEntry} objects are being stored),
-	 * then the next available ID is 0. The method will retrieve the ID of
-	 * the last {@code PhotoEntry} object, and return that value plus 1.
-	 * 
-	 * @return
-	 * 		The next available {@code PhotoEntry} ID.
-	 */
-	public long getNextAvailableID() {
+	public boolean retagPhoto(long id, String newTag){
 		SQLiteDatabase db = mDbHelper.getReadableDatabase();
+		ContentValues cv = new ContentValues();
+		cv.put(KEY_TAG, newTag);
 		
-		// Ensure query is ordered, because the default may be unordered.
-		Cursor c = db.query(DatabaseHelper.TABLE_NAME, new String[] {KEY_ID}, null, null, null, null, KEY_ID + " DESC");
-		Long latestID = null;
+		int numUpdated = db.update(DatabaseHelper.TABLE_NAME, cv, 
+				KEY_ID+"="+id, null);
 		
-		if (c.moveToFirst()) {
-			latestID = c.getLong(c.getColumnIndexOrThrow(KEY_ID));
-		}
-		
-		c.close();
-		db.close();
-		
-		return (latestID == null) ? 0 : (latestID + 1);
-	}
-	
-	public void retagPhoto(long id, String newTag){
-		
-		//the order these 4 things are done in is the proper order.
-		//If the power goes out between the insert() and delete()
-		//there'll be 2 photoEntries for the same photo instead of
-		//no photoEntry.
-		//Change this so that it only changes the tag attribute of the
-		//photo instead of making a new one and deleting the old one.
-		PhotoEntry photo = getPhotoEntry(id); //get the current photoEntry
-		photo.setTag(newTag);  //Set the new tag
-		insertPhotoEntry(photo); //copy the new photoEntry to DB
-		deletePhotoEntry(id); //delete the old photoEntry
+		return(numUpdated > 0);
 	}
 	
 	
