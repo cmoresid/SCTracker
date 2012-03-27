@@ -3,8 +3,6 @@ package ca.ualberta.views;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -215,8 +213,6 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 	 * help screen will not be shown, yes otherwise.
 	 */
 	private void checkFirstRun() {
-		//createFirstTimeDialog();
-		
 		boolean firstTime = mPreferences.getBoolean("firstTime", true);
 		
 		if (firstTime) {
@@ -224,39 +220,8 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 			editor.putBoolean("firstTime", false);
 			editor.commit();
 			
-			createFirstTimeDialog();
+			Toast.makeText(this, "First time run...", Toast.LENGTH_LONG).show();
 		}
-	}
-	
-	private void createFirstTimeDialog() {
-		AlertDialog firstTimeUseDialog = new AlertDialog.Builder(this).create();
-		
-		String message = getResources().getString(R.string.first_time_message);
-		
-		firstTimeUseDialog.setTitle(R.string.first_time_dialog_title);
-		firstTimeUseDialog.setMessage(message);
-		
-		firstTimeUseDialog.setButton("Add Password", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface arg0, int arg1) {
-				Intent passwordIntent = new Intent(TagGalleryActivity.this, PasswordActivity.class);
-				passwordIntent.putExtra(MainPreferenceActivity.KEY_PASSWORD_FUNCTION, 
-						MainPreferenceActivity.ADD_PASSWORD);
-				
-				startActivity(passwordIntent);
-			}
-		});
-		
-		// This is really ugly...
-		firstTimeUseDialog.setButton2("No thanks", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		
-		firstTimeUseDialog.show();
 	}
 	
 	/**
