@@ -291,32 +291,6 @@ public class SqlPhotoStorage {
 		}
 	}
 	
-	/**
-	 * Retrieves the next available ID for a {@code PhotoEntry} object. If the
-	 * database is empty (i.e. no {@code PhotoEntry} objects are being stored),
-	 * then the next available ID is 0. The method will retrieve the ID of
-	 * the last {@code PhotoEntry} object, and return that value plus 1.
-	 * 
-	 * @return
-	 * 		The next available {@code PhotoEntry} ID.
-	 */
-	public long getNextAvailableID() {
-		SQLiteDatabase db = mDbHelper.getReadableDatabase();
-		
-		// Ensure query is ordered, because the default may be unordered.
-		Cursor c = db.query(DatabaseHelper.TABLE_NAME, new String[] {KEY_ID}, null, null, null, null, KEY_ID + " DESC");
-		Long latestID = null;
-		
-		if (c.moveToFirst()) {
-			latestID = c.getLong(c.getColumnIndexOrThrow(KEY_ID));
-		}
-		
-		c.close();
-		db.close();
-		
-		return (latestID == null) ? 0 : (latestID + 1);
-	}
-	
 	public boolean retagPhoto(long id, String newTag){
 		SQLiteDatabase db = mDbHelper.getReadableDatabase();
 		ContentValues cv = new ContentValues();
