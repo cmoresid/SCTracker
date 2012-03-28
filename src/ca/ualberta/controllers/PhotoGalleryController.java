@@ -4,8 +4,11 @@ import java.util.ArrayList;
 
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.widget.Toast;
+import ca.ualberta.SCApplication;
 import ca.ualberta.models.PhotoEntry;
 import ca.ualberta.persistence.SqlPhotoStorage;
+import ca.ualberta.views.TaggingScreenActivity;
 
 /**
  * Implementation of the {@link SCController} interface. Acts as the
@@ -40,6 +43,10 @@ public class PhotoGalleryController extends SCController {
 	 * {@code PhotoEntry} object
 	 */
 	public static final int RENAME_PHOTO = 6;
+	/**
+	 * 
+	 */
+	public static final int EMPTY_TAG = 7;
 	/** Reference to a persistence object. */
 	private SqlPhotoStorage mStorage;
 
@@ -112,6 +119,12 @@ public class PhotoGalleryController extends SCController {
 					for (PhotoEntry photo : photosLocal) {
 						mPhotos.add(photo);
 					}
+					
+					if(mPhotos.size() ==0){
+						//Toast.makeText(SCApplication.getContext(), "there are no photo in the tag", Toast.LENGTH_SHORT).show();
+						notifyOutboxHandlers(EMPTY_TAG, null);
+						return ;
+					}
 
 					// This is actually what sends a message to the
 					// PhotoGalleryActivity, in this case. When
@@ -137,8 +150,12 @@ public class PhotoGalleryController extends SCController {
 			@Override
 			public void run() {
 				mStorage.deletePhotoEntry(id);
+				if(mPhotos.size() ==0){
+					notifyOutboxHandlers(EMPTY_TAG, null);
+				}
 			}
 		});
+
 	}
 	
 	/**
@@ -215,6 +232,7 @@ public class PhotoGalleryController extends SCController {
 			getAllPhotos();
 			return true;
 		case DELETE_ENTRY:
+			//Toast.makeText(SCApplication.getContext(), "want to delete photo in this tag"+String.valueOf((Long) data), Toast.LENGTH_SHORT).show();
 			deletePhotoEntry((Long) data);
 			getAllPhotos(); // Make sure to refresh list
 			// of PhotoEntry objects.

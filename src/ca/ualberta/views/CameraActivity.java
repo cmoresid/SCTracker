@@ -107,7 +107,6 @@ public class CameraActivity extends Activity {
 			SqlPhotoStorage storage = new SqlPhotoStorage();
 			PhotoEntry newPhoto = new PhotoEntry();
 			
-			newPhoto.setId(storage.getNextAvailableID());
 			newPhoto.setTag(getIntent().getExtras().getString(SqlPhotoStorage.KEY_TAG));
 			newPhoto.setTimeStamp(currentDateString);
 			newPhoto.setFilePath(intentFile.getAbsolutePath());

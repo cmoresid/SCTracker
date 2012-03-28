@@ -23,9 +23,9 @@ public class MainPreferenceActivity extends PreferenceActivity {
 	public static final String KEY_PASSWORD_FUNCTION = "password_function";
 	
 	/** Constant that tells {@code PasswordActivity} to create new password. */
-	public static final int ADD_PASSWORD = 1;
+	public static final int ADD_PASSWORD = 0;
 	/** Constant that tells {@code PasswordActivity} to verify password then remove. */
-	public static final int VERIFY_REMOVE_PASSWORD = 0;
+	public static final int VERIFY_REMOVE_PASSWORD = 1;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

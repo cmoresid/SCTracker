@@ -224,6 +224,15 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 		}
 	}
 
+	
+	
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		super.onBackPressed();
+		
+	}
+
 	/**
 	 * This method is called after the controller updates the list of
 	 * {@code PhotoEntry} objects (i.e. when the updater thread is finished).
@@ -246,6 +255,16 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 				}
 			});
 			return true;
+		case PhotoGalleryController.EMPTY_TAG:
+			runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					finish();
+					
+				}
+				
+			});
 		}
 		return false;
 	}

@@ -1,7 +1,6 @@
 package ca.ualberta.views;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import android.app.Activity;
 import android.app.AlertDialog;

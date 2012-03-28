@@ -13,6 +13,9 @@ import android.widget.TextView;
 import ca.ualberta.R;
 import ca.ualberta.controllers.PasswordActivityController;
 import ca.ualberta.prefs.MainPreferenceActivity;
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.Toast;
 
 public class PasswordActivity extends Activity implements Handler.Callback {
 
@@ -40,7 +43,7 @@ public class PasswordActivity extends Activity implements Handler.Callback {
 	private void setPasswordBehavior() {
 		mActivityBehavior = getIntent().getExtras().getInt(
 				MainPreferenceActivity.KEY_PASSWORD_FUNCTION);
-		
+
 		if (mActivityBehavior == MainPreferenceActivity.ADD_PASSWORD) {
 			addPasswordBehavior();
 		} else {
