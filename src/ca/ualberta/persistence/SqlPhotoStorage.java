@@ -66,7 +66,7 @@ public class SqlPhotoStorage {
 
 		ContentValues vs = new ContentValues();
 
-		vs.put(KEY_ID, e.getId());
+		//vs.put(KEY_ID, e.getId());
 		vs.put(KEY_TIMESTAMP, e.getTimeStamp().toString());
 		vs.put(KEY_TAG, e.getTag());
 		vs.put(KEY_FILENAME, e.getFilePath());
