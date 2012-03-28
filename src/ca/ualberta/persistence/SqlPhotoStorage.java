@@ -136,6 +136,23 @@ public class SqlPhotoStorage {
 		return (deletedEntry > 0);
 	}
 
+	public long getNextAvailableID() {
+		SQLiteDatabase db = mDbHelper.getReadableDatabase();
+		
+		// Ensure query is ordered, because the default may be unordered.
+		Cursor c = db.query(DatabaseHelper.TABLE_NAME, new String[] {KEY_ID}, null, null, null, null, KEY_ID + " DESC");
+		Long latestID = null;
+		
+		if (c.moveToFirst()) {
+			latestID = c.getLong(c.getColumnIndexOrThrow(KEY_ID));
+		}
+		
+		c.close();
+		db.close();
+		
+		return (latestID == null) ? 0 : (latestID + 1);
+	}
+	
 	/**
 	 * Deletes all photo entries from the database. This method is mainly used
 	 * in the {@code tearDown} method in a unit test.
