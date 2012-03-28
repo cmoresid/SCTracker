@@ -239,9 +239,7 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 		firstTimeUseDialog.setButton("Add Password", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface arg0, int arg1) {
-				Intent passwordIntent = new Intent(TagGalleryActivity.this, PasswordActivity.class);
-				passwordIntent.putExtra(MainPreferenceActivity.KEY_PASSWORD_FUNCTION, 
-						MainPreferenceActivity.ADD_PASSWORD);
+				Intent passwordIntent = new Intent(TagGalleryActivity.this, MainPreferenceActivity.class);
 				
 				startActivity(passwordIntent);
 			}

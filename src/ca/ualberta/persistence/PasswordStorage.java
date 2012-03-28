@@ -7,17 +7,33 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import android.content.Context;
+
 
 public class PasswordStorage {
 	
+	/** Name of the file where the password is stored. */
 	public static final String PASSWORD_FILE = "sc.pwd";
 	
+	/** Allow password to be written to disk. */
 	private FileOutputStream mPasswordOutputStream;
+	/** Allow password to be read from disk. */
 	private FileInputStream mPasswordInputStream;
+	/** Describes where to find the file in the sand box. */
 	private FileDescriptor mFilePath;
+	/** Used to calculate hash of password. */
 	private MessageDigest mDigest;
+	/** Hashing algorithm to use. */
 	private String hashAlgorithm = "SHA-256";
 	
+	/**
+	 * Initializes the hashing component {@code MessageDigest}. The
+	 * algorithm that is used is dependent on the member variable
+	 * {@code hashAlgorithm}. The method itself does not throw an
+	 * exception, however the {@code NoSuchAlgorithmException} is
+	 * handled internally if for some reason the algorithm specified
+	 * in the {@code hashAlgorithm} member variable does not exist.
+	 */
 	public void initDigest() {
 		try {
 			mDigest = MessageDigest.getInstance(hashAlgorithm);
@@ -27,6 +43,18 @@ public class PasswordStorage {
 		}
 	}
 	
+	/**
+	 * Initializes a new instance of {@code PasswordStorage} with the
+	 * specified {@code FileDescriptor}. The {@code FileDescriptor} will
+	 * normally be passed from the controller, which will be obtained from
+	 * a {@code Context} object and a call to 
+	 * {@link Context#openFileOutput(String, int)#getFD().
+	 * 
+	 * @param fd
+	 * 		The file descriptor describing where to open the file
+	 * 		from.
+	 * @throws IOException
+	 */
 	public PasswordStorage(FileDescriptor fd) throws IOException {
 		mFilePath = fd;
 		initDigest();
