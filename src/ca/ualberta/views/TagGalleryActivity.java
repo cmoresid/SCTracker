@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -125,9 +126,10 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 			Toast.makeText(TagGalleryActivity.this, "SD card not mounted! Please install SD card.", Toast.LENGTH_LONG).show();
 		}
 		
-		mPreferences = this.getPreferences(MODE_PRIVATE);
+		mPreferences = this.getSharedPreferences("ca.ualberta_preferences", MODE_PRIVATE);
 		
 		checkFirstRun();
+		checkAuthenticate();
 
 		// assign the newPhotoButton to the button in the layout
 		mNewPhotoButton = (Button) this.findViewById(R.id.takenewphotobutton);
@@ -225,6 +227,16 @@ public class TagGalleryActivity extends Activity implements Handler.Callback{
 			editor.commit();
 			
 			createFirstTimeDialog();
+		}
+	}
+	
+	private void checkAuthenticate() {
+		boolean passwordAuthenticate =  mPreferences.getBoolean("password_preferences", false);
+		
+		if (passwordAuthenticate) {
+			Intent i = new Intent(this, PasswordActivity.class);
+			i.putExtra(MainPreferenceActivity.KEY_PASSWORD_FUNCTION, MainPreferenceActivity.VERIFY_REMOVE_PASSWORD);
+			startActivity(i);
 		}
 	}
 	
