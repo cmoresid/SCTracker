@@ -10,6 +10,13 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import ca.ualberta.persistence.PasswordStorage;
 
+/**
+ * Acts as the controller for the {@code PasswordActivityController}. This
+ * controller has a reference to the {@link PasswordStorage} persistence
+ * object in order to manipulate the user's password.
+ * {@code PasswordActivityController} has the ability to verify and
+ * update/change a user's password.
+ */
 public class PasswordActivityController extends SCController {
 
 	/**
@@ -22,10 +29,17 @@ public class PasswordActivityController extends SCController {
 	 * password in the password file.
 	 */
 	public static final int VERIFY_PASSWORD = 2;
-	
+	/** 
+	 * Message code that the controller sends to any listening views that an
+	 * operation has been performed.
+	 */
 	public static final int UPDATED_RESULTS = 3;
-
-	/** Context so we can grab file descriptors. */
+	/** 
+	 * Reference to the {@code PasswordActivity}'s context in order to
+	 * grab references to the application's internal memory via
+	 * {@link Context#openFileOutput(String, int)}
+	 * and {@link Context#openFileInput(String)}.
+	 */
 	private Context mContext;
 	/**
 	 * Thread so any handlers can deal with messages, without blocking UI
@@ -38,7 +52,9 @@ public class PasswordActivityController extends SCController {
 	private PasswordStorage mStorage;
 
 	/**
-	 * 
+	 * Instantiates a new instance of {@code PasswordActivityController},
+	 * with a given {@code Context}. The context will be the
+	 * {@code PasswordActivity}. 
 	 * 
 	 * @param c
 	 * @param results
@@ -53,31 +69,55 @@ public class PasswordActivityController extends SCController {
 	}
 
 	/**
-	 * 
+	 * Ensures that there are no file handles within
+	 * mStorage.
+	 * <p>
+	 * Note: If anyone knows of a cleaner way of doing this,
+	 * feel free to make changes as needed.
+	 * </p>
+	 */
+	private void disposeOfPasswordStorage() {
+		if (mStorage != null) {
+			try {
+				mStorage.dispose();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			mStorage = null;
+		}
+	}
+	
+	/**
+	 * Verifies whether or not the given password matches
+	 * the password found within the password file. The verification
+	 * takes place on the worker thread, as to not block the UI
+	 * thread.
 	 * 
 	 * @param password
+	 * 		The password to be authenticated.
 	 */
 	private void verifyPassword(final String password) {
 		inboxHandler.post(new Runnable() {
 			@Override
 			public void run() {
-				if (mStorage != null) {
-					try {
-						mStorage.dispose();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					mStorage = null;
-				}
+				disposeOfPasswordStorage();
 				
 				FileInputStream stream = null;
 				try {
+					// Open an input stream to the password file, by
+					// using the stored context (PasswordActivity).
 					stream = mContext
 							.openFileInput(PasswordStorage.PASSWORD_FILE);
+					// Instantiate the PasswordStorage object with
+					// the FileDescriptor of the input stream. Look at
+					// the PasswordStorage class to see why.
 					mStorage = new PasswordStorage(stream.getFD());
+					// Returns whether or not the password has been
+					// verified.
 					Boolean results = (Boolean)mStorage.verifyPassword(password);
-					
+					// Notify PasswordActivity whether or not the password
+					// was successfully verified. 
 					notifyOutboxHandlers(UPDATED_RESULTS, results);
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
@@ -98,43 +138,39 @@ public class PasswordActivityController extends SCController {
 	}
 
 	/**
-	 * 
+	 * Updates the user's password in the password file. The
+	 * updating takes place on the worker thread as to not
+	 * block the UI thread.
 	 * 
 	 * @param newPassword
+	 * 		The user's new password to be stored in the
+	 * 		password file.
 	 */
 	private void updatePassword(final String newPassword) {
 		inboxHandler.post(new Runnable() {
 			@Override
 			public void run() {
-				if (mStorage != null) {
-					try {
-						mStorage.dispose();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					mStorage = null;
-				}
+				disposeOfPasswordStorage();
 				
 				FileOutputStream stream = null;
 				try {
+					// Retrieve output stream to the password file.
 					stream = mContext
 							.openFileOutput(PasswordStorage.PASSWORD_FILE, Context.MODE_PRIVATE);
 					mStorage = new PasswordStorage(stream.getFD());
+					// Update password.
 					mStorage.updatePassword(newPassword);
-					
+					// If mStorage#updatePassword(newPassword) does not
+					// throw an exception, assume all is well.
 					notifyOutboxHandlers(UPDATED_RESULTS, (Boolean)true);
 				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} finally {
 					try {
 						stream.close();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -159,13 +195,7 @@ public class PasswordActivityController extends SCController {
 	@Override
 	protected void dispose() {
 		inboxHandlerThread.getLooper().quit();
-		
-		try {
-			mStorage.dispose();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		disposeOfPasswordStorage();
 	}
 
 }

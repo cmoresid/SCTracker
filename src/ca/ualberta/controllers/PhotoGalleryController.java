@@ -4,11 +4,8 @@ import java.util.ArrayList;
 
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.widget.Toast;
-import ca.ualberta.SCApplication;
 import ca.ualberta.models.PhotoEntry;
 import ca.ualberta.persistence.SqlPhotoStorage;
-import ca.ualberta.views.TaggingScreenActivity;
 
 /**
  * Implementation of the {@link SCController} interface. Acts as the

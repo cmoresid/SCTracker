@@ -7,9 +7,15 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import android.content.Context;
-
-
+/**
+ * Manages the user's password. In charge of
+ * the storage and retrieval of a hashed version
+ * of the password. Right now, the password storage
+ * mechanism is not very secure. All it does right
+ * now is hash the password and store it. Weak against
+ * dictionary attacks. Should probably use a salt as
+ * well... 
+ */
 public class PasswordStorage {
 	
 	/** Name of the file where the password is stored. */
@@ -20,7 +26,7 @@ public class PasswordStorage {
 	/** Allow password to be read from disk. */
 	private FileInputStream mPasswordInputStream;
 	/** Describes where to find the file in the sand box. */
-	private FileDescriptor mFilePath;
+	private FileDescriptor mPasswordFileDescriptor;
 	/** Used to calculate hash of password. */
 	private MessageDigest mDigest;
 	/** Hashing algorithm to use. */
@@ -56,34 +62,79 @@ public class PasswordStorage {
 	 * @throws IOException
 	 */
 	public PasswordStorage(FileDescriptor fd) throws IOException {
-		mFilePath = fd;
+		mPasswordFileDescriptor = fd;
 		initDigest();
 	}
 	
+	/**
+	 * Instantiates the mPasswordInputStream variable from the
+	 * given {@code FileDescriptor}.
+	 * 
+	 * @param passwordFD
+	 * 		The {@code FileDescriptor} used to instantiate the
+	 * 		{@code FileInputStream}.
+	 * @throws IOException
+	 */
 	private void createPasswordInputStream(FileDescriptor passwordFD) throws IOException {
 		mPasswordInputStream = new FileInputStream(passwordFD);
 	}
 	
+	/**
+	 * Instantiates the mPasswordOutputStream variable from the
+	 * given {@code FileDescriptor}.
+	 * 
+	 * @param passwordFD
+	 * 		The {@code FileDescriptor} used to instantiate the
+	 * 		{@code FileOutputStream}.
+	 * @throws IOException
+	 */
 	private void createPasswordOutputStream(FileDescriptor passwordFD) throws IOException {
 		mPasswordOutputStream = new FileOutputStream(passwordFD);
 	}
 	
+	/**
+	 * Hashes the given password and writes it to the 
+	 * password file.
+	 * 
+	 * @param newPassword
+	 * 		The password to be hashed and stored.
+	 * 
+	 * @throws IOException
+	 */
 	public void updatePassword(String newPassword) throws IOException {
+		// Lazy initialization of the output stream.
 		if (mPasswordOutputStream == null) {
-			createPasswordOutputStream(mFilePath);
+			createPasswordOutputStream(mPasswordFileDescriptor);
 		}
 		
 		mPasswordOutputStream.write(this.hashValue(newPassword));
 		mPasswordOutputStream.close();
 	}
 	
+	/**
+	 * Retrieves the hash value of the given string, based
+	 * on the chosen hashing algorithm.
+	 * 
+	 * @param value
+	 * 		The string to hash.
+	 * @return
+	 * 		A byte array containing the hash based on the
+	 * 		given string.
+	 */
 	public byte[] hashValue(String value) {
+		// Convert string to bytes.
 		byte[] valueBytes = value.getBytes();
 		mDigest.update(valueBytes);
 		
 		return mDigest.digest();
 	}
 	
+	/**
+	 * Releases all the IO streams held by
+	 * password storage.
+	 * 
+	 * @throws IOException
+	 */
 	public void dispose() throws IOException {
 		if (mPasswordOutputStream != null) {
 			mPasswordOutputStream.close();
@@ -94,19 +145,37 @@ public class PasswordStorage {
 		}
 	}
 	
+	/**
+	 * Verifies the hash of the given password and the hash stored
+	 * in the password file match.
+	 * 
+	 * @param password
+	 * 		The password to verify against the password in
+	 * 		the password file.		
+	 * 
+	 * @return
+	 * 		Whether or not the hashes match.
+	 * @throws IOException
+	 */
 	public boolean verifyPassword(String password) throws IOException {
+		// Assume password is validated unless proven
+		// otherwise.
 		boolean passwordValidated = true;
-		int i = 0;
 		
+		// Lazy initialization of input stream.
 		if (mPasswordInputStream == null) {
-			createPasswordInputStream(mFilePath);
+			createPasswordInputStream(mPasswordFileDescriptor);
 		}
 		
+		// The hashed value of given password.
 		byte[] hashPassword = this.hashValue(password);
+		// The hashed password in the password file.
+		// Note: Any SHA-256 checksum has the same length.
 		byte[] hashFilePassword = new byte[hashPassword.length];
-		
 		mPasswordInputStream.read(hashFilePassword);
 		
+		// Ensure hashes match.
+		int i = 0;
 		while (passwordValidated && i < hashPassword.length) {
 			if (hashPassword[i] != hashFilePassword[i]) {
 				passwordValidated = false;

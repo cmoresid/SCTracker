@@ -61,46 +61,13 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 	 */
 	private ListView mListView;
 
-	/**
-	 * Refers to the context menu item for deleting entries.
-	 * 
-	 * Can you expand on this? Does it hold the index of the photoEntry that's
-	 * passed to the delete menu? ~David
-	 * 
-	 * ----- If you're referring to the MENU_DELETE_ENTRY constant, all this
-	 * does is give a name to the Delete Entry button in the context menu. It is
-	 * helpful when dealing with events pertaining to context menus (i.e. in the
-	 * onContextItemSelected method). One could perform a switch/case statement
-	 * on the different menu constants.
-	 * 
-	 * If you're meant the mContextPhotoEntry reference, it refers to the
-	 * particular PhotoEntry object that the context menu was created on (i.e.
-	 * the picture you performed the long click on). Note the actual PhotoEntry
-	 * object is returned, not just the index. If you look at the lines
-	 * following lines in the onCreateContextMenu method:
-	 * 
-	 * ... AdapterView.AdapterContextMenuInfo info =
-	 * (AdapterView.AdapterContextMenuInfo) menuInfo; mContextPhotoEntry =
-	 * (PhotoEntry) mGridAdapter .getItem(info.position);
-	 * 
-	 * ...
-	 * 
-	 * The PhotoEntry object is retrieved via the mGridAdapter. The 'info'
-	 * parameter contains the information pertaining to which entry was selected
-	 * (info.position). If you're wondering why we're storing a reference to
-	 * which entry the context menu is created on, it will be passed to the
-	 * controller as an extra parameter. See the rest of onCreateContextMenu to
-	 * see an example.
-	 * 
-	 * ~Connor
-	 */
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.taggallery);
 
+		// Get the shared preferences
 		mPreferences = this.getSharedPreferences("ca.ualberta_preferences",
 				MODE_PRIVATE);
 
@@ -165,6 +132,10 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 
 	}
 
+	/**
+	 * Checks to see if an SD card is installed. Notifies user
+	 * that an SD card is required.
+	 */
 	private void checkSDCard() {
 		// Checks to see if SD card is properly mounted.
 		if (!ApplicationUtil.checkSdCard()) {
@@ -182,6 +153,10 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 		return super.onCreateOptionsMenu(menu);
 	}
 
+	/**
+	 * Enables/Disables the lock button based on whether
+	 * or not a password has been set.
+	 */
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		if (!mPreferences.getBoolean("password_preferences", false)) {
@@ -232,6 +207,10 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 		}
 	}
 
+	/**
+	 * Checks to see if a user has set a password. If they have, 
+	 * start the PasswordActivity so they can authenticate.
+	 */
 	private void checkAuthenticate() {
 		boolean passwordAuthenticate = mPreferences.getBoolean(
 				"password_preferences", false);
@@ -290,9 +269,6 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 	protected void onDestroy() {
 		super.onDestroy();
 		mController.dispose();
-		// **************************************************
-		// new SqlPhotoStorage().deleteAllPhotoEntries(); //TODO: take me out
-		// **************************************************
 	}
 
 	@Override
