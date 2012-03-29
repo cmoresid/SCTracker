@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import ca.ualberta.R;
+import ca.ualberta.controllers.CameraController;
 import ca.ualberta.models.BogoPicGen;
 import ca.ualberta.models.PhotoEntry;
 import ca.ualberta.persistence.SqlPhotoStorage;
@@ -29,6 +30,7 @@ public class CameraActivity extends Activity {
     /** Called when the activity is first created. */
 	
 	private Bitmap ourBMP;
+	private CameraController cameraController;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -104,15 +106,15 @@ public class CameraActivity extends Activity {
 			SimpleDateFormat niceDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.CANADA);
 			String currentDateString = niceDateFormat.format(currentDate);
 			
-			SqlPhotoStorage storage = new SqlPhotoStorage();
 			PhotoEntry newPhoto = new PhotoEntry();
 			
-			//newPhoto.setId(storage.getNextAvailableID());
 			newPhoto.setTag(getIntent().getExtras().getString(SqlPhotoStorage.KEY_TAG));
 			newPhoto.setTimeStamp(currentDateString);
 			newPhoto.setFilePath(intentFile.getAbsolutePath());
-			storage.insertPhotoEntry(newPhoto);
+			cameraController = new CameraController(newPhoto);
+			cameraController.handleMessage(CameraController.STORE_PHOTO_ENTRY, null);
 			// ---------------------------------------------------------------------------------
+			Toast.makeText(getApplicationContext(), "there is a bug if without this toast", Toast.LENGTH_LONG).show();
 			
 			setResult(RESULT_OK);
 		}

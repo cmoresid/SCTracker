@@ -20,6 +20,7 @@ import ca.ualberta.views.SCView;
  * Serves as the main model in the MVC paradigm.
  * @see SCModel
  */
+@SuppressWarnings("rawtypes")
 public class PhotoEntry extends SCModel<SCView> {
 	/** Unique identifier of a photo entry. */
 	private long id;

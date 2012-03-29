@@ -23,6 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/take"
+		android:text=" "
         android:textColor="#FFFFFF"
         android:id="@+id/takenewphotobutton"
         android:layout_gravity="center_horizontal"
@@ -30,3 +31,5 @@
         android:drawablePadding="-15sp"></Button>
 
 </LinearLayout>
+
+<!-- android:background="@drawable/take" -->

@@ -71,3 +71,4 @@ public class BogoPicGen {
 		return bitmap;
 	}
 }
+

@@ -58,17 +58,10 @@ public class PhotoGalleryGridAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		
-		// When we get around to actually implementing this, use
-		// a LayoutInflator instead of just displaying the photo.
-		ImageView imageView;
+
 		PhotoEntry e = (PhotoEntry) this.getItem(position);
 		View v;
-		if (convertView == null) { // if it's not recycled, initialize some
-									// attributes
-			// imageView = new ImageView(mContext);
-			// imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
-			// imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-			// imageView.setPadding(8, 8, 8, 8);
+		if (convertView == null) { 
 
 			// inflate the layout.
 			LayoutInflater li = (LayoutInflater) mContext
@@ -84,15 +77,8 @@ public class PhotoGalleryGridAdapter extends BaseAdapter {
 
 			ImageView iv = (ImageView) v.findViewById(R.id.grid_item_image);
 			iv.setLayoutParams(new LinearLayout.LayoutParams(85, 85));
-
-			// this line need to be changed to the URL of the image.
 			iv.setImageBitmap(BitmapFactory.decodeFile(e.getFilePath()));
-			/*
-			 * File imageFile = new File(e.getFilePath()); Uri imageFileUri;
-			 * 
-			 * imageFileUri = Uri.fromFile(imageFile);
-			 * iv.setImageURI(imageFileUri);
-			 */
+
 
 		} else {
 

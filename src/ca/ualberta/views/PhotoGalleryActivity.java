@@ -16,13 +16,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 import ca.ualberta.R;
 import ca.ualberta.adapters.PhotoGalleryGridAdapter;
 import ca.ualberta.controllers.PhotoGalleryController;
 import ca.ualberta.models.PhotoEntry;
 import ca.ualberta.persistence.SqlPhotoStorage;
-import ca.ualberta.utils.ApplicationUtil;
 
 /**
  * Tutorial on GridViews:

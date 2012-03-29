@@ -7,15 +7,15 @@ import ca.ualberta.persistence.SqlPhotoStorage;
 
 /**
  * Implementation of the {@link SCController} interface. Acts as the controller
- * between the CameraActivity layer. Provides methods to retrieve all photo
- * entries with a particular tag, and can delete photo entry objects so far.
+ * between the CameraActivity layer. Provides methods to save the photo
+ * entry with a particular tag.
  */
 public class CameraController extends SCController {
 
 	private HandlerThread inboxHandlerThread;
 	private Handler inboxHandler;
 
-	public static final int STORE_PHOTO_ENTRY = 1;
+	public static final int STORE_PHOTO_ENTRY = 0;
 
 	/** Reference to a persistence object. */
 	private SqlPhotoStorage mStorage;
@@ -46,15 +46,12 @@ public class CameraController extends SCController {
 	}
 
 	private void storePhotoEntry() {
-		// PUT THIS FUNCTIONALITY INTO CONTROLLER CLASS
-		// LATER!!
-		// --------------------------------------------------------------------------------
+
 		inboxHandler.post(new Runnable() {
 
 			@Override
 			public void run() {
 				mStorage.insertPhotoEntry(photoEntry);
-				// ---------------------------------------------------------------------------------
 
 			}
 

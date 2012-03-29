@@ -4,11 +4,8 @@ import java.util.ArrayList;
 
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.widget.Toast;
-import ca.ualberta.SCApplication;
 import ca.ualberta.models.PhotoEntry;
 import ca.ualberta.persistence.SqlPhotoStorage;
-import ca.ualberta.views.TaggingScreenActivity;
 
 /**
  * Implementation of the {@link SCController} interface. Acts as the
@@ -166,12 +163,12 @@ public class PhotoGalleryController extends SCController {
 	 * @param id
 	 *            The ID of the {@code PhotoEntry} object selected.
 	 */
-	private void comparePhoto(final long id) {
+	private void comparePhoto(final long id, final long id2) {
 		inboxHandler.post(new Runnable() {
 
 			@Override
 			public void run() {
-
+				
 			}
 
 		});
@@ -238,8 +235,7 @@ public class PhotoGalleryController extends SCController {
 			// of PhotoEntry objects.
 			return true;
 		case COMPARE_PHOTO:
-			comparePhoto((Long) data);
-			getAllPhotos();
+			comparePhoto((Long) data, (Long) data);
 			return true;
 		case UPDATED_ENTRIES:
 			retagPhoto((Long) data);

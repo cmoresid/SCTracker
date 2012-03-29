@@ -40,12 +40,11 @@ public class MainPreferenceActivity extends PreferenceActivity {
 		checkBoxPassword.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 			@Override
 			public boolean onPreferenceChange(Preference preference, Object newValue) {
-				
 				// Grab current state of check box
 				boolean currentState = (Boolean) newValue;
 				// Based on currentState, set appropriate behavior of password activity
 				int passwordActivityBehavior = currentState ? ADD_PASSWORD : VERIFY_REMOVE_PASSWORD;
-				
+				// Start the PasswordActivity, with given behavior.
 				Intent i = new Intent(MainPreferenceActivity.this, PasswordActivity.class);
 				i.putExtra(KEY_PASSWORD_FUNCTION, passwordActivityBehavior);
 				startActivityForResult(i, RESULT_OK);
