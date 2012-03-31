@@ -61,7 +61,7 @@ public class TaggingScreenController extends SCController {
 	}
 
 	@Override
-	protected void dispose() {
+	public void dispose() {
 		inboxHandlerThread.getLooper().quit();
 	}
 
@@ -78,6 +78,10 @@ public class TaggingScreenController extends SCController {
 				String[] tags = mStorage.getAllTags();
 
 				synchronized (mTags) {
+					while (mTags.size() > 0) {
+						mTags.remove(0);
+					}
+					
 					for (String tag : tags) {
 						mTags.add(tag);
 					}

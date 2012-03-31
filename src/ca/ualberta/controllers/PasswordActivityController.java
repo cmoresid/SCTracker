@@ -112,7 +112,7 @@ public class PasswordActivityController extends SCController {
 					// Instantiate the PasswordStorage object with
 					// the FileDescriptor of the input stream. Look at
 					// the PasswordStorage class to see why.
-					mStorage = new PasswordStorage(stream.getFD());
+					mStorage = new PasswordStorage(stream);
 					// Returns whether or not the password has been
 					// verified.
 					Boolean results = (Boolean)mStorage.verifyPassword(password);
@@ -157,7 +157,7 @@ public class PasswordActivityController extends SCController {
 					// Retrieve output stream to the password file.
 					stream = mContext
 							.openFileOutput(PasswordStorage.PASSWORD_FILE, Context.MODE_PRIVATE);
-					mStorage = new PasswordStorage(stream.getFD());
+					mStorage = new PasswordStorage(stream);
 					// Update password.
 					mStorage.updatePassword(newPassword);
 					// If mStorage#updatePassword(newPassword) does not
@@ -193,7 +193,7 @@ public class PasswordActivityController extends SCController {
 	}
 
 	@Override
-	protected void dispose() {
+	public void dispose() {
 		inboxHandlerThread.getLooper().quit();
 		disposeOfPasswordStorage();
 	}

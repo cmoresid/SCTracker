@@ -1,11 +1,12 @@
 package ca.ualberta.persistence;
 
-import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import android.content.Context;
 
 /**
  * Manages the user's password. In charge of
@@ -25,8 +26,6 @@ public class PasswordStorage {
 	private FileOutputStream mPasswordOutputStream;
 	/** Allow password to be read from disk. */
 	private FileInputStream mPasswordInputStream;
-	/** Describes where to find the file in the sand box. */
-	private FileDescriptor mPasswordFileDescriptor;
 	/** Used to calculate hash of password. */
 	private MessageDigest mDigest;
 	/** Hashing algorithm to use. */
@@ -61,22 +60,56 @@ public class PasswordStorage {
 	 * 		from.
 	 * @throws IOException
 	 */
-	public PasswordStorage(FileDescriptor fd) throws IOException {
-		mPasswordFileDescriptor = fd;
+	public PasswordStorage() throws IOException {
 		initDigest();
 	}
 	
 	/**
-	 * Instantiates the mPasswordInputStream variable from the
-	 * given {@code FileDescriptor}.
+	 * Initializes a new instance of {@code PasswordStorage} with the
+	 * specified {@code FileInputStream}. The {@code FileInputStream} will
+	 * normally be passed from the controller, which will be obtained from
+	 * a {@code Context} object and a call to 
+	 * {@link Context#openFileOutput(String, int)}.
+	 * 
+	 * @param stream
+	 * 		Input stream that will contain a reference to the password
+	 * 		file.
+	 * @throws IOException
+	 */
+	public PasswordStorage(FileInputStream stream) {
+		initDigest();
+		mPasswordInputStream = stream;
+	}
+	
+	/**
+	 * Initializes a new instance of {@code PasswordStorage} with the
+	 * specified {@code FileOutputStream}. The {@code FileOutputStream} will
+	 * normally be passed from the controller, which will be obtained from
+	 * a {@code Context} object and a call to 
+	 * {@link Context#openFileOutput(String, int)}.
+	 * 
+	 * @param stream
+	 * 		Output stream that will contain a reference to the password
+	 * 		file.
+	 * @throws IOException
+	 */
+	public PasswordStorage(FileOutputStream stream) {
+		initDigest();
+		mPasswordOutputStream = stream;
+	}
+	
+	/**
+	 * Instantiates the mPasswordInputStream with the given
+	 * input stream. Used in conjunction with the empty
+	 * construct.
 	 * 
 	 * @param passwordFD
 	 * 		The {@code FileDescriptor} used to instantiate the
 	 * 		{@code FileInputStream}.
 	 * @throws IOException
 	 */
-	private void createPasswordInputStream(FileDescriptor passwordFD) throws IOException {
-		mPasswordInputStream = new FileInputStream(passwordFD);
+	public void setPasswordInputStream(FileInputStream stream) throws IOException {
+		mPasswordInputStream = stream;
 	}
 	
 	/**
@@ -88,8 +121,8 @@ public class PasswordStorage {
 	 * 		{@code FileOutputStream}.
 	 * @throws IOException
 	 */
-	private void createPasswordOutputStream(FileDescriptor passwordFD) throws IOException {
-		mPasswordOutputStream = new FileOutputStream(passwordFD);
+	public void setPasswordOutputStream(FileOutputStream stream) throws IOException {
+		mPasswordOutputStream = stream;
 	}
 	
 	/**
@@ -104,7 +137,7 @@ public class PasswordStorage {
 	public void updatePassword(String newPassword) throws IOException {
 		// Lazy initialization of the output stream.
 		if (mPasswordOutputStream == null) {
-			createPasswordOutputStream(mPasswordFileDescriptor);
+			throw new IOException("Password output stream not initialized.");
 		}
 		
 		mPasswordOutputStream.write(this.hashValue(newPassword));
@@ -162,9 +195,8 @@ public class PasswordStorage {
 		// otherwise.
 		boolean passwordValidated = true;
 		
-		// Lazy initialization of input stream.
 		if (mPasswordInputStream == null) {
-			createPasswordInputStream(mPasswordFileDescriptor);
+			throw new IOException("Password input stream not initialized.");
 		}
 		
 		// The hashed value of given password.
