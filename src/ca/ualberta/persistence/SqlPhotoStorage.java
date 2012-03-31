@@ -76,10 +76,6 @@ public class SqlPhotoStorage {
 		return newRowId;
 	}
 	
-	
-	
-	
-	
 	/**
 	 * Deletes a photo entry from the application database. It also deletes the
 	 * associated image file.

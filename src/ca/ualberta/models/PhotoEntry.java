@@ -42,8 +42,10 @@ public class PhotoEntry extends SCModel<SCView> {
 	}
 	
 	/**
-	 * Sets the ID of the {@code PhotoEntry} object, which
-	 * sends a notification to subscribed views.
+	 * Sets the ID of the {@code PhotoEntry} object.The
+	 * only time this method will be used is when a
+	 * an instance is created using methods from
+	 * {@link SqlPhotoStorage}.
 	 * 
 	 * @param id
 	 */

@@ -58,16 +58,14 @@ public class SqlPhotoStorageTest extends AndroidTestCase {
 		
 		// Stores this photo entry
 		PhotoEntry testEntry1 = new PhotoEntry();
-		testEntry1.setId(1);
 		testEntry1.setTag(testTag);
 		testEntry1.setTimeStamp(d.toString());
 		testEntry1.setFilePath(testFilePath);
-		new SqlPhotoStorage(getContext()).insertPhotoEntry(testEntry1);
+		long testEntry1ID = new SqlPhotoStorage(getContext()).insertPhotoEntry(testEntry1);
 
-		PhotoEntry verifyTestEntry1 = new SqlPhotoStorage(getContext()).getPhotoEntry(testEntry1
-				.getId());
+		PhotoEntry verifyTestEntry1 = new SqlPhotoStorage(getContext()).getPhotoEntry(testEntry1ID);
 
-		assertEquals(1, verifyTestEntry1.getId());
+		assertEquals(testEntry1ID, verifyTestEntry1.getId());
 		assertEquals(testTag, verifyTestEntry1.getTag());
 		assertEquals(d.toString(), verifyTestEntry1.getTimeStamp());
 		assertEquals(testFilePath, verifyTestEntry1.getFilePath());
@@ -80,13 +78,12 @@ public class SqlPhotoStorageTest extends AndroidTestCase {
 		String imgPath = ApplicationUtil.copyPhotoToSDCard(R.drawable.sample_0).getAbsolutePath();
 		
 		PhotoEntry testEntry1 = new PhotoEntry();
-		testEntry1.setId(1);
 		testEntry1.setTag("mole on right hand");
 		testEntry1.setTimeStamp(d.toString());
 		testEntry1.setFilePath(imgPath);
-		new SqlPhotoStorage(getContext()).insertPhotoEntry(testEntry1);
+		long testEntry1Id = new SqlPhotoStorage(getContext()).insertPhotoEntry(testEntry1);
 		
-		assertTrue(new SqlPhotoStorage(getContext()).deletePhotoEntry(testEntry1.getId()));
+		assertTrue(new SqlPhotoStorage(getContext()).deletePhotoEntry(testEntry1Id));
 		// Ensure image does not exist after deletion
 		assertFalse(new File(imgPath).exists());
 		
@@ -103,14 +100,12 @@ public class SqlPhotoStorageTest extends AndroidTestCase {
 		
 		// Try adding 2 entries now
 		PhotoEntry testEntry1 = new PhotoEntry();
-		testEntry1.setId(1);
 		testEntry1.setTag(tag);
 		testEntry1.setTimeStamp(d.toString());
 		testEntry1.setFilePath("/some/file/img.jpg");
 		new SqlPhotoStorage(getContext()).insertPhotoEntry(testEntry1);
 		
 		PhotoEntry testEntry2 = new PhotoEntry();
-		testEntry2.setId(2);
 		testEntry2.setTag(tag);
 		testEntry2.setTimeStamp(d.toString());
 		testEntry2.setFilePath("/some/file/img2.jpg");
@@ -133,14 +128,12 @@ public class SqlPhotoStorageTest extends AndroidTestCase {
 		String tag2 = "rash on left hand";
 		
 		PhotoEntry testEntry1 = new PhotoEntry();
-		testEntry1.setId(1);
 		testEntry1.setTag(tag1);
 		testEntry1.setTimeStamp(new Date().toString());
 		testEntry1.setFilePath("/some/file/img1.jpg");
 		new SqlPhotoStorage(getContext()).insertPhotoEntry(testEntry1);
 		
 		PhotoEntry testEntry2 = new PhotoEntry();
-		testEntry2.setId(2);
 		testEntry2.setTag(tag2);
 		testEntry2.setTimeStamp(new Date().toString());
 		testEntry2.setFilePath("/some/file/img2.jpg");
@@ -152,14 +145,12 @@ public class SqlPhotoStorageTest extends AndroidTestCase {
 		
 		// Try 2 tags, but two entries with same tag
 		PhotoEntry testEntry3 = new PhotoEntry();
-		testEntry3.setId(3);
 		testEntry3.setTag(tag1);
 		testEntry3.setTimeStamp(new Date().toString());
 		testEntry3.setFilePath("/some/file/img3.jpg");
 		new SqlPhotoStorage(getContext()).insertPhotoEntry(testEntry3);
 		
 		String[] twoTagsTest2 = new SqlPhotoStorage(getContext()).getAllTags();
-		assertNotNull(twoTagsTest2);
 		assertEquals(twoTagsTest.length, 2);
 		
 		new SqlPhotoStorage(getContext()).deleteAllPhotoEntries();
