@@ -75,6 +75,7 @@ public class CameraActivity extends Activity {
 			}
 		});
         
+        cameraController = new CameraController();
     }
     
     // If the intent exists, exits the activity
@@ -99,9 +100,6 @@ public class CameraActivity extends Activity {
 			Log.i("Tag", intentFile.getAbsolutePath());
 			saveBMP(intentFile, ourBMP);
 	
-			// PUT THIS FUNCTIONALITY INTO CONTROLLER CLASS
-			// LATER!!
-			// --------------------------------------------------------------------------------
 			Date currentDate = new Date();
 			SimpleDateFormat niceDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.CANADA);
 			String currentDateString = niceDateFormat.format(currentDate);
@@ -111,11 +109,7 @@ public class CameraActivity extends Activity {
 			newPhoto.setTag(getIntent().getExtras().getString(SqlPhotoStorage.KEY_TAG));
 			newPhoto.setTimeStamp(currentDateString);
 			newPhoto.setFilePath(intentFile.getAbsolutePath());
-			cameraController = new CameraController(newPhoto);
-			cameraController.handleMessage(CameraController.STORE_PHOTO_ENTRY, null);
-			// ---------------------------------------------------------------------------------
-			Toast.makeText(getApplicationContext(), "there is a bug if without this toast", Toast.LENGTH_LONG).show();
-			
+			cameraController.handleMessage(CameraController.STORE_PHOTO_ENTRY, newPhoto);
 			setResult(RESULT_OK);
 		}
 		finish();
@@ -127,6 +121,7 @@ public class CameraActivity extends Activity {
 	{
 		try{
 			OutputStream out = new FileOutputStream(intentFile);
+			//OutputStream out = this.openFileOutput("sdfdf", Context.MODE_PRIVATE);
 			ourBMP.compress(Bitmap.CompressFormat.JPEG, 75, out);
 			out.close();
 		}catch(FileNotFoundException e){

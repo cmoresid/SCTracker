@@ -20,13 +20,9 @@ public class CameraController extends SCController {
 	/** Reference to a persistence object. */
 	private SqlPhotoStorage mStorage;
 
-	/** Contains all the PhotoEntry objects related to particular tag. */
-	private PhotoEntry photoEntry;
-
-	public CameraController(PhotoEntry photo) {
+	public CameraController() {
 
 		this.mStorage = new SqlPhotoStorage();
-		this.photoEntry = photo;
 
 		inboxHandlerThread = new HandlerThread("Message Thread");
 		// Start the thread that will handle messages
@@ -38,25 +34,23 @@ public class CameraController extends SCController {
 	public boolean handleMessage(int what, Object data) {
 		switch (what) {
 		case STORE_PHOTO_ENTRY:
-			storePhotoEntry();
+			storePhotoEntry((PhotoEntry)data);
 			return true;
 		}
 
 		return false;
 	}
 
-	private void storePhotoEntry() {
+	private void storePhotoEntry(final PhotoEntry pe) {
 
 		inboxHandler.post(new Runnable() {
 
 			@Override
 			public void run() {
-				mStorage.insertPhotoEntry(photoEntry);
+				mStorage.insertPhotoEntry(pe);
 
 			}
-
 		});
-
 	}
 
 	@Override

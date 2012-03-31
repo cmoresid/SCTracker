@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -74,6 +75,9 @@ public class PhotoGalleryGridAdapter extends BaseAdapter {
 
 				tv.setText(e.getTimeStamp());
 			}
+			
+			// Add the Check box
+			CheckBox checkBox = (CheckBox) v.findViewById(R.id.grid_item_check_box);
 
 			ImageView iv = (ImageView) v.findViewById(R.id.grid_item_image);
 			iv.setLayoutParams(new LinearLayout.LayoutParams(85, 85));
