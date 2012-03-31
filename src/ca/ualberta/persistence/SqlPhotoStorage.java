@@ -267,6 +267,7 @@ public class SqlPhotoStorage {
 
 		Cursor c = db.query(DatabaseHelper.TABLE_NAME, new String[] {KEY_FILENAME}, 
 				KEY_TAG+"=?", new String[] {tag}, null, null, null);
+		//delete files first
 		deleteFilesFromCursor(c);
 		
 		int rowCount = 0;
@@ -291,16 +292,18 @@ public class SqlPhotoStorage {
 	private void deleteFilesFromCursor(Cursor c){
 		
 		File photoPath;
-		boolean deletedFile = false;		
+		boolean deletedFile;		
 		
-		while (c.moveToFirst()) {
-			photoPath = new File(c.getString(c
-					.getColumnIndexOrThrow(KEY_FILENAME)));
-			deletedFile = photoPath.delete(); // delete image file first
+		while (c.moveToNext()) {
+		//for(int i = 1; i <= c.getCount(); i++){
+			deletedFile = false;
+			photoPath = new File(c.getString(c.getColumnIndexOrThrow(KEY_FILENAME)));
+			deletedFile = photoPath.delete();
+			
 			
 			if (!deletedFile) {
 				Log.i("SqlPhotoStorage", "Could not delete file: " 
-						+ photoPath.getAbsolutePath());
+				 		+ photoPath.getAbsolutePath());
 			}
 		}
 	}
