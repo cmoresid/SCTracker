@@ -1,6 +1,5 @@
 package ca.ualberta.test.persistence;
 
-import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.security.MessageDigest;
@@ -15,7 +14,7 @@ public class PasswordStorageTest extends AndroidTestCase {
 	private final static String FILE_NAME = "test_pwd";
 	
 	public void setUp() throws Exception {
-		FileDescriptor output = getContext().openFileOutput(FILE_NAME, Context.MODE_PRIVATE).getFD();
+		FileOutputStream output = getContext().openFileOutput(FILE_NAME, Context.MODE_PRIVATE);
 		
 		PasswordStorage storage = new PasswordStorage(output);
 		storage.dispose();
@@ -27,7 +26,7 @@ public class PasswordStorageTest extends AndroidTestCase {
 		digest.update(newPassword.getBytes());
 		byte[] hashNewPassword = digest.digest();
 		
-		PasswordStorage storage = new PasswordStorage(getContext().openFileOutput(FILE_NAME, Context.MODE_PRIVATE).getFD());
+		PasswordStorage storage = new PasswordStorage(getContext().openFileOutput(FILE_NAME, Context.MODE_PRIVATE));
 		storage.updatePassword(newPassword);
 		
 		byte[] hashFilePassword = new byte[hashNewPassword.length];
@@ -44,16 +43,16 @@ public class PasswordStorageTest extends AndroidTestCase {
 	
 	public void testVerifyPassword() throws Exception {
 		String password = "star12345";
-		FileDescriptor fd = getContext().openFileOutput(FILE_NAME, Context.MODE_PRIVATE).getFD();
-		
-		FileOutputStream outputStream = new FileOutputStream(fd);
+
+		FileOutputStream outputStream = getContext().openFileOutput(FILE_NAME, Context.MODE_PRIVATE);
 		MessageDigest digest = MessageDigest.getInstance("SHA-256");
 		digest.update(password.getBytes());
 		byte[] hashPassword = digest.digest();
 		
 		outputStream.write(hashPassword);
 		
-		PasswordStorage storage = new PasswordStorage(fd);
+		FileInputStream inputStream = getContext().openFileInput(FILE_NAME);
+		PasswordStorage storage = new PasswordStorage(inputStream);
 		
 		assert(storage.verifyPassword(password));
 	}

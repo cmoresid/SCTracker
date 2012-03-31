@@ -315,5 +315,15 @@ public class SqlPhotoStorage {
 	}
 	
 	
-	
+	public int getPhotoEntryCount() {
+		SQLiteDatabase db = mDbHelper.getReadableDatabase();
+		Cursor c = db.query(DatabaseHelper.TABLE_NAME, new String[] {KEY_ID}, 
+				null, null, null, null, null);
+		
+		int entryCount = c.getCount();
+		c.close();
+		db.close();
+		
+		return entryCount;
+	}
 }

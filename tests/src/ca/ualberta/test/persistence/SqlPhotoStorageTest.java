@@ -21,33 +21,27 @@ import ca.ualberta.utils.ApplicationUtil;
 public class SqlPhotoStorageTest extends AndroidTestCase {
 
 	@Override
-	protected void setUp() throws Exception {
-		Date d = new Date();
-
-		// Create some test objects and see if
-		// they can be instantiated without
-		// errors.
-		PhotoEntry e1 = new PhotoEntry();
-		e1.setId(1);
-		e1.setTag("mole on right hand");
-		e1.setTimeStamp(d.toString());
-		e1.setFilePath("/some/file/img.jpg");
-		
-		PhotoEntry e2 = new PhotoEntry();
-		e2.setId(2);
-		e2.setTag("mole on right hand");
-		e2.setTimeStamp(d.toString());
-		e2.setFilePath("/some/file/img2.jpg");
-
-		super.setUp();
-	}
-
-	@Override
 	protected void tearDown() throws Exception {
 		// Leave the database in a clean state.
 		new SqlPhotoStorage(getContext()).deleteAllPhotoEntries();
 
 		super.tearDown();
+	}
+	
+	public void testDeleteAllPhotoEntries() {
+		Date d = new Date();
+		String testFilePath = "/some/file/img1.jpg";
+		String testTag = "mole on right hand";
+		
+		PhotoEntry testEntry1 = new PhotoEntry();
+		testEntry1.setTag(testTag);
+		testEntry1.setTimeStamp(d.toString());
+		testEntry1.setFilePath(testFilePath);
+		new SqlPhotoStorage(getContext()).insertPhotoEntry(testEntry1);
+		
+		new SqlPhotoStorage(getContext()).deleteAllPhotoEntries();
+		
+		assertEquals(0, new SqlPhotoStorage(getContext()).getPhotoEntryCount());
 	}
 
 	public void testInsertPhotoEntry() {
@@ -69,8 +63,6 @@ public class SqlPhotoStorageTest extends AndroidTestCase {
 		assertEquals(testTag, verifyTestEntry1.getTag());
 		assertEquals(d.toString(), verifyTestEntry1.getTimeStamp());
 		assertEquals(testFilePath, verifyTestEntry1.getFilePath());
-		
-		new SqlPhotoStorage(getContext()).deleteAllPhotoEntries();
 	}
 	
 	public void testDeletePhotoEntry() throws Exception {
@@ -86,8 +78,6 @@ public class SqlPhotoStorageTest extends AndroidTestCase {
 		assertTrue(new SqlPhotoStorage(getContext()).deletePhotoEntry(testEntry1Id));
 		// Ensure image does not exist after deletion
 		assertFalse(new File(imgPath).exists());
-		
-		new SqlPhotoStorage(getContext()).deleteAllPhotoEntries();
 	}
 	
 	public void testGetAllPhotoEntriesWithTag() {
@@ -113,16 +103,9 @@ public class SqlPhotoStorageTest extends AndroidTestCase {
 		
 		entries = new SqlPhotoStorage(getContext()).getAllPhotoEntriesWithTag(tag);
 		assertEquals(entries.size(), 2);
-		
-		new SqlPhotoStorage(getContext()).deleteAllPhotoEntries();
 	}
 	
 	public void testGetAllTags() {
-		// Check empty case
-		String[] emptyTagsTest = new SqlPhotoStorage(getContext()).getAllTags();
-		assertNotNull(emptyTagsTest);
-		assertEquals(emptyTagsTest.length, 0);
-		
 		// Check 2 tags
 		String tag1 = "mole on right hand";
 		String tag2 = "rash on left hand";
@@ -140,19 +123,6 @@ public class SqlPhotoStorageTest extends AndroidTestCase {
 		new SqlPhotoStorage(getContext()).insertPhotoEntry(testEntry2);
 		
 		String[] twoTagsTest = new SqlPhotoStorage(getContext()).getAllTags();
-		assertNotNull(twoTagsTest);
 		assertEquals(twoTagsTest.length, 2);
-		
-		// Try 2 tags, but two entries with same tag
-		PhotoEntry testEntry3 = new PhotoEntry();
-		testEntry3.setTag(tag1);
-		testEntry3.setTimeStamp(new Date().toString());
-		testEntry3.setFilePath("/some/file/img3.jpg");
-		new SqlPhotoStorage(getContext()).insertPhotoEntry(testEntry3);
-		
-		String[] twoTagsTest2 = new SqlPhotoStorage(getContext()).getAllTags();
-		assertEquals(twoTagsTest.length, 2);
-		
-		new SqlPhotoStorage(getContext()).deleteAllPhotoEntries();
 	}
 }
