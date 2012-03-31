@@ -34,6 +34,14 @@ public class TagGalleryController extends SCController {
 	 */
 	public static final int DELETE_ENTRY = 3;
 	
+	/**
+	 * Message code which tells the controller to delete a particular
+	 * {@code PhotoEntry} object
+	 */
+	public static final int DELETE_TAG_AND_PHOTOS = 4;
+	
+	
+	
 	/** Reference to a persistence object. */
 	private SqlPhotoStorage mStorage;
 
@@ -114,6 +122,12 @@ public class TagGalleryController extends SCController {
 		});
 	}
 	
+	private void deleteTagandPhotos(String tag)
+	{
+		mStorage.deleteTagAndPhotoEntries(tag);
+		
+	}
+	
 	/**
 	 * Responds to messages, and calls appropriate method to deal with the
 	 * message.
@@ -121,7 +135,9 @@ public class TagGalleryController extends SCController {
 	@Override
 	public boolean handleMessage(int what, Object data) {
 		switch (what) {
-		case GET_TAGS:
+		case DELETE_TAG_AND_PHOTOS:
+			deleteTagandPhotos((String)data); //still need to getAllTags().
+		case GET_TAGS:						  //don't put in a return 
 			getAllTags();
 			return true;
 		}

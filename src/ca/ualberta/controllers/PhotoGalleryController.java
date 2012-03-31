@@ -14,7 +14,12 @@ import ca.ualberta.persistence.SqlPhotoStorage;
  * particular tag, and can delete photo entry objects so far.
  */
 public class PhotoGalleryController extends SCController {
-
+	
+	/**
+	 * hold the photos to be compared.
+	 */
+	private long id1,id2;
+	
 	/**
 	 * Message code that tells controller retrieve all the {@code PhotoEntry} 
 	 * objects with a particular tag.

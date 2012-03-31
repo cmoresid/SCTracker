@@ -9,6 +9,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
+import android.util.Log;
 import ca.ualberta.SCApplication;
 import ca.ualberta.models.PhotoEntry;
 
@@ -261,7 +262,7 @@ public class SqlPhotoStorage {
 	 *            The tag to be removed.
 	 * @return Returns whether or not the operation was successful or not.
 	 */
-	public boolean deleteTagAndPhotoEntries(String tag) throws IOException {
+	public boolean deleteTagAndPhotoEntries(String tag){
 		SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
 		Cursor c = db.query(DatabaseHelper.TABLE_NAME, new String[] {KEY_FILENAME}, 
@@ -287,7 +288,7 @@ public class SqlPhotoStorage {
 	 *            The cursor that folds the filepaths to be deleted
 	 */
 	
-	private void deleteFilesFromCursor(Cursor c) throws IOException{
+	private void deleteFilesFromCursor(Cursor c){
 		
 		File photoPath;
 		boolean deletedFile = false;		
@@ -298,7 +299,7 @@ public class SqlPhotoStorage {
 			deletedFile = photoPath.delete(); // delete image file first
 			
 			if (!deletedFile) {
-				throw new IOException("Could not delete file: " 
+				Log.i("SqlPhotoStorage", "Could not delete file: " 
 						+ photoPath.getAbsolutePath());
 			}
 		}
