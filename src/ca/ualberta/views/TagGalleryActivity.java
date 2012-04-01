@@ -10,6 +10,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,6 +31,9 @@ import ca.ualberta.utils.ApplicationUtil;
 
 public class TagGalleryActivity extends Activity implements Handler.Callback {
 
+	private TagGroup mContextTagGroup;
+	public static final int MENU_DELETE_TAG_AND_PHOTOS = 0;
+	
 	/**
 	 * The button pressed to take a new photo
 	 */
@@ -95,7 +100,9 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 				// */
 			}
 		});
-
+		
+		this.registerForContextMenu(mListView);
+		
 		// Initialize an empty list.
 		mTags = new ArrayList<TagGroup>();
 
@@ -279,6 +286,38 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 		mController.handleMessage(TagGalleryController.GET_TAGS, null);
 	}
 
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		if (v.getId() == R.id.table) {
+			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+			// Stores a reference to the photo that the context
+			// menu was created on. Used in the onContextItemSelected.
+			mContextTagGroup = (TagGroup) mListAdapter
+					.getItem(info.position);
+			menu.add(Menu.NONE, TagGalleryActivity.MENU_DELETE_TAG_AND_PHOTOS,
+					TagGalleryActivity.MENU_DELETE_TAG_AND_PHOTOS, "Delete Tag Group");
+		}
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+
+		switch (item.getItemId()) {
+		case MENU_DELETE_TAG_AND_PHOTOS:
+			return mController.handleMessage(
+					TagGalleryController.DELETE_TAG_AND_PHOTOS,
+					mContextTagGroup.getTag());
+		default:
+			return super.onContextItemSelected(item);
+
+		}
+	}
+	
+	
+	
+	
 	/**
 	 * This method is called after the controller updates the list of
 	 * {@code PhotoEntry} objects (i.e. when the updater thread is finished).

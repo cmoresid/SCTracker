@@ -9,6 +9,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
+import android.util.Log;
 import ca.ualberta.SCApplication;
 import ca.ualberta.models.PhotoEntry;
 
@@ -261,11 +262,12 @@ public class SqlPhotoStorage {
 	 *            The tag to be removed.
 	 * @return Returns whether or not the operation was successful or not.
 	 */
-	public boolean deleteTagAndPhotoEntries(String tag) throws IOException {
+	public boolean deleteTagAndPhotoEntries(String tag){
 		SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
 		Cursor c = db.query(DatabaseHelper.TABLE_NAME, new String[] {KEY_FILENAME}, 
 				KEY_TAG+"=?", new String[] {tag}, null, null, null);
+		//delete files first
 		deleteFilesFromCursor(c);
 		
 		int rowCount = 0;
@@ -287,19 +289,21 @@ public class SqlPhotoStorage {
 	 *            The cursor that folds the filepaths to be deleted
 	 */
 	
-	private void deleteFilesFromCursor(Cursor c) throws IOException{
+	private void deleteFilesFromCursor(Cursor c){
 		
 		File photoPath;
-		boolean deletedFile = false;		
+		boolean deletedFile;		
 		
-		while (c.moveToFirst()) {
-			photoPath = new File(c.getString(c
-					.getColumnIndexOrThrow(KEY_FILENAME)));
-			deletedFile = photoPath.delete(); // delete image file first
+		while (c.moveToNext()) {
+		//for(int i = 1; i <= c.getCount(); i++){
+			deletedFile = false;
+			photoPath = new File(c.getString(c.getColumnIndexOrThrow(KEY_FILENAME)));
+			deletedFile = photoPath.delete();
+			
 			
 			if (!deletedFile) {
-				throw new IOException("Could not delete file: " 
-						+ photoPath.getAbsolutePath());
+				Log.i("SqlPhotoStorage", "Could not delete file: " 
+				 		+ photoPath.getAbsolutePath());
 			}
 		}
 	}
