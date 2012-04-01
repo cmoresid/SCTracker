@@ -21,6 +21,7 @@
         choose. Press Menu --> Preferences to manage your
         password at later date too.
     </string>
+    <string name="empty_gallery">No photos yet :\'(</string>
     <string name="menu_lock_title">Lock Application</string>
     
 
