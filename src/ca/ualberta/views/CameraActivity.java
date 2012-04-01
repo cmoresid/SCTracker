@@ -13,7 +13,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Environment;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,7 +28,8 @@ import ca.ualberta.models.BogoPicGen;
 import ca.ualberta.models.PhotoEntry;
 import ca.ualberta.persistence.SqlPhotoStorage;
 
-public class CameraActivity extends Activity {
+public class CameraActivity extends Activity
+	implements Handler.Callback {
     /** Called when the activity is first created. */
 	
 	private Bitmap ourBMP;
@@ -76,6 +79,7 @@ public class CameraActivity extends Activity {
 		});
         
         cameraController = new CameraController();
+        cameraController.addHandler(new Handler(this));
     }
     
     // If the intent exists, exits the activity
@@ -110,9 +114,9 @@ public class CameraActivity extends Activity {
 			newPhoto.setTimeStamp(currentDateString);
 			newPhoto.setFilePath(intentFile.getAbsolutePath());
 			cameraController.handleMessage(CameraController.STORE_PHOTO_ENTRY, newPhoto);
-			setResult(RESULT_OK);
+			//setResult(RESULT_OK);
 		}
-		finish();
+		//finish();
 		
 	}
 	
@@ -149,10 +153,21 @@ public class CameraActivity extends Activity {
 	//Calls the code that actually generates the photo
 	protected void setBogoPic()
 	{
-
 		ImageButton button = (ImageButton) findViewById(R.id.TakeAPhoto);
 		ourBMP = BogoPicGen.generateBitmap(400, 400);
 		button.setImageBitmap(ourBMP);
 		
+	}
+
+	@Override
+	public boolean handleMessage(Message msg) {
+		switch (msg.what) {
+		case CameraController.FINISH_STORE_PHOTO:
+			setResult(RESULT_OK);
+			finish();
+			break;
+		}
+		
+		return false;
 	}
 }
