@@ -23,6 +23,7 @@ public class ViewPhotoActivity extends Activity {
 
 	private ImageView mPhotoView;
 	private TextView mTimeStampView;
+	private TextView mTagView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,12 +33,16 @@ public class ViewPhotoActivity extends Activity {
 		
 		mPhotoView = (ImageView) this.findViewById(R.id.photo_view);
 		mTimeStampView = (TextView) this.findViewById(R.id.dateTextView);
+		mTagView = (TextView) this.findViewById(R.id.tagTextView);
 		
 		String fileName = this.getIntent().getExtras().getString(SqlPhotoStorage.KEY_FILENAME);
 		mPhotoView.setImageBitmap(BitmapFactory.decodeFile(fileName));
 		
 		String timeStamp = this.getIntent().getExtras().getString(SqlPhotoStorage.KEY_TIMESTAMP);
 		mTimeStampView.setText(timeStamp);
+		
+		String tag = this.getIntent().getExtras().getString(SqlPhotoStorage.KEY_TAG);
+		mTagView.setText(tag);
 
 		Bitmap bmp = BitmapFactory.decodeFile(fileName);
 
