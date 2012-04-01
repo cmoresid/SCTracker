@@ -135,15 +135,6 @@ public class CameraActivity extends Activity {
 	//Returns the file path to save the photo to
 	private File getPicturePath(Intent intent)
 	{
-
-		/*Uri uri = (Uri)intent.getExtras().get(MediaStore.EXTRA_OUTPUT);
-		
-		if (uri == null) {
-			Log.i("Tag", "Null uri");
-		}
-		
-		File file = new File(uri.getPath());
-		return file;*/
 		
 		Date currentDate = new Date();
 		SimpleDateFormat niceDateFormat = new SimpleDateFormat("ddMMyyyyHHmmss", Locale.CANADA);

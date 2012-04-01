@@ -2,8 +2,10 @@ package ca.ualberta.controllers;
 
 import java.util.ArrayList;
 
+import android.app.AlertDialog;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.widget.EditText;
 import ca.ualberta.models.PhotoEntry;
 import ca.ualberta.persistence.SqlPhotoStorage;
 
@@ -22,9 +24,9 @@ public class PhotoGalleryController extends SCController {
 	public static final int GET_PHOTO_ENTRIES = 1;
 	/**
 	 * Message code that tells the controller to notify all associated message
-	 * handlers that the {@code mPhotos} list has changed.
+	 * handlers that the {@code Photo_tag} has changed.
 	 */
-	public static final int UPDATED_ENTRIES = 2;
+	public static final int RETAG_PHOTO = 2;
 	/**
 	 * Message code which tells the controller to delete a particular
 	 * {@code PhotoEntry} object
@@ -35,11 +37,6 @@ public class PhotoGalleryController extends SCController {
 	 * {@code PhotoEntry} objects
 	 */
 	public static final int COMPARE_PHOTO = 4;
-	/**
-	 * Message code which tells the controller to rename a particular
-	 * {@code PhotoEntry} object
-	 */
-	public static final int RENAME_PHOTO = 6;
 	/**
 	 * 
 	 */
@@ -128,7 +125,7 @@ public class PhotoGalleryController extends SCController {
 					// this method is called, it causes the
 					// handleMessage(Message msg) callback method
 					// to be called in the PhotoGalleryActivity.
-					notifyOutboxHandlers(UPDATED_ENTRIES, null);
+					notifyOutboxHandlers(RETAG_PHOTO, null);
 				}
 			}
 		});
@@ -175,26 +172,6 @@ public class PhotoGalleryController extends SCController {
 	}
 
 	/**
-	 * Rename a {@code PhotoEntry} object from the application's database with
-	 * the given ID. This is done on a separate thread to avoid blocking the UI
-	 * thread.
-	 * 
-	 * @param id
-	 *            The ID of the {@code PhotoEntry} object to rename.
-	 */
-
-	private void renamePhoto(final long id) {
-		inboxHandler.post(new Runnable() {
-
-			@Override
-			public void run() {
-
-			}
-
-		});
-	}
-	
-	/**
 	 * Retags a {@code PhotoEntry} object from the application's database with
 	 * the given ID. This is done on a separate thread to avoid blocking the UI
 	 * thread. Calls the tagging 
@@ -206,18 +183,14 @@ public class PhotoGalleryController extends SCController {
 		inboxHandler.post(new Runnable() {
 			@Override
 			public void run() {
-				String newTag =new String("Hand");
-				
-				
+				String newTag;				
+				newTag = "Foot";
 				
 				mStorage.retagPhoto(id,newTag);
 			}
 		});
 	}
 	
-	
-	
-
 	/**
 	 * Responds to messages, and calls appropriate method to deal with the
 	 * message.
@@ -229,22 +202,17 @@ public class PhotoGalleryController extends SCController {
 			getAllPhotos();
 			return true;
 		case DELETE_ENTRY:
-			//Toast.makeText(SCApplication.getContext(), "want to delete photo in this tag"+String.valueOf((Long) data), Toast.LENGTH_SHORT).show();
 			deletePhotoEntry((Long) data);
 			getAllPhotos(); // Make sure to refresh list
-			// of PhotoEntry objects.
 			return true;
 		case COMPARE_PHOTO:
 			comparePhoto((Long) data, (Long) data);
 			return true;
-		case UPDATED_ENTRIES:
+		case RETAG_PHOTO:
 			retagPhoto((Long) data);
 			getAllPhotos();
 			return true;
-		case RENAME_PHOTO:
-			renamePhoto((Long) data);
-			getAllPhotos();
-			return true;
+
 		}
 
 		return false;

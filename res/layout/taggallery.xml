@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="@string/project_name"
+        android:typeface="serif"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <ListView
