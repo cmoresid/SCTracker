@@ -122,9 +122,14 @@ public class TagGalleryController extends SCController {
 		});
 	}
 	
-	private void deleteTagandPhotos(String tag)
-	{
-		mStorage.deleteTagAndPhotoEntries(tag);
+	private void deleteTagandPhotos(final String tag)
+	{	
+		inboxHandler.post(new Runnable() {
+			@Override
+			public void run() {
+				mStorage.deleteTagAndPhotoEntries(tag);
+			}
+		});
 		
 	}
 	
