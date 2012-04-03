@@ -199,7 +199,7 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 			break;
 		case R.id.menu_lock:
 			intent = new Intent(this, PasswordActivity.class);
-			intent.putExtra(MainPreferenceActivity.KEY_PASSWORD_FUNCTION, MainPreferenceActivity.VERIFY_REMOVE_PASSWORD);
+			intent.putExtra(PasswordActivity.KEY_PASSWORD_FUNCTION, PasswordActivity.UNLOCK_APPLICTION);
 			this.startActivity(intent);
 			break;
 		}
@@ -237,8 +237,8 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 		
 		if (passwordAuthenticate) {
 			Intent i = new Intent(this, PasswordActivity.class);
-			i.putExtra(MainPreferenceActivity.KEY_PASSWORD_FUNCTION,
-					MainPreferenceActivity.VERIFY_REMOVE_PASSWORD);
+			i.putExtra(PasswordActivity.KEY_PASSWORD_FUNCTION,
+					PasswordActivity.UNLOCK_APPLICTION);
 			startActivity(i);
 		}
 	}

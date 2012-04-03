@@ -9,9 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import ca.ualberta.R;
+import ca.ualberta.SCApplication;
 import ca.ualberta.controllers.PasswordActivityController;
-import ca.ualberta.prefs.MainPreferenceActivity;
 
 /**
  * Activity that allows user's to verify and add
@@ -54,6 +55,16 @@ public class PasswordActivity extends Activity implements Handler.Callback {
 	 */
 	private String mErrorString;
 
+	/** Key to refer to the desired behavior of {@code PasswordActivity}. */
+	public static final String KEY_PASSWORD_FUNCTION = "password_function";
+
+	/** Constant that tells {@code PasswordActivity} to create new password. */
+	public static final int ADD_PASSWORD = 0;
+	/** Constant that tells {@code PasswordActivity} to verify password then remove. */
+	public static final int VERIFY_REMOVE_PASSWORD = 1;
+	/** Constant that tells {@code PasswordActivity} to unlock the application. */
+	public static final int UNLOCK_APPLICTION = 2;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -73,15 +84,21 @@ public class PasswordActivity extends Activity implements Handler.Callback {
 	 */
 	private void setPasswordBehavior() {
 		mActivityBehavior = getIntent().getExtras().getInt(
-				MainPreferenceActivity.KEY_PASSWORD_FUNCTION);
+				PasswordActivity.KEY_PASSWORD_FUNCTION);
 
-		if (mActivityBehavior == MainPreferenceActivity.ADD_PASSWORD) {
+		switch (mActivityBehavior) {
+		case ADD_PASSWORD:
 			addPasswordBehavior();
-		} else {
+			break;
+		case VERIFY_REMOVE_PASSWORD:
 			verifyPasswordBehavior();
+			break;
+		case UNLOCK_APPLICTION:
+			unlockBehavior();
+			break;
 		}
 	}
-	
+
 	/**
 	 * User is not allowed to get out of the
 	 * password screen unless they add a password
@@ -92,6 +109,30 @@ public class PasswordActivity extends Activity implements Handler.Callback {
 		return;
 	}
 
+	/**
+	 * Sets up the activity in order for user to
+	 * unlock the application.
+	 */
+	private void unlockBehavior() {
+		this.setContentView(R.layout.password_activity_unlock);
+		mResultsTextView = (TextView) this.findViewById(R.id.statusLabelUnlock);
+		mErrorString = "Invalid Password!";
+		
+		mPassword1 = (EditText) this.findViewById(R.id.verifyPassword3);
+		mPassword1.setRawInputType(Configuration.KEYBOARD_12KEY);
+		
+		mOKButton = (Button) this.findViewById(R.id.unlockButton);
+		mOKButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				mResultsTextView.setText("");
+				
+				mController.handleMessage(PasswordActivityController.VERIFY_PASSWORD, mPassword1.getText().toString());
+			}
+		});
+	}
+	
 	/**
 	 * Sets up the activity in order for user to
 	 * verify their password.
@@ -156,7 +197,7 @@ public class PasswordActivity extends Activity implements Handler.Callback {
 		switch (msg.what) {
 		case PasswordActivityController.UPDATED_RESULTS:
 			// If there is an error, set the mResultsTextView
-			// do display the error string.
+			// to display the error string.
 			if (!results) {
 				runOnUiThread(new Runnable() {
 					@Override

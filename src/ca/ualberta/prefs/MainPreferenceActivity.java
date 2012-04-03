@@ -19,14 +19,6 @@ public class MainPreferenceActivity extends PreferenceActivity {
 	/** Refers to the password protect check box. */
 	private Preference checkBoxPassword;
 	
-	/** Key to refer to the desired behavior of {@code PasswordActivity}. */
-	public static final String KEY_PASSWORD_FUNCTION = "password_function";
-	
-	/** Constant that tells {@code PasswordActivity} to create new password. */
-	public static final int ADD_PASSWORD = 0;
-	/** Constant that tells {@code PasswordActivity} to verify password then remove. */
-	public static final int VERIFY_REMOVE_PASSWORD = 1;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -43,10 +35,10 @@ public class MainPreferenceActivity extends PreferenceActivity {
 				// Grab current state of check box
 				boolean currentState = (Boolean) newValue;
 				// Based on currentState, set appropriate behavior of password activity
-				int passwordActivityBehavior = currentState ? ADD_PASSWORD : VERIFY_REMOVE_PASSWORD;
+				int passwordActivityBehavior = currentState ? PasswordActivity.ADD_PASSWORD : PasswordActivity.VERIFY_REMOVE_PASSWORD;
 				// Start the PasswordActivity, with given behavior.
 				Intent i = new Intent(MainPreferenceActivity.this, PasswordActivity.class);
-				i.putExtra(KEY_PASSWORD_FUNCTION, passwordActivityBehavior);
+				i.putExtra(PasswordActivity.KEY_PASSWORD_FUNCTION, passwordActivityBehavior);
 				startActivityForResult(i, RESULT_OK);
 				
 				return true;
