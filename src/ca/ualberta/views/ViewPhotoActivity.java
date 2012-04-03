@@ -1,8 +1,11 @@
 package ca.ualberta.views;
 
+import java.io.FileNotFoundException;
+
 import android.app.Activity;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import ca.ualberta.R;
@@ -36,7 +39,17 @@ public class ViewPhotoActivity extends Activity {
 		mTagView = (TextView) this.findViewById(R.id.tagTextView);
 		
 		String fileName = this.getIntent().getExtras().getString(SqlPhotoStorage.KEY_FILENAME);
-		mPhotoView.setImageBitmap(BitmapFactory.decodeFile(fileName));
+		Bitmap image = null;
+		try
+		{	
+			image = BitmapFactory.decodeStream(this.openFileInput(fileName));
+			mPhotoView.setImageBitmap(image);
+		} catch (FileNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Log.i("openingFile", fileName + " not there");
+		}
 		
 		String timeStamp = this.getIntent().getExtras().getString(SqlPhotoStorage.KEY_TIMESTAMP);
 		mTimeStampView.setText(timeStamp);
@@ -44,9 +57,7 @@ public class ViewPhotoActivity extends Activity {
 		String tag = this.getIntent().getExtras().getString(SqlPhotoStorage.KEY_TAG);
 		mTagView.setText(tag);
 
-		Bitmap bmp = BitmapFactory.decodeFile(fileName);
-
-		mPhotoView.setImageBitmap(createReflectedImage(bmp));
+		mPhotoView.setImageBitmap(createReflectedImage(image));
 	}
 	
 	//create the reflaction of the photo
