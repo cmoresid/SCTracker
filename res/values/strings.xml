@@ -30,6 +30,6 @@
     <string name="new_password_label">New Password:</string>
     <string name="verify_password_label">Verify Password:</string>
     <string name="new_password_message">Adding New Password</string>
-    
+    <string name="archive_button">Archive</string>
 
 </resources>

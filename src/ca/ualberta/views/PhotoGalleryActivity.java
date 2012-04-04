@@ -67,15 +67,18 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 	 * created on.
 	 */
 	private PhotoEntry mContextPhotoEntry;
+	private int mContextPhotoEntryPosition;
 	
 	/** The tag. */
 	private String mTag;
 
+	public static final int MENU_ARCHIVE_ENTRY = 2;
+	
 	/** refers to the context menu item for delete photo. */
-	public static final int MENU_DELETE_ENTRY = 0;
+	public static final int MENU_DELETE_ENTRY = 1;
 
 	/** Refers to the context menu item for retag photo. */
-	public static final int MENU_RETAG_PHOTO = 3;
+	public static final int MENU_COMPARE_ENTRY = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -123,45 +126,7 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 			
 		});
 		
-		// this is when user clicks on compare button
-		compareButton = (Button) findViewById(R.id.compareButton);
-		compareButton.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				
-				Intent intent = new Intent(PhotoGalleryActivity.this, CompareActivity.class);
-				
-	               if(mCheckBoxes.size() == 2){
-							for (int i = 0; i < mCheckBoxes.size(); i++) {
-									intent.putExtra("tag", mPhotos.get(mCheckBoxes.get(i).getId()).getTag());
-									intent.putExtra("photo" + i, mPhotos.get(mCheckBoxes.get(i).getId()).getFilePath());
-									intent.putExtra("photoText" + i, mPhotos.get(mCheckBoxes.get(i).getId()).getTimeStamp());
-							}
-							
-						startActivity(intent);
-	               } else {
-						while (mCheckBoxes.size() > 0) {
-		            		   mCheckBoxes.get(0).setChecked(false);
-		            		   mCheckBoxes.remove(0);
-						}
-	            	   Toast.makeText(getApplicationContext(), "Need 2 photos", Toast.LENGTH_SHORT).show();
-	               }
-			}
-			
-		});
 		
-		//this is when user clicks on delete button
-		deleteButton = (Button) findViewById(R.id.DeleteButton);
-		deleteButton.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-		});
 		
 		// Registers a context menu for the grid view.
 		this.registerForContextMenu(mGridView2);
@@ -195,10 +160,14 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 			// menu was created on. Used in the onContextItemSelected.
 			mContextPhotoEntry = (PhotoEntry) mGridAdapter2
 					.getItem(info.position);
+			mContextPhotoEntryPosition = info.position;
+			
+			menu.add(Menu.NONE, PhotoGalleryActivity.MENU_COMPARE_ENTRY,
+					PhotoGalleryActivity.MENU_COMPARE_ENTRY, "Compare With");
 			menu.add(Menu.NONE, PhotoGalleryActivity.MENU_DELETE_ENTRY,
 					PhotoGalleryActivity.MENU_DELETE_ENTRY, "Delete Photo");
-			menu.add(Menu.NONE, PhotoGalleryActivity.MENU_RETAG_PHOTO,
-					PhotoGalleryActivity.MENU_RETAG_PHOTO, "Retag Photo");
+			menu.add(Menu.NONE, PhotoGalleryActivity.MENU_ARCHIVE_ENTRY,
+					PhotoGalleryActivity.MENU_ARCHIVE_ENTRY, "Archive");
 		}
 	}
 
@@ -206,15 +175,24 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 	public boolean onContextItemSelected(MenuItem item) {
 		// There will be more 'cases' when we add the
 		// compare, update tag, etc... functionalities.
+		Intent intent;
 		switch (item.getItemId()) {
 		case MENU_DELETE_ENTRY:
 			return mController.handleMessage(
 					PhotoGalleryController.DELETE_ENTRY,
 					mContextPhotoEntry.getId());
-		case PhotoGalleryActivity.MENU_RETAG_PHOTO:
-			return mController.handleMessage(
-					PhotoGalleryController.RETAG_PHOTO,
-					mContextPhotoEntry.getId());
+		case PhotoGalleryActivity.MENU_COMPARE_ENTRY:
+			intent = new Intent(this, CompareSelectionActivity.class);
+			intent.putExtra("SELECTED_PHOTO", mContextPhotoEntryPosition);
+			intent.putExtra(SqlPhotoStorage.KEY_TAG, mTag);
+			startActivity(intent);
+			return true;
+		case PhotoGalleryActivity.MENU_ARCHIVE_ENTRY:
+			intent = new Intent(this, ArchiveActivity.class);
+			intent.putExtra("SELECTED_PHOTO", mContextPhotoEntryPosition);
+			intent.putExtra(SqlPhotoStorage.KEY_TAG, mTag);
+			startActivity(intent);
+			return true;
 		default:
 			return super.onContextItemSelected(item);
 

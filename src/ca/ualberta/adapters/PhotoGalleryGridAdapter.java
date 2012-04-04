@@ -104,7 +104,6 @@ public class PhotoGalleryGridAdapter extends BaseAdapter {
 			
 			holder.imageView.setImageBitmap(image);
 			
-			holder.checkBox = (CheckBox) convertView.findViewById(R.id.grid_item_check_box);
 			holder.textView = (TextView) convertView.findViewById(R.id.grid_item_text);
 			if(holder.textView != null){
 				holder.textView.setText(e.getTimeStamp());
@@ -116,54 +115,8 @@ public class PhotoGalleryGridAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		
-		holder.checkBox.setId(position);
 		holder.imageView.setId(position);
 		holder.textView.setId(position);
-		
-        holder.checkBox.setOnClickListener(new OnClickListener() {
-
-            public void onClick(View v) {
-            	
-            	
-               CheckBox cb = (CheckBox) v;
-               
-               if(cb.isChecked()){
-            	   mCheckBoxes.add(cb);
-               }
-               if(!cb.isChecked()){
-            	   mCheckBoxes.remove(cb);
-            	   Toast.makeText(mContext, "you removed "+ cb.getId(), Toast.LENGTH_SHORT).show();
-               }
-
-
-               /*
-               if (!cb.isChecked()) {
-            	   if (cb == box1) {
-            		   box1Checked = false;
-            	   } else if (cb == box2) {
-            		   box2Checked = false;
-            	   }
-               }
-               
-                if (cb.isChecked()) {
-                	
-                	if(box2 != null){
-                		box2.setChecked(false);
-                	}
-                	if(box1 != null){
-                		box2 = box1;
-                	}
-                	box1 = cb;
-*/
-                	
-//                	if (box2 != null) {
-//                		Toast.makeText(mContext, "you checked the box" + box1.getId() + " " + box2.getId(), Toast.LENGTH_SHORT).show();
-//                	} else {
-//                		Toast.makeText(mContext, "you checked the box" + box1.getId(), Toast.LENGTH_SHORT).show();
-//                	}
-//            	}
-            }
-        });
         
 		return convertView;
 	}
@@ -171,7 +124,6 @@ public class PhotoGalleryGridAdapter extends BaseAdapter {
 	
     class ViewHolder {
         ImageView imageView;
-        CheckBox checkBox;
         TextView textView;
         int id;
     }

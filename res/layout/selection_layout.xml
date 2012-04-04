@@ -5,23 +5,22 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/tag_text_view"
+        android:id="@+id/selection_tag_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="okay"
         android:textStyle="bold"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:typeface="serif"
         android:paddingLeft="25dp"
-    	android:paddingRight="25dp"
-       />
+    	android:paddingRight="25dp" >
+    </TextView>
     
     
 	<GridView xmlns:android="http://schemas.android.com/apk/res/android"
-    	android:id="@+id/photogallery_gridview"
+    	android:id="@+id/selection_gridview"
     	android:layout_width="fill_parent"
-    	android:layout_height="fill_parent"
+    	android:layout_height="0dp"
     	android:columnWidth="90dp"
     	android:numColumns="auto_fit"
     	android:verticalSpacing="10dp"
@@ -29,7 +28,13 @@
     	android:stretchMode="columnWidth"
     	android:gravity="center"
     	android:layout_weight = "0.5" >
-    	
 	</GridView>
-	    
+
+	<Button
+	    android:id="@+id/commandButton"
+	    android:layout_width="150dp"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="center_horizontal" >
+	</Button>
+
 </LinearLayout>

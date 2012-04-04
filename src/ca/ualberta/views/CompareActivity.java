@@ -63,7 +63,6 @@ public class CompareActivity extends Activity {
 		
 		
 	}
-	
 }
 
 
