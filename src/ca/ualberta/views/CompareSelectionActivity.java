@@ -12,9 +12,17 @@ import ca.ualberta.controllers.ArchiveController;
 import ca.ualberta.controllers.BaseSelectionController;
 import ca.ualberta.models.PhotoEntry;
 
+/**
+ * Activity that is responsible for comparing selected
+ * photos. Subclasses {@code BaseSelectionActivity}
+ * in order to retrieve some base functionality. The layout
+ * is set in the parent activity. Controller is added here.
+ */
+
 public class CompareSelectionActivity extends BaseSelectionActivity 
 	implements View.OnClickListener, Handler.Callback {
 
+	/** Controller for this activity. */
 	private BaseSelectionController mController;
 	
 	@Override
@@ -22,6 +30,8 @@ public class CompareSelectionActivity extends BaseSelectionActivity
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		
+		// Set the listener to be attached to
+		// all the checkboxes.
 		mAdapter.setOnClickListener(this);
 		
 		mCommandButton.setText("Compare");
@@ -50,11 +60,20 @@ public class CompareSelectionActivity extends BaseSelectionActivity
 			}
 		});
 		
+		// Set up controller here.
 		mController = new BaseSelectionController(mPhotos, mSelectedEntries, mTag);
 		mController.addHandler(new Handler(this));
 		mController.handleMessage(BaseSelectionController.GET_PHOTO_ENTRIES, null);
 	}
 
+	/**
+	 * Retrieve a list of all the photos that are
+	 * currently selected.
+	 * 
+	 * @return
+	 * 		Array containing the two selected
+	 * 		photos.
+	 */
 	public PhotoEntry[] getSelectedPhotos() {
 		PhotoEntry[] entries = new PhotoEntry[2];
 		
@@ -97,6 +116,10 @@ public class CompareSelectionActivity extends BaseSelectionActivity
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
+					// After the photos are populated, grab from the intent 
+					// the position of the photo where the
+					// archive context menu was created. Make sure that this photo
+					// is always checked.
 					int selectedIndex = getIntent().getIntExtra("SELECTED_PHOTO", 0);
 					mAdapter.setFixedChecked(selectedIndex);
 					mSelectedEntries.set(selectedIndex, true);

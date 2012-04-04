@@ -188,7 +188,7 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 			startActivity(intent);
 			return true;
 		case PhotoGalleryActivity.MENU_ARCHIVE_ENTRY:
-			intent = new Intent(this, ArchiveActivity.class);
+			intent = new Intent(this, ArchiveSelectionActivity.class);
 			intent.putExtra("SELECTED_PHOTO", mContextPhotoEntryPosition);
 			intent.putExtra(SqlPhotoStorage.KEY_TAG, mTag);
 			startActivity(intent);

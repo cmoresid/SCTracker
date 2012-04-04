@@ -9,16 +9,24 @@ import android.widget.CheckBox;
 import android.widget.Toast;
 import ca.ualberta.controllers.ArchiveController;
 
-public class ArchiveActivity extends BaseSelectionActivity implements
+/**
+ * Activity that is responsible for archiving selected
+ * photos. Subclasses {@code BaseSelectionActivity}
+ * in order to retrieve some base functionality. The layout
+ * is set in the parent activity. Controller is added here.
+ */
+public class ArchiveSelectionActivity extends BaseSelectionActivity implements
 		View.OnClickListener, Handler.Callback {
 
+	/** The controller for this activity. */
 	private ArchiveController mController;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		
+		// Sets the listener that is to be attached
+		// to all checkboxes in the GridView.
 		mAdapter.setOnClickListener(this);
 		mCommandButton.setText("Archive");
 		mCommandButton.setOnClickListener(new OnClickListener() {
@@ -29,6 +37,7 @@ public class ArchiveActivity extends BaseSelectionActivity implements
 			}
 		});
 		
+		// Set up the controller.
 		mController = new ArchiveController(mPhotos, mSelectedEntries, mTag);
 		mController.addHandler(new Handler(this));
 		mController.handleMessage(ArchiveController.GET_PHOTO_ENTRIES, null);
@@ -55,6 +64,10 @@ public class ArchiveActivity extends BaseSelectionActivity implements
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
+					// After the photos are populated, grab from the intent 
+					// the position of the photo where the
+					// archive context menu was created. Make sure that this photo
+					// is always checked.
 					int selectedIndex = getIntent().getIntExtra("SELECTED_PHOTO", 0);
 					mAdapter.setFixedChecked(selectedIndex);
 					mSelectedEntries.set(selectedIndex, true);
@@ -66,7 +79,7 @@ public class ArchiveActivity extends BaseSelectionActivity implements
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					Toast.makeText(ArchiveActivity.this, "Archive Callback", Toast.LENGTH_SHORT).show();
+					Toast.makeText(ArchiveSelectionActivity.this, "Archive Callback", Toast.LENGTH_SHORT).show();
 				}
 			});
 			return true;
