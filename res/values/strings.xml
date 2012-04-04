@@ -2,7 +2,7 @@
 <resources>
 
     <string name="hello">Updating tag: </string>
-    <string name="app_name">301_project</string>
+    <string name="app_name">SC Tracker</string>
     <string name="delete_menu">Delete Photo</string>
     <string name="project_name">Skin Condition Tracker</string>
     <string name="takenewphoto">Take A New Photo</string>

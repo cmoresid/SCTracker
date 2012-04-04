@@ -72,8 +72,10 @@ public class TagGalleryListAdapter extends BaseAdapter {
 		//lastImage.setLayoutParams(new LinearLayout.LayoutParams(85, 85));
 		TextView tag = (TextView)rowView.findViewById(R.id.tag);
 		
-		tag.setText(mTags.get(position).getTag());
-
+		if(mTags.size() != 0){
+			tag.setText(mTags.get(position).getTag());
+		}
+		
 		try
 		{
 			firstImage.setImageBitmap(getFirstImageBitmap(position));
