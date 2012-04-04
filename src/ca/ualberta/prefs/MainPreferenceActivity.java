@@ -18,6 +18,8 @@ public class MainPreferenceActivity extends PreferenceActivity {
 
 	/** Refers to the password protect check box. */
 	private Preference checkBoxPassword;
+	/** Result code for used to start PasswordActivity. */
+	public static final int PASSWORD_CODE = 100;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +41,20 @@ public class MainPreferenceActivity extends PreferenceActivity {
 				// Start the PasswordActivity, with given behavior.
 				Intent i = new Intent(MainPreferenceActivity.this, PasswordActivity.class);
 				i.putExtra(PasswordActivity.KEY_PASSWORD_FUNCTION, passwordActivityBehavior);
-				startActivityForResult(i, RESULT_OK);
+				startActivityForResult(i, PASSWORD_CODE);
 				
 				return true;
 			}
 		});
 	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {	
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if (requestCode == PASSWORD_CODE) {
+			finish();
+		}
+	}
+	
 }
