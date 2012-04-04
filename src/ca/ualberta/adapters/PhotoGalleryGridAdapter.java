@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import ca.ualberta.R;
 import ca.ualberta.models.PhotoEntry;
 
@@ -36,6 +38,16 @@ public class PhotoGalleryGridAdapter extends BaseAdapter {
 	private ArrayList<PhotoEntry> mPhotos;
 	/** Reference to the parent context if we need it. */
 	private Context mContext;
+	
+	private ArrayList<CheckBox> mCheckBoxes;
+	
+	private boolean box1Checked = false;
+	private boolean box2Checked = false;
+	
+	private CheckBox box1;
+	private CheckBox box2;
+	
+	private LayoutInflater mInflater;
 
 	/**
 	 * Instantiates a new {@code PhotoGalleryGridAdapter} that
@@ -51,46 +63,109 @@ public class PhotoGalleryGridAdapter extends BaseAdapter {
 	 * 		(PhotoGalleryActivity) and the controller (PhotoGalleryController)
 	 * 		in this particular case.
 	 */
-	public PhotoGalleryGridAdapter(Context c, ArrayList<PhotoEntry> photos) {
+	
+//	public PhotoGalleryGridAdapter(Context c, ArrayList<PhotoEntry> photos) {
+//		mContext = c;
+//		mPhotos = photos;
+//		mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//	}
+	
+	public PhotoGalleryGridAdapter(Context c, ArrayList<PhotoEntry> photos, ArrayList<CheckBox> checkBoxes){
 		mContext = c;
 		mPhotos = photos;
+		mCheckBoxes = checkBoxes;
+		mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		
+		ViewHolder holder;
 
 		PhotoEntry e = (PhotoEntry) this.getItem(position);
-		View v;
-		if (convertView == null) { 
 
+		
+		if(convertView == null){
+			holder = new ViewHolder();
 			// inflate the layout.
-			LayoutInflater li = (LayoutInflater) mContext
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			v = li.inflate(R.layout.grid_item, null);
-
-			// Add the text.
-			TextView tv = (TextView) v.findViewById(R.id.grid_item_text);
-			if (tv != null) {
-
-				tv.setText(e.getTimeStamp());
+			convertView = mInflater.inflate(R.layout.grid_item,null);
+			
+			holder.imageView = (ImageView) convertView.findViewById(R.id.grid_item_image);
+			holder.imageView.setLayoutParams(new LinearLayout.LayoutParams(85, 85));
+			holder.imageView.setImageBitmap(BitmapFactory.decodeFile(e.getFilePath()));
+			
+			holder.checkBox = (CheckBox) convertView.findViewById(R.id.grid_item_check_box);
+			holder.textView = (TextView) convertView.findViewById(R.id.grid_item_text);
+			if(holder.textView != null){
+				holder.textView.setText(e.getTimeStamp());
 			}
 			
-			// Add the Check box
-			CheckBox checkBox = (CheckBox) v.findViewById(R.id.grid_item_check_box);
+			convertView.setTag(holder);
 
-			ImageView iv = (ImageView) v.findViewById(R.id.grid_item_image);
-			iv.setLayoutParams(new LinearLayout.LayoutParams(85, 85));
-			iv.setImageBitmap(BitmapFactory.decodeFile(e.getFilePath()));
-
-
-		} else {
-
-			v = convertView;
+		}else {
+			holder = (ViewHolder) convertView.getTag();
 		}
+		
+		holder.checkBox.setId(position);
+		holder.imageView.setId(position);
+		holder.textView.setId(position);
+		
+        holder.checkBox.setOnClickListener(new OnClickListener() {
 
-		return v;
+            public void onClick(View v) {
+            	
+            	
+               CheckBox cb = (CheckBox) v;
+               
+               if(cb.isChecked()){
+            	   mCheckBoxes.add(cb);
+               }
+               if(!cb.isChecked()){
+            	   mCheckBoxes.remove(cb);
+            	   Toast.makeText(mContext, "you removed "+ cb.getId(), Toast.LENGTH_SHORT).show();
+               }
+
+
+               /*
+               if (!cb.isChecked()) {
+            	   if (cb == box1) {
+            		   box1Checked = false;
+            	   } else if (cb == box2) {
+            		   box2Checked = false;
+            	   }
+               }
+               
+                if (cb.isChecked()) {
+                	
+                	if(box2 != null){
+                		box2.setChecked(false);
+                	}
+                	if(box1 != null){
+                		box2 = box1;
+                	}
+                	box1 = cb;
+*/
+                	
+//                	if (box2 != null) {
+//                		Toast.makeText(mContext, "you checked the box" + box1.getId() + " " + box2.getId(), Toast.LENGTH_SHORT).show();
+//                	} else {
+//                		Toast.makeText(mContext, "you checked the box" + box1.getId(), Toast.LENGTH_SHORT).show();
+//                	}
+//            	}
+            }
+        });
+        
+		return convertView;
 	}
+	
+	
+    class ViewHolder {
+        ImageView imageView;
+        CheckBox checkBox;
+        TextView textView;
+        int id;
+    }
+	
+
 
 	/*
 	 * The following methods have to be implemented

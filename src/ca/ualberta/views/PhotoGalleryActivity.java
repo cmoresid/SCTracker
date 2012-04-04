@@ -12,10 +12,14 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 import ca.ualberta.R;
 import ca.ualberta.adapters.PhotoGalleryGridAdapter;
 import ca.ualberta.controllers.PhotoGalleryController;
@@ -33,12 +37,16 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 	 * the adapter.
 	 */
 	private ArrayList<PhotoEntry> mPhotos;
-
 	/**
-	 * Responsible for populating the grid view with the {@code PhotoEntry}
+	 * Used as a list of checked items. This reference is shared between the controller and
+	 * the adapter.
+	 */
+	private ArrayList<CheckBox> mCheckBoxes;
+	/**
+	 * Responsible for populating the grid view with the {@code CheckBoxes}
 	 * objects.
 	 */
-	private PhotoGalleryGridAdapter mGridAdapter;
+	private PhotoGalleryGridAdapter mGridAdapter2;
 	/**
 	 * The controller that does all the work basically.
 	 */
@@ -47,10 +55,13 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 	 * Reference to the {@code GridView} inflated from the photogallery_grid.xml
 	 * layout
 	 */
-	private GridView mGridView;
+	private GridView mGridView2;
 	
 	private TextView mTagTextView;
 	
+	private Button compareButton;
+	
+	private Button deleteButton;
 	/**
 	 * Stores a reference to the {@code PhotoEntry} that a context menu was
 	 * created on.
@@ -62,9 +73,6 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 
 	/** refers to the context menu item for delete photo. */
 	public static final int MENU_DELETE_ENTRY = 0;
-
-	/** Refers to the context menu item for compare photos. */
-	public static final int MENU_COMPARE_PHOTO = 1;
 
 	/** Refers to the context menu item for retag photo. */
 	public static final int MENU_RETAG_PHOTO = 3;
@@ -79,29 +87,29 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 
 		// Initialize an empty list.
 		mPhotos = new ArrayList<PhotoEntry>();
+		mCheckBoxes = new ArrayList<CheckBox>();
 
-		// The controller shares the reference to the mPhotos
-		// list.
-		mController = new PhotoGalleryController(mPhotos, mTag);
-		// This allows the activity to respond to messages passed
-		// to the view from the controller (i.e. calls the
-		// handleMessage(Message msg) callback method).
+		// The controller shares the reference to the mPhotos list.
+		mController = new PhotoGalleryController(mPhotos, mCheckBoxes, mTag);
+
 		mController.addHandler(new Handler(this));
-		// Uses the mPhotos list as it's data source
-		mGridAdapter = new PhotoGalleryGridAdapter(this, mPhotos);
-
-		mGridView = (GridView) this.findViewById(R.id.photogallery_gridview);
-		mTagTextView = (TextView) this.findViewById(R.id.tag_text_view);
+		
 		// Set tag text
+		mTagTextView = (TextView) this.findViewById(R.id.tag_text_view);
 		mTagTextView.setText(getIntent().getExtras().getString(SqlPhotoStorage.KEY_TAG));
-		// Uses the adapter to populate itself.
-		mGridView.setAdapter(mGridAdapter);
+		
 
+		//use the checkBoxes list & photos as it's data source
+		mGridAdapter2 = new PhotoGalleryGridAdapter(this,mPhotos,mCheckBoxes);
+		mGridView2 = (GridView) findViewById(R.id.photogallery_gridview);
+		mGridView2.setAdapter(mGridAdapter2);
+		
+		mGridView2.setOnItemClickListener(new OnItemClickListener(){
 
-		mGridView.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> parent, View v,
-					int position, long id) {
-
+			@Override
+			public void onItemClick(AdapterView<?> parent, View v, int position,
+					long id) {
+				
 				Intent i = new Intent(PhotoGalleryActivity.this,
 						ViewPhotoActivity.class);
 
@@ -113,10 +121,51 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 				i.putExtra(SqlPhotoStorage.KEY_FILENAME, e.getFilePath());
 				startActivity(i);
 			}
+			
+		});
+		
+		// this is when user clicks on compare button
+		compareButton = (Button) findViewById(R.id.compareButton);
+		compareButton.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				
+				Intent intent = new Intent(PhotoGalleryActivity.this, CompareActivity.class);
+				
+	               if(mCheckBoxes.size() == 2){
+							for (int i = 0; i < mCheckBoxes.size(); i++) {
+									intent.putExtra("tag", mPhotos.get(mCheckBoxes.get(i).getId()).getTag());
+									intent.putExtra("photo" + i, mPhotos.get(mCheckBoxes.get(i).getId()).getFilePath());
+									intent.putExtra("photoText" + i, mPhotos.get(mCheckBoxes.get(i).getId()).getTimeStamp());
+							}
+							
+						startActivity(intent);
+	               } else {
+						while (mCheckBoxes.size() > 0) {
+		            		   mCheckBoxes.get(0).setChecked(false);
+		            		   mCheckBoxes.remove(0);
+						}
+	            	   Toast.makeText(getApplicationContext(), "Need 2 photos", Toast.LENGTH_SHORT).show();
+	               }
+			}
+			
+		});
+		
+		//this is when user clicks on delete button
+		deleteButton = (Button) findViewById(R.id.DeleteButton);
+		deleteButton.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+			}
+			
 		});
 		
 		// Registers a context menu for the grid view.
-		this.registerForContextMenu(mGridView);
+		this.registerForContextMenu(mGridView2);
 		// Populates the mPhotos with the PhotoEntry objects
 		// from the database.
 		this.retrieveData();
@@ -145,12 +194,10 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 			// Stores a reference to the photo that the context
 			// menu was created on. Used in the onContextItemSelected.
-			mContextPhotoEntry = (PhotoEntry) mGridAdapter
+			mContextPhotoEntry = (PhotoEntry) mGridAdapter2
 					.getItem(info.position);
 			menu.add(Menu.NONE, PhotoGalleryActivity.MENU_DELETE_ENTRY,
 					PhotoGalleryActivity.MENU_DELETE_ENTRY, "Delete Photo");
-			menu.add(Menu.NONE, PhotoGalleryActivity.MENU_COMPARE_PHOTO,
-					PhotoGalleryActivity.MENU_COMPARE_PHOTO, "Compare Photos");
 			menu.add(Menu.NONE, PhotoGalleryActivity.MENU_RETAG_PHOTO,
 					PhotoGalleryActivity.MENU_RETAG_PHOTO, "Retag Photo");
 		}
@@ -165,10 +212,6 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 			return mController.handleMessage(
 					PhotoGalleryController.DELETE_ENTRY,
 					mContextPhotoEntry.getId());
-		case PhotoGalleryActivity.MENU_COMPARE_PHOTO:
-			return mController.handleMessage(
-					PhotoGalleryController.GET_PHOTO_ENTRIES,
-					mContextPhotoEntry.getId());
 		case PhotoGalleryActivity.MENU_RETAG_PHOTO:
 			return mController.handleMessage(
 					PhotoGalleryController.RETAG_PHOTO,
@@ -179,11 +222,8 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 		}
 	}
 
-	
-	
 	@Override
 	public void onBackPressed() {
-		// TODO Auto-generated method stub
 		super.onBackPressed();
 		
 	}
@@ -206,7 +246,7 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 						startActivity(i);
 					}
 					
-					mGridAdapter.notifyDataSetChanged();
+					mGridAdapter2.notifyDataSetChanged();
 				}
 			});
 			return true;
@@ -219,6 +259,17 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 					
 				}
 				
+			});
+		case PhotoGalleryController.DELETE_ENTRY:
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					while (mCheckBoxes.size() > 0) {
+	            		   mCheckBoxes.get(0).setChecked(false);
+	            		   mCheckBoxes.remove(0);
+					}
+					mGridAdapter2.notifyDataSetChanged();
+				}
 			});
 		}
 		return false;

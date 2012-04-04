@@ -2,10 +2,10 @@ package ca.ualberta.controllers;
 
 import java.util.ArrayList;
 
-import android.app.AlertDialog;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.widget.EditText;
+import android.widget.CheckBox;
+import android.widget.Toast;
 import ca.ualberta.models.PhotoEntry;
 import ca.ualberta.persistence.SqlPhotoStorage;
 
@@ -17,10 +17,7 @@ import ca.ualberta.persistence.SqlPhotoStorage;
  */
 public class PhotoGalleryController extends SCController {
 	
-	/**
-	 * hold the photos to be compared.
-	 */
-	private long id1,id2;
+
 	
 	/**
 	 * Message code that tells controller retrieve all the {@code PhotoEntry} 
@@ -57,6 +54,8 @@ public class PhotoGalleryController extends SCController {
 
 	/** Contains all the PhotoEntry objects related to particular tag. */
 	private ArrayList<PhotoEntry> mPhotos;
+	/**Contains all the CheckBox objects related to particular tag. */
+	private ArrayList<CheckBox> mCheckBoxes;
 	/**
 	 * Thread that so any handlers can deal with messages, without blocking the
 	 * UI thread.
@@ -72,16 +71,21 @@ public class PhotoGalleryController extends SCController {
 	 * and also the name of the tag to display.
 	 * 
 	 * @param photos
-	 *            {@link java.util.ArrayList} containing the PhotoEntry objects. This
-	 *            array acts as the 'model' in this case.
+	 *            containing the PhotoEntry objects. This array together with photo array
+	 *            acts as the 'model' in this case.
 	 * @param photoTag
 	 *            Name of the tag to display.
+	 *            
+	 * @param mCheckBoxes
+	 * 			  containing the CheckBox objects. this array together with photo array 
+	 * 			  acts as the modelin this case.
 	 */
-	public PhotoGalleryController(ArrayList<PhotoEntry> photos, String photoTag) {
+	public PhotoGalleryController(ArrayList<PhotoEntry> photos, ArrayList<CheckBox> checkBoxes, String photoTag){
 		this.mPhotoTag = photoTag;
 		this.mStorage = new SqlPhotoStorage();
 		this.mPhotos = photos;
-
+		this.mCheckBoxes = checkBoxes;
+		
 		inboxHandlerThread = new HandlerThread("Message Thread");
 		// Start the thread that will handle messages
 		inboxHandlerThread.start();
@@ -149,9 +153,13 @@ public class PhotoGalleryController extends SCController {
 			@Override
 			public void run() {
 				mStorage.deletePhotoEntry(id);
+				
+				
 				if(mPhotos.size() ==0){
 					notifyOutboxHandlers(EMPTY_TAG, null);
 				}
+				
+				notifyOutboxHandlers(DELETE_ENTRY, (Long)id);
 			}
 		});
 
@@ -170,7 +178,9 @@ public class PhotoGalleryController extends SCController {
 
 			@Override
 			public void run() {
-				
+				if(mCheckBoxes.size() == 2){
+					Toast.makeText(null, "the size is 2", Toast.LENGTH_SHORT).show();
+				}
 			}
 
 		});

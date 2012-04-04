@@ -15,6 +15,7 @@
             android:text="@string/tmp"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:typeface="serif"
+            android:textStyle="bold"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="5dp"
             android:minWidth="130dp"
