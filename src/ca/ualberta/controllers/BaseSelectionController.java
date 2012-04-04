@@ -14,13 +14,13 @@ public class BaseSelectionController extends SCController {
 	public static final int EMPTY_TAG = 2;
 	public static final int UPDATED_ENTRIES = 3;
 	
-	private SqlPhotoStorage mStorage;
-	private ArrayList<PhotoEntry> mPhotos;
-	private ArrayList<Boolean> mSelectedEntries;
-	private String mPhotoTag;
+	protected SqlPhotoStorage mStorage;
+	protected ArrayList<PhotoEntry> mPhotos;
+	protected ArrayList<Boolean> mSelectedEntries;
+	protected String mPhotoTag;
 	
-	private HandlerThread inboxHandlerThread;
-	private Handler inboxHandler;
+	protected HandlerThread inboxHandlerThread;
+	protected Handler inboxHandler;
 	
 	public BaseSelectionController(ArrayList<PhotoEntry> photos, ArrayList<Boolean> selected, String tag) {
 		this.mPhotoTag = tag;

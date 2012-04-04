@@ -2,14 +2,21 @@ package ca.ualberta.views;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.Toast;
+import ca.ualberta.controllers.ArchiveController;
+import ca.ualberta.controllers.BaseSelectionController;
 import ca.ualberta.models.PhotoEntry;
 
-public class CompareSelectionActivity extends BaseSelectionActivity implements View.OnClickListener {
+public class CompareSelectionActivity extends BaseSelectionActivity 
+	implements View.OnClickListener, Handler.Callback {
 
+	private BaseSelectionController mController;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -42,6 +49,10 @@ public class CompareSelectionActivity extends BaseSelectionActivity implements V
 				}
 			}
 		});
+		
+		mController = new BaseSelectionController(mPhotos, mSelectedEntries, mTag);
+		mController.addHandler(new Handler(this));
+		mController.handleMessage(BaseSelectionController.GET_PHOTO_ENTRIES, null);
 	}
 
 	public PhotoEntry[] getSelectedPhotos() {
@@ -77,5 +88,22 @@ public class CompareSelectionActivity extends BaseSelectionActivity implements V
 			cb.setSelected(true);
 			mSelectedEntries.set(cbId, true);
 		}
+	}
+
+	@Override
+	public boolean handleMessage(Message msg) {
+		switch (msg.what) {
+		case BaseSelectionController.UPDATED_ENTRIES:
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					int selectedIndex = getIntent().getIntExtra("SELECTED_PHOTO", 0);
+					mAdapter.setFixedChecked(selectedIndex);
+					mSelectedEntries.set(selectedIndex, true);
+					mAdapter.notifyDataSetChanged();
+				}
+			});
+		}
+		return false;
 	}
 }

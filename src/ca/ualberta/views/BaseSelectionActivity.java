@@ -15,7 +15,7 @@ import ca.ualberta.controllers.BaseSelectionController;
 import ca.ualberta.models.PhotoEntry;
 import ca.ualberta.persistence.SqlPhotoStorage;
 
-public class BaseSelectionActivity extends Activity implements Handler.Callback {
+public class BaseSelectionActivity extends Activity {
 	
 	protected SelectionGridAdapter mAdapter;
 	protected ArrayList<Boolean> mSelectedEntries;
@@ -23,7 +23,6 @@ public class BaseSelectionActivity extends Activity implements Handler.Callback 
 	protected GridView mGridView;
 	protected Button mCommandButton;
 	protected TextView mTagTextView;
-	protected BaseSelectionController mController;
 	protected String mTag;
 	
 	@Override
@@ -46,9 +45,9 @@ public class BaseSelectionActivity extends Activity implements Handler.Callback 
 		mTag = getIntent().getStringExtra(SqlPhotoStorage.KEY_TAG);
 		mTagTextView.setText(mTag);
 		
-		mController = new BaseSelectionController(mPhotos, mSelectedEntries, mTag);
-		mController.addHandler(new Handler(this));
-		mController.handleMessage(BaseSelectionController.GET_PHOTO_ENTRIES, null);
+		//mController = new BaseSelectionController(mPhotos, mSelectedEntries, mTag);
+		//mController.addHandler(new Handler(this));
+		//mController.handleMessage(BaseSelectionController.GET_PHOTO_ENTRIES, null);
 	}
 	
 	protected int getSelectedCount() {
@@ -58,22 +57,5 @@ public class BaseSelectionActivity extends Activity implements Handler.Callback 
 		}
 		
 		return i;
-	}
-
-	@Override
-	public boolean handleMessage(Message msg) {
-		switch (msg.what) {
-		case BaseSelectionController.UPDATED_ENTRIES:
-			runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					int selectedIndex = getIntent().getIntExtra("SELECTED_PHOTO", 0);
-					mAdapter.setFixedChecked(selectedIndex);
-					mSelectedEntries.set(selectedIndex, true);
-					mAdapter.notifyDataSetChanged();
-				}
-			});
-		}
-		return false;
 	}
 }
