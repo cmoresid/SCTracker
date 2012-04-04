@@ -50,6 +50,7 @@ public class CompareSelectionActivity extends BaseSelectionActivity
 					String timestamp2 = entries[1].getTimeStamp();
 					
 					Intent i = new Intent(CompareSelectionActivity.this, CompareActivity.class);
+					i.putExtra("tag",mTag);
 					i.putExtra("photo0", filename1);
 					i.putExtra("photo1", filename2);
 					i.putExtra("photoText0", timestamp1);

@@ -161,9 +161,10 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 			mContextPhotoEntry = (PhotoEntry) mGridAdapter2
 					.getItem(info.position);
 			mContextPhotoEntryPosition = info.position;
-			
-			menu.add(Menu.NONE, PhotoGalleryActivity.MENU_COMPARE_ENTRY,
-					PhotoGalleryActivity.MENU_COMPARE_ENTRY, "Compare With");
+			if(mPhotos.size() != 1){
+				menu.add(Menu.NONE, PhotoGalleryActivity.MENU_COMPARE_ENTRY,
+						PhotoGalleryActivity.MENU_COMPARE_ENTRY, "Compare With");
+			}
 			menu.add(Menu.NONE, PhotoGalleryActivity.MENU_DELETE_ENTRY,
 					PhotoGalleryActivity.MENU_DELETE_ENTRY, "Delete Photo");
 			menu.add(Menu.NONE, PhotoGalleryActivity.MENU_ARCHIVE_ENTRY,
