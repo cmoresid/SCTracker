@@ -16,6 +16,7 @@ public class CameraController extends SCController {
 	private Handler inboxHandler;
 
 	public static final int STORE_PHOTO_ENTRY = 0;
+	public static final int FINISH_STORE_PHOTO = 1;
 
 	/** Reference to a persistence object. */
 	private SqlPhotoStorage mStorage;
@@ -48,7 +49,7 @@ public class CameraController extends SCController {
 			@Override
 			public void run() {
 				mStorage.insertPhotoEntry(pe);
-
+				notifyOutboxHandlers(FINISH_STORE_PHOTO, null);
 			}
 		});
 	}

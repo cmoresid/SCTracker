@@ -98,7 +98,6 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 		mTagTextView = (TextView) this.findViewById(R.id.tag_text_view);
 		mTagTextView.setText(getIntent().getExtras().getString(SqlPhotoStorage.KEY_TAG));
 		
-
 		//use the checkBoxes list & photos as it's data source
 		mGridAdapter2 = new PhotoGalleryGridAdapter(this,mPhotos,mCheckBoxes);
 		mGridView2 = (GridView) findViewById(R.id.photogallery_gridview);

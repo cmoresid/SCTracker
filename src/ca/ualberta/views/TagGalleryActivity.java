@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import ca.ualberta.R;
 import ca.ualberta.adapters.TagGalleryListAdapter;
@@ -65,6 +66,9 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 	 * layout
 	 */
 	private ListView mListView;
+	
+	
+	private TextView mEmptyView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +87,7 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 		// assign the newPhotoButton to the button in the layout
 		mNewPhotoButton = (Button) this.findViewById(R.id.takenewphotobutton);
 
+		mEmptyView = (TextView) this.findViewById(R.id.no_gallery_contents);
 		mListView = (ListView) this.findViewById(R.id.table);
 
 		// launches the intent to the PhotoGalleryActivity
@@ -119,7 +124,7 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 
 		// Uses the adapter to populate itself.
 		mListView.setAdapter(mListAdapter);
-
+		
 		// Populates the mPhotos with the PhotoEntry objects
 		// from the database.
 		this.retrieveData();
@@ -137,6 +142,14 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 			}
 		});
 
+	}
+	
+	private void setEmptyMessage(int count) {
+		if (count == 0) {
+			mEmptyView.setVisibility(TextView.VISIBLE);
+		} else {
+			mEmptyView.setVisibility(TextView.GONE);
+		}
 	}
 
 	/**
@@ -186,7 +199,7 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 			break;
 		case R.id.menu_lock:
 			intent = new Intent(this, PasswordActivity.class);
-			intent.putExtra(MainPreferenceActivity.KEY_PASSWORD_FUNCTION, MainPreferenceActivity.VERIFY_REMOVE_PASSWORD);
+			intent.putExtra(PasswordActivity.KEY_PASSWORD_FUNCTION, PasswordActivity.UNLOCK_APPLICTION);
 			this.startActivity(intent);
 			break;
 		}
@@ -224,8 +237,8 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 		
 		if (passwordAuthenticate) {
 			Intent i = new Intent(this, PasswordActivity.class);
-			i.putExtra(MainPreferenceActivity.KEY_PASSWORD_FUNCTION,
-					MainPreferenceActivity.VERIFY_REMOVE_PASSWORD);
+			i.putExtra(PasswordActivity.KEY_PASSWORD_FUNCTION,
+					PasswordActivity.UNLOCK_APPLICTION);
 			startActivity(i);
 		}
 	}
@@ -283,6 +296,7 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 
 		// TODO Auto-generated method stub
 		super.onResume();
+		mController.handleMessage(TagGalleryController.GET_PHOTOS_COUNT, null);
 		mController.handleMessage(TagGalleryController.GET_TAGS, null);
 	}
 
@@ -327,12 +341,21 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 	@Override
 	public boolean handleMessage(Message msg) {
 		switch (msg.what) {
-
 		case TagGalleryController.UPDATED_ENTRIES:
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
 					mListAdapter.notifyDataSetChanged();
+				}
+			});
+			return true;
+		case TagGalleryController.GET_PHOTOS_COUNT:
+			final int photoCount = (Integer) msg.obj;
+			
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					setEmptyMessage(photoCount);
 				}
 			});
 			return true;

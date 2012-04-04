@@ -1,9 +1,12 @@
 package ca.ualberta.adapters;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -91,7 +94,15 @@ public class PhotoGalleryGridAdapter extends BaseAdapter {
 			
 			holder.imageView = (ImageView) convertView.findViewById(R.id.grid_item_image);
 			holder.imageView.setLayoutParams(new LinearLayout.LayoutParams(85, 85));
-			holder.imageView.setImageBitmap(BitmapFactory.decodeFile(e.getFilePath()));
+			
+			Bitmap image = null;
+			try {
+				image = BitmapFactory.decodeStream(mContext.openFileInput(e.getFilePath()));
+			} catch (FileNotFoundException e1) {
+				Log.i("ProblemOpeningFile", e.getFilePath());
+			}
+			
+			holder.imageView.setImageBitmap(image);
 			
 			holder.checkBox = (CheckBox) convertView.findViewById(R.id.grid_item_check_box);
 			holder.textView = (TextView) convertView.findViewById(R.id.grid_item_text);

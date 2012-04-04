@@ -1,11 +1,14 @@
 package ca.ualberta.views;
 
-import ca.ualberta.R;
+import java.io.FileNotFoundException;
+
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+import ca.ualberta.R;
 
 public class CompareActivity extends Activity {
 	
@@ -32,10 +35,22 @@ public class CompareActivity extends Activity {
 
 		
 		String fileName1 = this.getIntent().getExtras().getString("photo0");
-		topPhoto.setImageBitmap(BitmapFactory.decodeFile(fileName1));
-		
 		String fileName2 = this.getIntent().getExtras().getString("photo1");
-		bottomPhoto.setImageBitmap(BitmapFactory.decodeFile(fileName2));
+		
+		Bitmap topImage = null;
+		Bitmap bottomImage = null;
+		
+		try {
+			topImage = BitmapFactory.decodeStream(this.openFileInput(fileName1));
+			bottomImage = BitmapFactory.decodeStream(this.openFileInput(fileName2));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		topPhoto.setImageBitmap(topImage);
+		bottomPhoto.setImageBitmap(bottomImage);
 		
 		topPhotoText = (TextView) this.findViewById(R.id.topPhotoText);
 		bottomPhotoText = (TextView) this.findViewById(R.id.bottomPhotoText);

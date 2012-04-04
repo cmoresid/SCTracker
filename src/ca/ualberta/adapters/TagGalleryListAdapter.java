@@ -1,8 +1,10 @@
 package ca.ualberta.adapters;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,16 +73,54 @@ public class TagGalleryListAdapter extends BaseAdapter {
 		TextView tag = (TextView)rowView.findViewById(R.id.tag);
 		
 		tag.setText(mTags.get(position).getTag());
-		firstImage.setImageBitmap(BitmapFactory.decodeFile(mTags.get(position).getFirstImage().getFilePath()));
+
+		try
+		{
+			firstImage.setImageBitmap(getFirstImageBitmap(position));
+		} catch (FileNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		if(mTags.get(position).getFirstImage().getId() != mTags.get(position).getLastImage().getId())
-			lastImage.setImageBitmap(BitmapFactory.decodeFile(mTags.get(position).getLastImage().getFilePath()));
+			try
+			{
+				lastImage.setImageBitmap(getLastImageBitmap(position));
+			} catch (FileNotFoundException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		else
 			lastImage.setAlpha(0);
 		
 		return rowView;
 	}
-
+	
+	
+	/**
+	 * Returns the Bitmap for the last image of the
+	 * {@ TagGroup} at position in the arrayvector of {@ TagGroup}
+	 * @param position
+	 * @return Bitmap
+	 * @throws FileNotFoundException 
+	 */
+	private Bitmap getLastImageBitmap(int position) throws FileNotFoundException{		
+		return BitmapFactory.decodeStream(mContext.openFileInput(mTags.get(position).getLastImage().getFilePath()));
+	}
+	
+	/**
+	 * Returns the Bitmap for the first image of the
+	 * {@ TagGroup} at position in the arrayvector of {@ TagGroup}
+	 * @param position
+	 * @return Bitmap
+	 * @throws FileNotFoundException 
+	 */
+	private Bitmap getFirstImageBitmap(int position) throws FileNotFoundException{		
+		return BitmapFactory.decodeStream(mContext.openFileInput(mTags.get(position).getFirstImage().getFilePath()));
+	}
+	
 	/*
 	 * The following methods have to be implemented
 	 * in order for the adapter to work properly.

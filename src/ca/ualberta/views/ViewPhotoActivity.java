@@ -1,23 +1,24 @@
 package ca.ualberta.views;
 
+import java.io.FileNotFoundException;
+
 import android.app.Activity;
-import android.graphics.BitmapFactory;
-import android.os.Bundle;
-import android.widget.ImageView;
-import android.widget.TextView;
-import ca.ualberta.R;
-import ca.ualberta.persistence.SqlPhotoStorage;
-
-
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Bitmap.Config;
 import android.graphics.PorterDuff.Mode;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Shader.TileMode;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.ImageView;
+import android.widget.TextView;
+import ca.ualberta.R;
+import ca.ualberta.persistence.SqlPhotoStorage;
 
 public class ViewPhotoActivity extends Activity {
 
@@ -39,14 +40,25 @@ public class ViewPhotoActivity extends Activity {
 		mTag.setText(tag);
 		
 		String fileName = this.getIntent().getExtras().getString(SqlPhotoStorage.KEY_FILENAME);
+		
+				Bitmap image = null;
+		try
+		{	
+			image = BitmapFactory.decodeStream(this.openFileInput(fileName));
+			mPhotoView.setImageBitmap(image);
+		} catch (FileNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Log.i("openingFile", fileName + " not there");
+		}
+		
 		mPhotoView.setImageBitmap(BitmapFactory.decodeFile(fileName));
 		
 		String timeStamp = this.getIntent().getExtras().getString(SqlPhotoStorage.KEY_TIMESTAMP);
 		mTimeStampView.setText(timeStamp);
 
-		Bitmap bmp = BitmapFactory.decodeFile(fileName);
-
-		mPhotoView.setImageBitmap(createReflectedImage(bmp));
+		mPhotoView.setImageBitmap(createReflectedImage(image));
 	}
 	
 	//create the reflaction of the photo

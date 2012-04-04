@@ -39,7 +39,11 @@ public class TagGalleryController extends SCController {
 	 * {@code PhotoEntry} object
 	 */
 	public static final int DELETE_TAG_AND_PHOTOS = 4;
-	
+	/**
+	 * Message code which tells the controller to retrieve a count of
+	 * how many photos are in the database.
+	 */
+	public static final int GET_PHOTOS_COUNT = 5;
 	
 	
 	/** Reference to a persistence object. */
@@ -117,15 +121,34 @@ public class TagGalleryController extends SCController {
 					// handleMessage(Message msg) callback method
 					// to be called in the TagGalleryActivity.
 					notifyOutboxHandlers(UPDATED_ENTRIES, null);
+					
+					if (mTags.size() == 0) {
+						notifyOutboxHandlers(GET_PHOTOS_COUNT, 0);
+					}
 				}
 			}
 		});
 	}
 	
-	private void deleteTagandPhotos(String tag)
-	{
-		mStorage.deleteTagAndPhotoEntries(tag);
+	private void deleteTagandPhotos(final String tag)
+	{	
+		inboxHandler.post(new Runnable() {
+			@Override
+			public void run() {
+				mStorage.deleteTagAndPhotoEntries(tag);
+			}
+		});
 		
+	}
+	
+	private void getPhotosCount() {
+		inboxHandler.post(new Runnable() {
+			@Override
+			public void run() {
+				int photoCount = mStorage.getPhotoEntryCount();
+				notifyOutboxHandlers(GET_PHOTOS_COUNT, (Integer) photoCount);
+			}
+		});
 	}
 	
 	/**
@@ -139,6 +162,9 @@ public class TagGalleryController extends SCController {
 			deleteTagandPhotos((String)data); //still need to getAllTags().
 		case GET_TAGS:						  //don't put in a return 
 			getAllTags();
+			return true;
+		case GET_PHOTOS_COUNT:
+			getPhotosCount();
 			return true;
 		}
 
