@@ -13,6 +13,10 @@
         android:textStyle="bold"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:typeface="serif"
+        android:shadowColor="#00ff00"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="2"
         android:paddingLeft="25dp"
     	android:paddingRight="25dp"
        />

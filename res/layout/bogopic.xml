@@ -21,6 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.5"
         android:text="Accept" 
+        android:textColor="#00ff00"
         android:typeface="serif"/>
 
     <Button
@@ -29,6 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.5"
         android:text="Cancel"
+        android:textColor="#ff0000"
         android:typeface="serif" />
     </LinearLayout>
 

@@ -3,55 +3,37 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="100dp"
-        android:orientation="vertical" >
-
+    
         <TextView
+            android:paddingTop="150dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="11dp"
             android:paddingRight="10dp"
             android:text="@string/tag_instructions"
             android:typeface="serif"
+            android:shadowColor="#00ff00"
+        	android:shadowDx="0"
+        	android:shadowDy="0"
+       		android:shadowRadius="2"
             android:textAppearance="?android:attr/textAppearanceLarge" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:orientation="vertical" >
-
+    
         <AutoCompleteTextView
             android:id="@+id/autoCompleteTextView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:hint="@string/tag_completion_hint"
             android:maxLength="40" >
         </AutoCompleteTextView>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="10dp" >
-
         <Button
             android:id="@+id/okButton"
             android:layout_width="130dp"
             android:layout_height="50dp"
-            android:layout_gravity="center"
+            android:textColor="#00ff00"
+            android:layout_gravity ="center"
             android:text="@string/ok_button"
             android:typeface="serif" />
 
-    </LinearLayout>
 
 </LinearLayout>
