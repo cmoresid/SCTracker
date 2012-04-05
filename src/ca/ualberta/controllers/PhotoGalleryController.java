@@ -17,6 +17,8 @@ import ca.ualberta.persistence.SqlPhotoStorage;
  */
 public class PhotoGalleryController extends SCController {
 	
+
+	
 	/**
 	 * Message code that tells controller retrieve all the {@code PhotoEntry} 
 	 * objects with a particular tag.

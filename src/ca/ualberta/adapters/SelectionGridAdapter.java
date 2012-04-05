@@ -19,77 +19,29 @@ import android.widget.TextView;
 import ca.ualberta.R;
 import ca.ualberta.models.PhotoEntry;
 
-/**
- * Reusable adapter that can be used to display
- * {@code PhotoEntry} images, dates, along with
- * a checkbox underneath to allow the selection
- * of a particular photo. So far, this adapter
- * is used in the CompareSelectionActivity and
- * ArchiveActivity.
- */
 public class SelectionGridAdapter extends BaseAdapter {
 
-	/** Shared reference to all photos with given tag. */
 	private ArrayList<PhotoEntry> mPhotos;
-	/** 
-	 * Each boolean refers a photo's checkbox. Either checked
-	 * or not check.
-	 */
 	private ArrayList<Boolean> mSelected;
-	/**
-	 * Refers to the position of the checkbox that 
-	 * is fixed. 
-	 */
-	private int positionFixedChecked;
-	/** Used to inflate the layout. */
+	private int fixedChecked;
 	private LayoutInflater mInflater;
-	/** Context is needed in order to retrieve layout inflater. */
 	private Context mContext;
-	/** The listener to attach to each checkbox. */
 	private OnClickListener mCurrentListener;
 	
-	/**
-	 * Instantiates a new {@code SelectionGridAdapter} with a context,
-	 * a list of {@code PhotoEntry} objects, and a list of checkbox positions.
-	 * 
-	 * @param c
-	 * 		Context that is used to retrieve a LayoutInflater efficiently.
-	 * @param list
-	 * 		A shared list of {@code PhotoEntry} objects that are used to populate
-	 * 		the adapter.
-	 * @param selected
-	 * 		A shared list of booleans, where each position refers to the state 
-	 * 		of a checkbox for a photo cell.
-	 */
 	public SelectionGridAdapter(Context c, ArrayList<PhotoEntry> list, ArrayList<Boolean> selected) {
-		positionFixedChecked = -1;
+		fixedChecked = -1;
 		mPhotos = list;
 		mSelected = selected;
 		mContext = c;
 		mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
-	/**
-	 * Sets the listener for the checkbox of each photo cell.
-	 * 
-	 * @param listener
-	 * 		The listener that is called when the checkbox is
-	 *      clicked.
-	 */
-	public void setOnClickListener(OnClickListener listener) {
-		mCurrentListener = listener;
+	public void setOnClickListener(OnClickListener l) {
+		mCurrentListener = l;
 	}
 	
-	/**
-	 * Sets the position of the checkbox that is to be
-	 * checked, but don't allow the user to change it's
-	 * state.
-	 * 
-	 * @param pos
-	 * 		Position of checkbox that is to be fixed.
-	 */
 	public void setFixedChecked(int pos) {
-		positionFixedChecked = pos;
+		fixedChecked = pos;
 	}
 	
 	@Override
@@ -121,7 +73,6 @@ public class SelectionGridAdapter extends BaseAdapter {
 			
 			Bitmap image = null;
 			try {
-				// Decode the image from file name found in photo entry.
 				image = BitmapFactory.decodeStream(mContext.openFileInput(entry.getFilePath()));
 			} catch (FileNotFoundException e1) {
 				Log.i("ProblemOpeningFile", entry.getFilePath());
@@ -135,19 +86,16 @@ public class SelectionGridAdapter extends BaseAdapter {
 			convertView.setTag(holder);	
 		} else {
 			holder = (ViewHolder) convertView.getTag();
-		} 
+		}
 		
 		holder.checkBox.setId(position);
+		
 		holder.imageView.setId(position);
 		
 		holder.checkBox.setOnClickListener(mCurrentListener);
-		// Set the checkbox's state to reflect the state of the
-		// mSelected array.
 		holder.checkBox.setChecked(mSelected.get(position));
 		
-		// If this photocell should be locked,
-		// lock it here.
-		if (positionFixedChecked == position) {
+		if (fixedChecked == position) {
 			holder.checkBox.setEnabled(false);
 		}
 		
@@ -156,7 +104,6 @@ public class SelectionGridAdapter extends BaseAdapter {
 		return convertView;
 	}
 	
-	/** Used to cache a view. Helps efficiency. */
 	static class ViewHolder {
 		ImageView imageView;
 		CheckBox checkBox;
