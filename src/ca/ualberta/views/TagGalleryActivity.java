@@ -80,7 +80,6 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 		mPreferences = this.getSharedPreferences("ca.ualberta_preferences",
 				MODE_PRIVATE);
 
-		checkSDCard();
 		checkFirstRun();
 		checkAuthenticate();
 
@@ -149,19 +148,6 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 			mEmptyView.setVisibility(TextView.VISIBLE);
 		} else {
 			mEmptyView.setVisibility(TextView.GONE);
-		}
-	}
-
-	/**
-	 * Checks to see if an SD card is installed. Notifies user
-	 * that an SD card is required.
-	 */
-	private void checkSDCard() {
-		// Checks to see if SD card is properly mounted.
-		if (!ApplicationUtil.checkSdCard()) {
-			Toast.makeText(TagGalleryActivity.this,
-					"SD card not mounted! Please install SD card.",
-					Toast.LENGTH_LONG).show();
 		}
 	}
 

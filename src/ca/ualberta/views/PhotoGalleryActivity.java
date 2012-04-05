@@ -25,6 +25,7 @@ import ca.ualberta.adapters.PhotoGalleryGridAdapter;
 import ca.ualberta.controllers.PhotoGalleryController;
 import ca.ualberta.models.PhotoEntry;
 import ca.ualberta.persistence.SqlPhotoStorage;
+import ca.ualberta.utils.ApplicationUtil;
 
 /**
  * Tutorial on GridViews:
@@ -167,8 +168,11 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 			}
 			menu.add(Menu.NONE, PhotoGalleryActivity.MENU_DELETE_ENTRY,
 					PhotoGalleryActivity.MENU_DELETE_ENTRY, "Delete Photo");
-			menu.add(Menu.NONE, PhotoGalleryActivity.MENU_ARCHIVE_ENTRY,
+			
+			if (ApplicationUtil.checkSdCard()) {
+				menu.add(Menu.NONE, PhotoGalleryActivity.MENU_ARCHIVE_ENTRY,
 					PhotoGalleryActivity.MENU_ARCHIVE_ENTRY, "Archive");
+			}
 		}
 	}
 

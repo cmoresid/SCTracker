@@ -39,7 +39,7 @@ public class ApplicationUtil {
 		}
 
 		File storage = new File(Environment.getExternalStorageDirectory(),
-				"SqlPhotoStorage");
+				"SCArchive");
 
 		if (!storage.exists()) {
 			if (!storage.mkdirs()) {
