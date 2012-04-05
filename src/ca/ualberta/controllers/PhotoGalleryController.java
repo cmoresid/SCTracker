@@ -28,7 +28,7 @@ public class PhotoGalleryController extends SCController {
 	 * Message code that tells the controller to notify all associated message
 	 * handlers that the {@code Photo_tag} has changed.
 	 */
-	public static final int RETAG_PHOTO = 2;
+	public static final int UPDATED_ENTRIES = 2;
 	/**
 	 * Message code which tells the controller to delete a particular
 	 * {@code PhotoEntry} object
@@ -54,8 +54,6 @@ public class PhotoGalleryController extends SCController {
 
 	/** Contains all the PhotoEntry objects related to particular tag. */
 	private ArrayList<PhotoEntry> mPhotos;
-	/**Contains all the CheckBox objects related to particular tag. */
-	private ArrayList<CheckBox> mCheckBoxes;
 	/**
 	 * Thread that so any handlers can deal with messages, without blocking the
 	 * UI thread.
@@ -80,11 +78,10 @@ public class PhotoGalleryController extends SCController {
 	 * 			  containing the CheckBox objects. this array together with photo array 
 	 * 			  acts as the modelin this case.
 	 */
-	public PhotoGalleryController(ArrayList<PhotoEntry> photos, ArrayList<CheckBox> checkBoxes, String photoTag){
+	public PhotoGalleryController(ArrayList<PhotoEntry> photos, String photoTag){
 		this.mPhotoTag = photoTag;
 		this.mStorage = new SqlPhotoStorage();
 		this.mPhotos = photos;
-		this.mCheckBoxes = checkBoxes;
 		
 		inboxHandlerThread = new HandlerThread("Message Thread");
 		// Start the thread that will handle messages
@@ -122,19 +119,18 @@ public class PhotoGalleryController extends SCController {
 					for (PhotoEntry photo : photosLocal) {
 						mPhotos.add(photo);
 					}
-					
-					if(mPhotos.size() ==0){
-						//Toast.makeText(SCApplication.getContext(), "there are no photo in the tag", Toast.LENGTH_SHORT).show();
-						notifyOutboxHandlers(EMPTY_TAG, null);
-						return ;
-					}
 
+					if(mPhotos.size() == 0){
+						notifyOutboxHandlers(EMPTY_TAG, null);
+						return;
+					}
+					
 					// This is actually what sends a message to the
 					// PhotoGalleryActivity, in this case. When
 					// this method is called, it causes the
 					// handleMessage(Message msg) callback method
 					// to be called in the PhotoGalleryActivity.
-					notifyOutboxHandlers(RETAG_PHOTO, null);
+					notifyOutboxHandlers(UPDATED_ENTRIES, null);
 				}
 			}
 		});
@@ -153,37 +149,9 @@ public class PhotoGalleryController extends SCController {
 			@Override
 			public void run() {
 				mStorage.deletePhotoEntry(id);
-				
-				
-				if(mPhotos.size() ==0){
-					notifyOutboxHandlers(EMPTY_TAG, null);
-				}
-				
-				notifyOutboxHandlers(DELETE_ENTRY, (Long)id);
 			}
 		});
 
-	}
-	
-	/**
-	 * Compare two {@code PhotoEntry} object from the application's database
-	 * given IDs. This is done on a separate thread to avoid blocking the UI
-	 * thread.
-	 * 
-	 * @param id
-	 *            The ID of the {@code PhotoEntry} object selected.
-	 */
-	private void comparePhoto(final long id, final long id2) {
-		inboxHandler.post(new Runnable() {
-
-			@Override
-			public void run() {
-				if(mCheckBoxes.size() == 2){
-					Toast.makeText(null, "the size is 2", Toast.LENGTH_SHORT).show();
-				}
-			}
-
-		});
 	}
 
 	/**
@@ -220,14 +188,6 @@ public class PhotoGalleryController extends SCController {
 			deletePhotoEntry((Long) data);
 			getAllPhotos(); // Make sure to refresh list
 			return true;
-		case COMPARE_PHOTO:
-			comparePhoto((Long) data, (Long) data);
-			return true;
-		case RETAG_PHOTO:
-			retagPhoto((Long) data);
-			getAllPhotos();
-			return true;
-
 		}
 
 		return false;
