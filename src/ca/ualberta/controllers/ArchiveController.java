@@ -1,6 +1,9 @@
 package ca.ualberta.controllers;
 
+import java.io.File;
 import java.util.ArrayList;
+
+import android.os.Environment;
 
 import ca.ualberta.models.PhotoEntry;
 
@@ -43,20 +46,25 @@ public class ArchiveController extends BaseSelectionController {
 			ArrayList<Boolean> selected, String tag) {
 		super(photos, selected, tag);
 	}
-
+	
+	public boolean sdCardMounted(){
+		return(Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED);	
+	}
+	
+	
 	/**
 	 * Archives the photos.
 	 * 
 	 * @param entries
 	 */
-	public void archivePhotos(ArrayList<PhotoEntry> entries) {
+	public int archivePhotos(final ArrayList<PhotoEntry> entries) {
 		inboxHandler.post(new Runnable() {
 			@Override
 			public void run() {
-				// TODO: Finish writing implementation.
-				notifyOutboxHandlers(ARCHIVE_RESULTS, null);
+				notifyOutboxHandlers(ARCHIVE_RESULTS, null);	
 			}
 		});
+		return 0;
 	}
 	
 	@Override

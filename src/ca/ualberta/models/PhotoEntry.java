@@ -2,9 +2,6 @@ package ca.ualberta.models;
 
 import java.util.Date;
 
-import ca.ualberta.views.SCView;
-
-
 
 /**
  * POD (Plain Old Data) model that represents a
@@ -21,7 +18,7 @@ import ca.ualberta.views.SCView;
  * @see SCModel
  */
 @SuppressWarnings("rawtypes")
-public class PhotoEntry extends SCModel<SCView> {
+public class PhotoEntry {
 	/** Unique identifier of a photo entry. */
 	private long id;
 	/** Represents when the photo was taken. */
@@ -51,7 +48,6 @@ public class PhotoEntry extends SCModel<SCView> {
 	 */
 	public void setId(long id) {
 		this.id = id;
-		notifyViews();
 	}
 	
 	/**
@@ -78,7 +74,6 @@ public class PhotoEntry extends SCModel<SCView> {
 	 */
 	public void setTimeStamp(String timeStamp) {
 		this.timeStamp = timeStamp;
-		notifyViews();
 	}
 	
 	/**
@@ -102,7 +97,6 @@ public class PhotoEntry extends SCModel<SCView> {
 	 */
 	public void setTag(String tag) {
 		this.tag = tag;
-		notifyViews();
 	}
 	
 	/**
@@ -129,8 +123,5 @@ public class PhotoEntry extends SCModel<SCView> {
 	 */
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
-		notifyViews();
 	}
-	
-	
 }

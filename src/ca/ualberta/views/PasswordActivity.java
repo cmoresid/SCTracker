@@ -9,9 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 import ca.ualberta.R;
-import ca.ualberta.SCApplication;
 import ca.ualberta.controllers.PasswordActivityController;
 
 /**
@@ -206,6 +204,7 @@ public class PasswordActivity extends Activity implements Handler.Callback {
 					}
 				});
 			} else {
+				setResult(RESULT_OK);
 				PasswordActivity.this.finish();
 			}
 		}

@@ -25,6 +25,7 @@ import ca.ualberta.adapters.PhotoGalleryGridAdapter;
 import ca.ualberta.controllers.PhotoGalleryController;
 import ca.ualberta.models.PhotoEntry;
 import ca.ualberta.persistence.SqlPhotoStorage;
+import ca.ualberta.utils.ApplicationUtil;
 
 /**
  * Tutorial on GridViews:
@@ -46,7 +47,7 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 	 * Responsible for populating the grid view with the {@code CheckBoxes}
 	 * objects.
 	 */
-	private PhotoGalleryGridAdapter mGridAdapter2;
+	private PhotoGalleryGridAdapter mGridAdapter;
 	/**
 	 * The controller that does all the work basically.
 	 */
@@ -55,13 +56,10 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 	 * Reference to the {@code GridView} inflated from the photogallery_grid.xml
 	 * layout
 	 */
-	private GridView mGridView2;
+	private GridView mGridView;
 	
 	private TextView mTagTextView;
 	
-	private Button compareButton;
-	
-	private Button deleteButton;
 	/**
 	 * Stores a reference to the {@code PhotoEntry} that a context menu was
 	 * created on.
@@ -93,7 +91,7 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 		mCheckBoxes = new ArrayList<CheckBox>();
 
 		// The controller shares the reference to the mPhotos list.
-		mController = new PhotoGalleryController(mPhotos, mCheckBoxes, mTag);
+		mController = new PhotoGalleryController(mPhotos, mTag);
 
 		mController.addHandler(new Handler(this));
 		
@@ -102,11 +100,11 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 		mTagTextView.setText(getIntent().getExtras().getString(SqlPhotoStorage.KEY_TAG));
 		
 		//use the checkBoxes list & photos as it's data source
-		mGridAdapter2 = new PhotoGalleryGridAdapter(this,mPhotos,mCheckBoxes);
-		mGridView2 = (GridView) findViewById(R.id.photogallery_gridview);
-		mGridView2.setAdapter(mGridAdapter2);
+		mGridAdapter = new PhotoGalleryGridAdapter(this,mPhotos,mCheckBoxes);
+		mGridView = (GridView) findViewById(R.id.photogallery_gridview);
+		mGridView.setAdapter(mGridAdapter);
 		
-		mGridView2.setOnItemClickListener(new OnItemClickListener(){
+		mGridView.setOnItemClickListener(new OnItemClickListener(){
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View v, int position,
@@ -129,7 +127,7 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 		
 		
 		// Registers a context menu for the grid view.
-		this.registerForContextMenu(mGridView2);
+		this.registerForContextMenu(mGridView);
 		// Populates the mPhotos with the PhotoEntry objects
 		// from the database.
 		this.retrieveData();
@@ -158,7 +156,7 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 			// Stores a reference to the photo that the context
 			// menu was created on. Used in the onContextItemSelected.
-			mContextPhotoEntry = (PhotoEntry) mGridAdapter2
+			mContextPhotoEntry = (PhotoEntry) mGridAdapter
 					.getItem(info.position);
 			mContextPhotoEntryPosition = info.position;
 			if(mPhotos.size() != 1){
@@ -167,8 +165,11 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 			}
 			menu.add(Menu.NONE, PhotoGalleryActivity.MENU_DELETE_ENTRY,
 					PhotoGalleryActivity.MENU_DELETE_ENTRY, "Delete Photo");
-			menu.add(Menu.NONE, PhotoGalleryActivity.MENU_ARCHIVE_ENTRY,
+			
+			if (ApplicationUtil.checkSdCard()) {
+				menu.add(Menu.NONE, PhotoGalleryActivity.MENU_ARCHIVE_ENTRY,
 					PhotoGalleryActivity.MENU_ARCHIVE_ENTRY, "Archive");
+			}
 		}
 	}
 
@@ -215,40 +216,22 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 	@Override
 	public boolean handleMessage(Message msg) {
 		switch (msg.what) {
-		case PhotoGalleryController.RETAG_PHOTO:
+		case PhotoGalleryController.UPDATED_ENTRIES:
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					if (mPhotos.size() == 0) {
-						Intent i = new Intent(PhotoGalleryActivity.this, TagGalleryActivity.class);
-						startActivity(i);
-					}
-					
-					mGridAdapter2.notifyDataSetChanged();
+					mGridAdapter.notifyDataSetChanged();
 				}
 			});
 			return true;
 		case PhotoGalleryController.EMPTY_TAG:
 			runOnUiThread(new Runnable() {
-
 				@Override
 				public void run() {
 					finish();
-					
-				}
-				
-			});
-		case PhotoGalleryController.DELETE_ENTRY:
-			runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					while (mCheckBoxes.size() > 0) {
-	            		   mCheckBoxes.get(0).setChecked(false);
-	            		   mCheckBoxes.remove(0);
-					}
-					mGridAdapter2.notifyDataSetChanged();
 				}
 			});
+			return true;
 		}
 		return false;
 	}
