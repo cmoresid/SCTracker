@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import android.os.Environment;
 
+import android.os.Environment;
+
 import ca.ualberta.models.PhotoEntry;
 import ca.ualberta.utils.ApplicationUtil;
 
@@ -62,6 +64,7 @@ public class ArchiveController extends BaseSelectionController {
 		inboxHandler.post(new Runnable() {
 			@Override
 			public void run() {
+
 				if(ApplicationUtil.checkSdCard()){
 					
 					File sdCard = Environment.getExternalStorageDirectory();
@@ -78,6 +81,8 @@ public class ArchiveController extends BaseSelectionController {
 					// TODO: Finish writing implementation.
 					notifyOutboxHandlers(ARCHIVE_RESULTS, null);
 				}	
+
+				notifyOutboxHandlers(ARCHIVE_RESULTS, null);	
 			}
 		});
 		return 0;

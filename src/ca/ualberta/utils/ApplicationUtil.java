@@ -41,9 +41,8 @@ public class ApplicationUtil {
 			value = false;
 		}
 
-		File storage = new File(Environment.getExternalStorageDirectory(),
-				SD_FILE_PATH);
-		
+		File storage = new File(Environment.getExternalStorageDirectory(),SD_FILE_PATH);
+
 		if (!storage.exists()) {
 			if (!storage.mkdirs()) {
 				value = false;
