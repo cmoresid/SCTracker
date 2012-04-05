@@ -1,8 +1,12 @@
 package ca.ualberta.controllers;
 
+import java.io.File;
 import java.util.ArrayList;
 
+import android.os.Environment;
+
 import ca.ualberta.models.PhotoEntry;
+import ca.ualberta.utils.ApplicationUtil;
 
 /**
  * Implementation of the {@link SCController} class. Acts as the
@@ -43,20 +47,40 @@ public class ArchiveController extends BaseSelectionController {
 			ArrayList<Boolean> selected, String tag) {
 		super(photos, selected, tag);
 	}
-
+	
+	public boolean sdCardMounted(){
+		return(Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED);	
+	}
+	
+	
 	/**
 	 * Archives the photos.
 	 * 
 	 * @param entries
 	 */
-	public void archivePhotos(ArrayList<PhotoEntry> entries) {
+	public int archivePhotos(final ArrayList<PhotoEntry> entries) {
 		inboxHandler.post(new Runnable() {
 			@Override
 			public void run() {
-				// TODO: Finish writing implementation.
-				notifyOutboxHandlers(ARCHIVE_RESULTS, null);
+				if(ApplicationUtil.checkSdCard()){
+					
+					File sdCard = Environment.getExternalStorageDirectory();
+					File dir = new File(sdCard.getAbsolutePath()+ "/SC_Tracker_Archive");
+					dir.mkdir();
+					File file;
+						for(int i = 0; i < entries.size(); i++){
+							file = new File(dir,entries.get(i).getFilePath());
+							
+					
+						}
+				
+				
+					// TODO: Finish writing implementation.
+					notifyOutboxHandlers(ARCHIVE_RESULTS, null);
+				}	
 			}
 		});
+		return 0;
 	}
 	
 	@Override

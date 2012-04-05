@@ -25,6 +25,9 @@ public class ApplicationUtil {
 	
 	private static int image_count = 0;
 	
+	public static String SD_FILE_PATH = "SC_Tracker_Archive";
+	
+	
 	// Way to check if sd card is mounted
 	//should this be a boolean function or throw an exception? ~David
 	//I think either one would work. Less overhead if it is just
@@ -39,8 +42,8 @@ public class ApplicationUtil {
 		}
 
 		File storage = new File(Environment.getExternalStorageDirectory(),
-				"SqlPhotoStorage");
-
+				SD_FILE_PATH);
+		
 		if (!storage.exists()) {
 			if (!storage.mkdirs()) {
 				value = false;
