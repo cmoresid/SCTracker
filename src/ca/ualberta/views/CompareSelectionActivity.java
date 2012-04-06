@@ -56,6 +56,7 @@ public class CompareSelectionActivity extends BaseSelectionActivity
 					i.putExtra("photoText1", timestamp2);
 					
 					startActivityForResult(i, RESULT_OK);
+					finish();
 				}
 			}
 		});
