@@ -9,6 +9,15 @@ import android.os.Bundle;
 public class Splash extends Activity {
 
 	MediaPlayer our_song;
+	
+	
+	/*
+	 * BUG 
+	 * Doesn't load the photos while the splash screen is up. The "No Photos"
+	 * line still appeared. One way to do it is to have the app start in TagGalleryActivity,
+	 * but start this activity right away while it loads the array list of 
+	 * tagGroups on a seperate thread. 
+	 */
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +31,7 @@ public class Splash extends Activity {
 			public void run() {
 				try {
 					
-					sleep(3000);
+					sleep(2000);
 					
 					Intent openStartingPoint = new Intent(Splash.this,TagGalleryActivity.class);
 					startActivity(openStartingPoint);// from Activity class

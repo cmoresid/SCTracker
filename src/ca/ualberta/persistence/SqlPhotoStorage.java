@@ -252,6 +252,30 @@ public class SqlPhotoStorage {
 		
 		return allTags.toArray(new String[c.getCount()]);
 	}
+	
+	/**
+	 * Retrieves a list of all the tags containing the given query
+	 * 
+	 * 
+	 */
+	public String[] getMatchingTags(String query) {
+		SQLiteDatabase db = mDbHelper.getReadableDatabase();
+		
+		Cursor c = db.query(true, DatabaseHelper.TABLE_NAME, new String[] {KEY_TAG}, null, null, null, null, null, null);
+		
+		ArrayList<String> tags = new ArrayList<String>();
+		
+		while (c.moveToNext()) {
+			if(c.getString(c.getColumnIndexOrThrow(KEY_TAG)).contains(query)){
+				tags.add(c.getString(c.getColumnIndexOrThrow(KEY_TAG)));
+			}
+		}
+		
+		c.close();
+		db.close();
+		
+		return tags.toArray(new String[c.getCount()]);
+	}
 
 	/**
 	 * Deletes the specified tag and all the photo entries associated with the

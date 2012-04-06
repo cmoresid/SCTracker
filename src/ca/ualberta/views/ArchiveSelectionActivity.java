@@ -1,5 +1,7 @@
 package ca.ualberta.views;
 
+import java.util.ArrayList;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -8,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.Toast;
 import ca.ualberta.controllers.ArchiveController;
+import ca.ualberta.models.PhotoEntry;
 
 /**
  * Activity that is responsible for archiving selected
@@ -33,15 +36,33 @@ public class ArchiveSelectionActivity extends BaseSelectionActivity implements
 			@Override
 			public void onClick(View arg0) {
 				// FIXME
-				mController.handleMessage(ArchiveController.ARCHIVE_PHOTOS, null);
+				mController.handleMessage(ArchiveController.ARCHIVE_PHOTOS, getSelectedPhotos());
 				finish();
 			}
 		});
 		
+		
+		
 		// Set up the controller.
-		mController = new ArchiveController(mPhotos, mSelectedEntries, mTag);
+		mController = new ArchiveController(mPhotos, mSelectedEntries, mTag,this);
 		mController.addHandler(new Handler(this));
 		mController.handleMessage(ArchiveController.GET_PHOTO_ENTRIES, null);
+	}
+	
+	
+	public ArrayList<PhotoEntry> getSelectedPhotos() {
+		ArrayList<PhotoEntry> entries = new ArrayList<PhotoEntry>(2);
+		
+		int j=0;
+		for(int i = 0; i< mSelectedEntries.size(); i++){
+			if(mSelectedEntries.get(i)){
+				entries.add(mPhotos.get(i));
+				j++;
+			}
+		}
+		
+		return entries;
+		
 	}
 
 	@Override
