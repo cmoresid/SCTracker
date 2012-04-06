@@ -120,8 +120,7 @@ public class SearchActivity extends ListActivity {
     		
     		// Populates the mPhotos with the PhotoEntry objects
     		// from the database.
-    		this.retrieveData();
-            
+    		// this.retrieveData();
         }
 		
 	}
