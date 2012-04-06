@@ -30,7 +30,7 @@
             android:id="@+id/okButton"
             android:layout_width="130dp"
             android:layout_height="50dp"
-            android:textColor="#00ff00"
+            android:textColor="#006400"
             android:layout_gravity ="center"
             android:text="@string/ok_button"
             android:typeface="serif" />

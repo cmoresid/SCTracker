@@ -37,29 +37,34 @@ public class ArchiveSelectionActivity extends BaseSelectionActivity implements
 			public void onClick(View arg0) {
 				// FIXME
 				mController.handleMessage(ArchiveController.ARCHIVE_PHOTOS, getSelectedPhotos());
+				finish();
 			}
 		});
+		
+		
 		
 		// Set up the controller.
 		mController = new ArchiveController(mPhotos, mSelectedEntries, mTag,this);
 		mController.addHandler(new Handler(this));
 		mController.handleMessage(ArchiveController.GET_PHOTO_ENTRIES, null);
 	}
-
+	
+	
 	public ArrayList<PhotoEntry> getSelectedPhotos() {
 		ArrayList<PhotoEntry> entries = new ArrayList<PhotoEntry>(2);
 		
-		int j = 0;
-		for (int i = 0; i < mSelectedEntries.size(); i++) {
-			if (mSelectedEntries.get(i)) {
+		int j=0;
+		for(int i = 0; i< mSelectedEntries.size(); i++){
+			if(mSelectedEntries.get(i)){
 				entries.add(mPhotos.get(i));
 				j++;
 			}
 		}
 		
 		return entries;
+		
 	}
-	
+
 	@Override
 	public void onClick(View v) {
 		CheckBox cb = (CheckBox) v;
@@ -96,7 +101,7 @@ public class ArchiveSelectionActivity extends BaseSelectionActivity implements
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					Toast.makeText(ArchiveSelectionActivity.this, "Archive Callback", Toast.LENGTH_SHORT).show();
+				//	Toast.makeText(ArchiveSelectionActivity.this, "Archive Callback", Toast.LENGTH_SHORT).show();
 				}
 			});
 			return true;
