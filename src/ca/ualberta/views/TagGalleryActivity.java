@@ -146,6 +146,7 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 	private void setEmptyMessage(int count) {
 		if (count == 0) {
 			mEmptyView.setVisibility(TextView.VISIBLE);
+			mEmptyView.setText("No Photos Yet :'(");
 		} else {
 			mEmptyView.setVisibility(TextView.GONE);
 		}
