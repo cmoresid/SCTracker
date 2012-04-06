@@ -197,6 +197,10 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 			intent.putExtra(PasswordActivity.KEY_PASSWORD_FUNCTION, PasswordActivity.UNLOCK_APPLICTION);
 			this.startActivity(intent);
 			break;
+		case R.id.menu_help:
+			intent = new Intent(this,HelpActivity.class);
+			this.startActivity(intent);
+			break;
 		}
 
 		return super.onOptionsItemSelected(item);
@@ -218,7 +222,7 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 			editor.putBoolean("firstTime", false);
 			editor.commit();
 
-			createFirstTimeDialog();
+			//createFirstTimeDialog();
 		}
 	}
 
@@ -238,38 +242,7 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 		}
 	}
 
-	private void createFirstTimeDialog() {
-		AlertDialog firstTimeUseDialog = new AlertDialog.Builder(this).create();
 
-		String message = getResources().getString(R.string.first_time_message);
-
-		firstTimeUseDialog.setTitle(R.string.first_time_dialog_title);
-		firstTimeUseDialog.setMessage(message);
-
-		firstTimeUseDialog.setButton("Add Password",
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						Intent passwordIntent = new Intent(
-								TagGalleryActivity.this,
-								MainPreferenceActivity.class);
-
-						startActivity(passwordIntent);
-					}
-				});
-
-		// This is really ugly...
-		firstTimeUseDialog.setButton2("No thanks",
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
-
-					}
-				});
-
-		firstTimeUseDialog.show();
-	}
 
 	/**
 	 * Sends a message to the controller to populate the {@code mPhotos} list
