@@ -3,7 +3,22 @@ package ca.ualberta.models;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
+
+
+
+
+/**
+ * Creates random bitmaps.
+ */
+
 public class BogoPicGen {
+	
+	/**
+	 * Creates random bitmaps
+	 * @param width The desired width of the returned bitmap
+	 * @param height The desired height of the returned bitmap
+	 * @return A random bitmap of the specified height and width
+	 */
 	public static Bitmap generateBitmap(int width, int height) {
 		// Algorithms based on:
 		// 	http://countercomplex.blogspot.com/2011/10/some-deep-analysis-of-one-line-music.html
