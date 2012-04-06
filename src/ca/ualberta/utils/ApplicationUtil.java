@@ -1,5 +1,6 @@
 package ca.ualberta.utils;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -25,7 +26,7 @@ public class ApplicationUtil {
 	
 	private static int image_count = 0;
 	
-	public static String SD_FILE_PATH = "SC_Tracker_Archive";
+	public static String SD_FILE_PATH = "/SC_Tracker_Archive";
 	
 	
 	// Way to check if sd card is mounted
@@ -50,6 +51,17 @@ public class ApplicationUtil {
 		}
 		
 		return value;
+	}
+	
+	/**
+	 * Supposed to check if a photo is in the archive. Make sure it works before you use it.
+	 * @param photo
+	 * @return if the photo's picture file is in the SD card
+	 */
+	
+	public static boolean isArchived(PhotoEntry photo){
+		File newPhoto = new File(SD_FILE_PATH + "/" + photo.getFilePath());
+		return newPhoto.exists();
 	}
 	
 	/**
