@@ -2,15 +2,13 @@ package ca.ualberta.models;
 
 import java.util.ArrayList;
 
+import ca.ualberta.adapters.TagGalleryListAdapter;
 import ca.ualberta.persistence.SqlPhotoStorage;
 
 
 
 /**
- * Descries a tag.
- * 
- * 
- *
+ * Descries a tag. Used by the {@code TagGalleryListAdapter}
  */
 public class TagGroup
 {
@@ -37,6 +35,7 @@ public class TagGroup
 	}
 	
 	/**
+	 * Returns the {@code PhotoEntry} that was first tagged with the tag
 	 * @return The {@code PhotoEntry} that was first tagged with the tag
 	 */
 	public PhotoEntry getFirstImage()
@@ -45,6 +44,7 @@ public class TagGroup
 	}
 
 	/**
+	 * Returns the {@code PhotoEntry} that was last tagged with the tag
 	 * @return the {@code PhotoEntry} that was last tagged with the tag
 	 */
 	public PhotoEntry getLastImage()
@@ -53,6 +53,7 @@ public class TagGroup
 	}
 
 	/**
+	 * Returns the tag that the {@code TagGroup} was built around
 	 * @return The tag that the {@code TagGroup} was built around
 	 */
 	public String getTag()
