@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
@@ -18,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import ca.ualberta.R;
 import ca.ualberta.models.PhotoEntry;
 
@@ -41,14 +39,6 @@ public class PhotoGalleryGridAdapter extends BaseAdapter {
 	private ArrayList<PhotoEntry> mPhotos;
 	/** Reference to the parent context if we need it. */
 	private Context mContext;
-	
-	private ArrayList<CheckBox> mCheckBoxes;
-	
-	private boolean box1Checked = false;
-	private boolean box2Checked = false;
-	
-	private CheckBox box1;
-	private CheckBox box2;
 	
 	private LayoutInflater mInflater;
 
@@ -83,7 +73,6 @@ public class PhotoGalleryGridAdapter extends BaseAdapter {
 	public PhotoGalleryGridAdapter(Context c, ArrayList<PhotoEntry> photos, ArrayList<CheckBox> checkBoxes){
 		mContext = c;
 		mPhotos = photos;
-		mCheckBoxes = checkBoxes;
 		mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
