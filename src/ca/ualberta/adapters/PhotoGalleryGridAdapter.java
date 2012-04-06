@@ -73,6 +73,13 @@ public class PhotoGalleryGridAdapter extends BaseAdapter {
 //		mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //	}
 	
+	/**
+	 * Photo {@code GalleryGridAdapter} constructor.
+	 * @param c Context from the calling class
+	 * @param photos The array list of photos that the {@code GalleryGridAdapter}
+	 * will be updating
+	 * @param checkBoxes The array list of checkboxes. This needs to be refactored out.
+	 */
 	public PhotoGalleryGridAdapter(Context c, ArrayList<PhotoEntry> photos, ArrayList<CheckBox> checkBoxes){
 		mContext = c;
 		mPhotos = photos;
@@ -80,6 +87,13 @@ public class PhotoGalleryGridAdapter extends BaseAdapter {
 		mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
+	
+	/**
+	 * Populates each cell of the {@code GridView}.
+	 * @param position Position of the grid cell in the {@code GridView}
+	 * @param convertView The view that does stuff.
+	 * @param parent Doesn't do anyting. Refactor this out.
+	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
@@ -121,7 +135,9 @@ public class PhotoGalleryGridAdapter extends BaseAdapter {
 		return convertView;
 	}
 	
-	
+	/**
+	 * holds the contents of each cell in the {@code GridView}
+	 */
     class ViewHolder {
         ImageView imageView;
         TextView textView;
@@ -137,31 +153,59 @@ public class PhotoGalleryGridAdapter extends BaseAdapter {
 	 * details
 	 */
 
+    /**
+     * Returns the position of the item
+     * @param position The position of the item
+     * @return The position of the Item
+     */
 	@Override
-	public long getItemId(int position) {
-		return position;
+	public long getItemId(int position) { //wtf
+		return (long)position;
 	}
 	
+	/**
+	 * Gets the number of photos in the arrayList
+	 * @return The number of photo's in the arraylist
+	 */
 	@Override
 	public int getCount() {
 		return (mPhotos != null) ? mPhotos.size() : 0;
 	}
 
+	/**
+	 * Returns the {@code PhotoEntry} at positon idx in the arraylist
+	 * @param idx The desires Position of the {@code PhotoEntry} to retrieve
+	 * @return The {@code PhotoEntry} at index idx
+	 */
 	@Override
 	public Object getItem(int idx) {
 		return (mPhotos != null) ? mPhotos.get(idx) : null;
 	}
 
+	
+	/**
+	 * Indicates that the ID's are indeed stable
+	 * @return Always True
+	 */
 	@Override
 	public boolean hasStableIds() {
 		return true;
 	}
 
+	
+	/**
+	 * Indicates that the item view type should be ignored
+	 * @return android.widget.Adapter.IGNORE_ITEM_VIEW_TYPE constant
+	 */
 	@Override
 	public int getItemViewType(int pos) {
 		return IGNORE_ITEM_VIEW_TYPE;
 	}
 
+	/**
+	 * indicates that there is one item view type
+	 * @return Always returns 1
+	 */
 	@Override
 	public int getViewTypeCount() {
 		return 1;
