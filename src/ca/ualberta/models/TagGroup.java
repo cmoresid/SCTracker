@@ -4,6 +4,14 @@ import java.util.ArrayList;
 
 import ca.ualberta.persistence.SqlPhotoStorage;
 
+
+
+/**
+ * Descries a tag.
+ * 
+ * 
+ *
+ */
 public class TagGroup
 {
 	private PhotoEntry firstImage;
@@ -12,7 +20,12 @@ public class TagGroup
 	
 	
 	
-	//Constructor
+	/**
+	 * Constructs a TagGroup using the given tag. Finds and assignes the 
+	 * first {@code PhotoEntry} taken witht that tag to firstImage, and the most recent
+	 * {@code PhotoEntry} taken with that tag to lastImage.
+	 * @param tag The tag that defines the TagGroup
+	 */
 	public TagGroup(String tag){
 		SqlPhotoStorage DB = new SqlPhotoStorage();
 		
@@ -23,18 +36,25 @@ public class TagGroup
 		this.tag = tag;
 	}
 	
-	//getter methods that provide access to the contents of the TagGroup
-	//the contents shouldn't change so there aren't any setters.
+	/**
+	 * @return The {@code PhotoEntry} that was first tagged with the tag
+	 */
 	public PhotoEntry getFirstImage()
 	{
 		return firstImage;
 	}
 
+	/**
+	 * @return the {@code PhotoEntry} that was last tagged with the tag
+	 */
 	public PhotoEntry getLastImage()
 	{
 		return lastImage;
 	}
 
+	/**
+	 * @return The tag that the {@code TagGroup} was built around
+	 */
 	public String getTag()
 	{
 		return tag;

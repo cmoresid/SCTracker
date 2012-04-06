@@ -33,9 +33,14 @@ public class SearchActivity extends ListActivity {
 	private TextView mTextView;
     private ListView mListView;
     
-    SqlPhotoStorage sql = new SqlPhotoStorage();
-
-
+    /**
+     * The object that gives access to the database.
+     */
+    private SqlPhotoStorage sql = new SqlPhotoStorage();
+    
+	/**
+	 * The controller acts as a layer between the Photo Gallery and persistence layer.
+	 */
 	private TagGalleryController mController;
 	
 	@Override
