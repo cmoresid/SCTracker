@@ -63,7 +63,11 @@ public class ArchiveController extends BaseSelectionController {
 		super(photos, selected, tag);
 		mContext = context;
 	}
-	
+	/**check if the SD card is mounted or not
+	 * @return Boolean
+	 * 		True if the SD card is mounted 
+	 * 		False if SD card is not mounted
+	 * */
 	public boolean sdCardMounted(){
 		return(Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED);	
 	}
@@ -81,7 +85,7 @@ public class ArchiveController extends BaseSelectionController {
 	/**
 	 * Archives the photos.
 	 * 
-	 * @param entries
+	 * @param entries for archiving 
 	 */
 	public int archivePhotos(final ArrayList<PhotoEntry> entries, final Context mContext) {
 		inboxHandler.post(new Runnable() {
@@ -134,6 +138,13 @@ public class ArchiveController extends BaseSelectionController {
 		return 0;
 	}
 	
+	/**
+	 * Handle the Message which is shared with controller
+	 * @param message
+	 * @return boolean
+	 * 		true if the message handled correctly 
+	 * 		false if the message handled not correctly
+	 */
 	@Override
 	public boolean handleMessage(int what, Object data) {
 		// If the parent can't handle it, let the ArchiveController

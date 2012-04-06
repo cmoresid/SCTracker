@@ -32,6 +32,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 
+	/**
+	 * create sql data base 
+	 * 
+	 * */
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		String createStatement = "CREATE TABLE " + TABLE_NAME + "("
@@ -43,6 +47,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL(createStatement);
 	}
 
+	/**update the sql database 
+	 * 
+	 * */
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int arg1, int arg2) {
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);

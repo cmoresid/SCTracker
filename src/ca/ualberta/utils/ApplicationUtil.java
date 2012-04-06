@@ -108,6 +108,7 @@ public class ApplicationUtil {
 		return f; 
 	}
 	
+	/**this method are used to create sample object for testing the application*/
 	public static void createSampleObjects(String tag) throws Exception {
 		
 		File p1 = copyPhotoToSDCard(R.drawable.sample_0);

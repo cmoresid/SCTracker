@@ -21,7 +21,7 @@ import ca.ualberta.controllers.TagGalleryController;
 import ca.ualberta.models.PhotoEntry;
 import ca.ualberta.models.TagGroup;
 import ca.ualberta.persistence.SqlPhotoStorage;
-
+/**Activity responsible for Search Photos */
 public class SearchActivity extends ListActivity {
 	
 	private static final int MENU_SEARCH = 1;
@@ -123,6 +123,7 @@ public class SearchActivity extends ListActivity {
 		
 	}
 	/**
+	 * check if the menu has search option
 	 * @param menu
 	 * @return 
 	 * 		Boolean 
@@ -140,6 +141,7 @@ public class SearchActivity extends ListActivity {
     }
 
 	/**
+	 * if search is selected from the menu
 	 * @param item in the menu
 	 * @return 
 	 * 		Boolean

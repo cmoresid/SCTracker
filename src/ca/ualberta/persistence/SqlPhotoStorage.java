@@ -133,23 +133,7 @@ public class SqlPhotoStorage {
 		return (deletedEntry > 0);
 	}
 
-	public long getNextAvailableID() {
-		SQLiteDatabase db = mDbHelper.getReadableDatabase();
-		
-		// Ensure query is ordered, because the default may be unordered.
-		Cursor c = db.query(DatabaseHelper.TABLE_NAME, new String[] {KEY_ID}, null, null, null, null, KEY_ID + " DESC");
-		Long latestID = null;
-		
-		if (c.moveToFirst()) {
-			latestID = c.getLong(c.getColumnIndexOrThrow(KEY_ID));
-		}
-		
-		c.close();
-		db.close();
-		
-		return (latestID == null) ? 0 : (latestID + 1);
-	}
-	
+
 	/**
 	 * Deletes all photo entries from the database. This method is mainly used
 	 * in the {@code tearDown} method in a unit test.
@@ -332,18 +316,24 @@ public class SqlPhotoStorage {
 		}
 	}
 	
-	public boolean retagPhoto(long id, String newTag){
-		SQLiteDatabase db = mDbHelper.getReadableDatabase();
-		ContentValues cv = new ContentValues();
-		cv.put(KEY_TAG, newTag);
-		
-		int numUpdated = db.update(DatabaseHelper.TABLE_NAME, cv, 
-				KEY_ID+"="+id, null);
-		
-		return(numUpdated > 0);
-	}
-	
-	
+//	/**
+//	 * retag the Photo 
+//	 * */
+//	public boolean retagPhoto(long id, String newTag){
+//		SQLiteDatabase db = mDbHelper.getReadableDatabase();
+//		ContentValues cv = new ContentValues();
+//		cv.put(KEY_TAG, newTag);
+//		
+//		int numUpdated = db.update(DatabaseHelper.TABLE_NAME, cv, 
+//				KEY_ID+"="+id, null);
+//		
+//		return(numUpdated > 0);
+//	}
+//	
+	/**
+	 * count the photo entry in the database
+	 * 
+	 * */
 	public int getPhotoEntryCount() {
 		SQLiteDatabase db = mDbHelper.getReadableDatabase();
 		Cursor c = db.query(DatabaseHelper.TABLE_NAME, new String[] {KEY_ID}, 

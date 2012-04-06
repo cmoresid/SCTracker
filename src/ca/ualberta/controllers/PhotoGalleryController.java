@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.widget.CheckBox;
-import android.widget.Toast;
 import ca.ualberta.models.PhotoEntry;
 import ca.ualberta.persistence.SqlPhotoStorage;
 
@@ -40,7 +39,8 @@ public class PhotoGalleryController extends SCController {
 	 */
 	public static final int COMPARE_PHOTO = 4;
 	/**
-	 * 
+	 * Message code which tells the controller that there are no photos here
+	 * {@code PhotoEntry} object
 	 */
 	public static final int EMPTY_TAG = 7;
 	/** Reference to a persistence object. */
@@ -154,26 +154,26 @@ public class PhotoGalleryController extends SCController {
 
 	}
 
-	/**
-	 * Retags a {@code PhotoEntry} object from the application's database with
-	 * the given ID. This is done on a separate thread to avoid blocking the UI
-	 * thread. Calls the tagging 
-	 * 
-	 * @param id
-	 * 		The ID of the {@code PhotoEntry} object to retag.
-	 */
-	private void retagPhoto(final long id) {
-		inboxHandler.post(new Runnable() {
-			@Override
-			public void run() {
-				String newTag;				
-				newTag = "Foot";
-				
-				mStorage.retagPhoto(id,newTag);
-			}
-		});
-	}
-	
+//	/**
+//	 * Retags a {@code PhotoEntry} object from the application's database with
+//	 * the given ID. This is done on a separate thread to avoid blocking the UI
+//	 * thread. Calls the tagging 
+//	 * 
+//	 * @param id
+//	 * 		The ID of the {@code PhotoEntry} object to retag.
+//	 */
+//	private void retagPhoto(final long id) {
+//		inboxHandler.post(new Runnable() {
+//			@Override
+//			public void run() {
+//				String newTag;				
+//				newTag = "Foot";
+//				
+//				mStorage.retagPhoto(id,newTag);
+//			}
+//		});
+//	}
+//	
 	/**
 	 * Responds to messages, and calls appropriate method to deal with the
 	 * message.
