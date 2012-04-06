@@ -35,7 +35,6 @@ public class ArchiveSelectionActivity extends BaseSelectionActivity implements
 		mCommandButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				// FIXME
 				mController.handleMessage(ArchiveController.ARCHIVE_PHOTOS, getSelectedPhotos());
 				finish();
 			}

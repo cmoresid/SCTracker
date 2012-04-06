@@ -12,14 +12,11 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 import ca.ualberta.R;
 import ca.ualberta.adapters.PhotoGalleryGridAdapter;
 import ca.ualberta.controllers.PhotoGalleryController;
@@ -111,17 +108,6 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View v, int position,
 					long id) {
-				
-//				Intent i = new Intent(PhotoGalleryActivity.this,
-//						ViewPhotoActivity.class);
-//
-//				PhotoEntry e = mPhotos.get(position);
-//
-//				i.putExtra(SqlPhotoStorage.KEY_ID, e.getId());
-//				i.putExtra(SqlPhotoStorage.KEY_TAG, e.getTag());
-//				i.putExtra(SqlPhotoStorage.KEY_TIMESTAMP, e.getTimeStamp());
-//				i.putExtra(SqlPhotoStorage.KEY_FILENAME, e.getFilePath());
-//				startActivity(i);
 				
 				registerForContextMenu(mGridView);
 				retrieveData();
