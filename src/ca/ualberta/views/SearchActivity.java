@@ -25,20 +25,9 @@ import ca.ualberta.persistence.SqlPhotoStorage;
 public class SearchActivity extends ListActivity {
 	
 	private static final int MENU_SEARCH = 1;
-	
-	/**
-	 * Responsible for populating the ListView with the search results.
-	 */
 	private ArrayAdapter<PhotoEntry> searchResults;
-	
-	/**
-	 * The list of tags that results from the search.
-	 */
 	private ArrayList<TagGroup> tagList;
 	
-	/**
-	 * The search keyword that we query the database with. 
-	 */
 	private String searchKeywords;
 	
 	private TextView mTextView;
@@ -72,11 +61,13 @@ public class SearchActivity extends ListActivity {
 		//String queryAction = queryIntent.getAction();
 		
 		if (Intent.ACTION_VIEW.equals(queryIntent.getAction())) {
-            // actions performed after a search result is clicked.
+            // actions performed after a search result is clicked?
+			
+			
 			
             finish();
         } else if (Intent.ACTION_SEARCH.equals(queryIntent.getAction())) {
-        	// actions performed after search button is clicked.
+        	// actions performed after search button is clicked?
         	
         	
         	//searchKeywords gets string from search box
@@ -131,7 +122,14 @@ public class SearchActivity extends ListActivity {
         }
 		
 	}
-	
+	/**
+	 * @param menu
+	 * @return 
+	 * 		Boolean 
+	 * 		true if menu search is added
+	 * 		false if menu search is not added
+	 * 
+	 * */
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add(0, MENU_SEARCH, 0, R.string.menu_search)
@@ -141,6 +139,13 @@ public class SearchActivity extends ListActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+	/**
+	 * @param item in the menu
+	 * @return 
+	 * 		Boolean
+	 * 		true if the search is selected 
+	 * 		false if the search is not selected
+	 * */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -150,5 +155,10 @@ public class SearchActivity extends ListActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+	private void retrieveData() {
+		// TODO Auto-generated method stub
+		mController.handleMessage(TagGalleryController.GET_TAGS, null);
+	}
 	
 }

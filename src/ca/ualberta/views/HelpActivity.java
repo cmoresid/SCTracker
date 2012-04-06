@@ -5,6 +5,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+/**
+ * Activity that responsible for showing the Help information
+ *  to User
+ * */
 public class HelpActivity extends Activity{
 	
 	private TextView help_text;

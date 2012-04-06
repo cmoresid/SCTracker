@@ -85,6 +85,13 @@ public class TaggingScreenActivity extends Activity implements Handler.Callback 
 		mController.handleMessage(TaggingScreenController.GET_ALL_TAGS, null);
 	}
 
+	/**
+	 * Handle the Message which is shared with controller
+	 * @param message
+	 * @return boolean
+	 * 		true if the message handled correctly 
+	 * 		false if the message handled not correctly
+	 */
 	@Override
 	public boolean handleMessage(Message msg) {
 		switch (msg.what) {
@@ -107,6 +114,7 @@ public class TaggingScreenActivity extends Activity implements Handler.Callback 
 		return false;
 	}
 	
+	/**Finish the activity*/
 	public void finish() {
 		// Prepare data intent 
 		Intent data = new Intent();

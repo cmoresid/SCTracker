@@ -3,5 +3,6 @@ ca.ualberta.adapters
 ca.ualberta.controllers
 ca.ualberta.models
 ca.ualberta.persistence
+ca.ualberta.prefs
 ca.ualberta.utils
 ca.ualberta.views

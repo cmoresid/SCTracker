@@ -64,11 +64,12 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 	private PhotoEntry mContextPhotoEntry;
 	private int mContextPhotoEntryPosition;
 	
-	/** The tag. */
+	/** The tag for showing in the tag gallery. */
 	private String mTag;
 	
+	/**Constant for View photo*/
 	public static final int MENU_VIEW_ENTRY = 0;
-
+	/**Constant for Archive Photos*/
 	public static final int MENU_ARCHIVE_ENTRY = 2;
 	
 	/** refers to the context menu item for delete photo. */
@@ -126,10 +127,7 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 		this.retrieveData();
 	}
 	
-	/**
-	 * Sends a message to the controller to populate the {@code mPhotos} list
-	 * with {@code PhotoEntry} objects.
-	 */
+
 	private void retrieveData() {
 		mController.handleMessage(PhotoGalleryController.GET_PHOTO_ENTRIES,
 				null);
@@ -141,6 +139,10 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 		mController.dispose();
 	}
 
+	/**
+	 * this method is used to Create the visual Context Menu 
+	 * and set correlate Menu Item with Its functions
+	 * */
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
@@ -169,6 +171,10 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 		}
 	}
 
+	/**
+	 * this method is used to go to corresponding activities 
+	 * with selected Menu item
+	 * */
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		// There will be more 'cases' when we add the
@@ -204,6 +210,7 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 		}
 	}
 
+	/** when back button is pressed , the function is call*/
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();

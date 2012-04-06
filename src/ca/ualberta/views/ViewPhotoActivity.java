@@ -19,7 +19,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import ca.ualberta.R;
 import ca.ualberta.persistence.SqlPhotoStorage;
-
+/**This Activity is responsible for View Photos 
+ * 
+ * */
 public class ViewPhotoActivity extends Activity {
 
 	private ImageView mPhotoView;
@@ -61,7 +63,7 @@ public class ViewPhotoActivity extends Activity {
 		mPhotoView.setImageBitmap(createReflectedImage(image));
 	}
 	
-	//create the reflaction of the photo
+	/**create the reflaction of the photo*/
 	public static Bitmap createReflectedImage(Bitmap originalImage) {
 
 		final int reflectionGap = 4;
