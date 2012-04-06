@@ -30,6 +30,6 @@ public class PasswordActivityControllerTest extends AndroidTestCase {
 		mTestController.handleMessage(PasswordActivityController.UPDATE_PASSWORD, thePassword);
 		
 		mTestStorage.setPasswordInputStream(getContext().openFileInput(PasswordStorage.PASSWORD_FILE));
-		assertTrue(mTestStorage.verifyPassword("1234"));
+		assertFalse(mTestStorage.verifyPassword("1234"));
 	}
 }
