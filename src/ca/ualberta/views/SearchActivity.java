@@ -21,11 +21,11 @@ import ca.ualberta.controllers.TagGalleryController;
 import ca.ualberta.models.PhotoEntry;
 import ca.ualberta.models.TagGroup;
 import ca.ualberta.persistence.SqlPhotoStorage;
-
+/**Activity responsible for Search Photos */
 public class SearchActivity extends ListActivity {
 	
 	private static final int MENU_SEARCH = 1;
-	private ArrayAdapter<PhotoEntry> searchResults;
+	private ArrayAdapter<PhotoEntry> searchQuery;
 	private ArrayList<TagGroup> tagList;
 	
 	private String searchKeywords;
@@ -53,7 +53,7 @@ public class SearchActivity extends ListActivity {
 		
 		mListView = this.getListView();
 		
-		setListAdapter(searchResults);
+		setListAdapter(searchQuery);
 		
 		Log.i("stuff", "I'm in search actiivty");
 		
@@ -123,6 +123,7 @@ public class SearchActivity extends ListActivity {
 		
 	}
 	/**
+	 * check if the menu has search option
 	 * @param menu
 	 * @return 
 	 * 		Boolean 
@@ -140,6 +141,7 @@ public class SearchActivity extends ListActivity {
     }
 
 	/**
+	 * if search is selected from the menu
 	 * @param item in the menu
 	 * @return 
 	 * 		Boolean
@@ -155,10 +157,5 @@ public class SearchActivity extends ListActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-	private void retrieveData() {
-		// TODO Auto-generated method stub
-		mController.handleMessage(TagGalleryController.GET_TAGS, null);
-	}
 	
 }
