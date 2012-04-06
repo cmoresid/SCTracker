@@ -25,23 +25,32 @@ import ca.ualberta.persistence.SqlPhotoStorage;
 public class SearchActivity extends ListActivity {
 	
 	private static final int MENU_SEARCH = 1;
+	
+	/**
+	 * Responsible for populating the ListView with the search results.
+	 */
 	private ArrayAdapter<PhotoEntry> searchResults;
+	
+	/**
+	 * The list of tags that results from the search.
+	 */
 	private ArrayList<TagGroup> tagList;
 	
+	/**
+	 * The search keyword that we query the database with. 
+	 */
 	private String searchKeywords;
 	
 	private TextView mTextView;
     private ListView mListView;
     
-    SqlPhotoStorage sql = new SqlPhotoStorage();
-    
     /**
-	 * Responsible for populating the grid view with the {@code PhotoEntry}
-	 * objects.
-	 */
-
+     * The object that gives access to the database.
+     */
+    private SqlPhotoStorage sql = new SqlPhotoStorage();
+    
 	/**
-	 * The controller that does all the work basically.
+	 * The controller acts as a layer between the Photo Gallery and persistence layer.
 	 */
 	private TagGalleryController mController;
 	
@@ -63,13 +72,11 @@ public class SearchActivity extends ListActivity {
 		//String queryAction = queryIntent.getAction();
 		
 		if (Intent.ACTION_VIEW.equals(queryIntent.getAction())) {
-            // actions performed after a search result is clicked?
-			
-			
+            // actions performed after a search result is clicked.
 			
             finish();
         } else if (Intent.ACTION_SEARCH.equals(queryIntent.getAction())) {
-        	// actions performed after search button is clicked?
+        	// actions performed after search button is clicked.
         	
         	
         	//searchKeywords gets string from search box
@@ -143,10 +150,5 @@ public class SearchActivity extends ListActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-	private void retrieveData() {
-		// TODO Auto-generated method stub
-		mController.handleMessage(TagGalleryController.GET_TAGS, null);
-	}
 	
 }
