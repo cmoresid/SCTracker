@@ -274,7 +274,7 @@ public class SqlPhotoStorage {
 		c.close();
 		db.close();
 		
-		return tags.toArray(new String[c.getCount()]);
+		return tags.toArray(new String[tags.size()]);
 	}
 
 	/**
