@@ -76,10 +76,7 @@ public class PasswordActivity extends Activity implements Handler.Callback {
 		setPasswordBehavior();
 	}
 
-	/**
-	 * Retrieves the KEY_PASSWORD_FUNCTION key from the intent's
-	 * extra bundle, and sets the appropriate behavior.
-	 */
+
 	private void setPasswordBehavior() {
 		mActivityBehavior = getIntent().getExtras().getInt(
 				PasswordActivity.KEY_PASSWORD_FUNCTION);
@@ -107,10 +104,7 @@ public class PasswordActivity extends Activity implements Handler.Callback {
 		return;
 	}
 
-	/**
-	 * Sets up the activity in order for user to
-	 * unlock the application.
-	 */
+
 	private void unlockBehavior() {
 		this.setContentView(R.layout.password_activity_unlock);
 		mResultsTextView = (TextView) this.findViewById(R.id.statusLabelUnlock);
@@ -188,6 +182,13 @@ public class PasswordActivity extends Activity implements Handler.Callback {
 		});
 	}
 	
+	/**
+	 * Handle the Message which is shared with controller
+	 * @param message
+	 * @return boolean
+	 * 		true if the message handled correctly 
+	 * 		false if the message handled not correctly
+	 */
 	@Override
 	public boolean handleMessage(Message msg) {
 		boolean results = (Boolean) msg.obj;

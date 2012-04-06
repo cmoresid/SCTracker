@@ -26,11 +26,13 @@ import ca.ualberta.controllers.CameraController;
 import ca.ualberta.models.BogoPicGen;
 import ca.ualberta.models.PhotoEntry;
 import ca.ualberta.persistence.SqlPhotoStorage;
-
+/**
+ * Activity that is responsible for taking
+ * photos. 
+ */
 public class CameraActivity extends Activity implements Handler.Callback
 {
 
-	/** Called when the activity is first created. */
 
 	private Bitmap ourBMP;
 	private CameraController cameraController;
@@ -178,7 +180,13 @@ public class CameraActivity extends Activity implements Handler.Callback
 		button.setImageBitmap(ourBMP);
 
 	}
-
+	/**
+	 * Handle the Message which is shared with controller
+	 * @param message
+	 * @return boolean
+	 * 		true if the message handled correctly 
+	 * 		false if the message handled not correctly
+	 */
 	@Override
 	public boolean handleMessage(Message msg)
 	{

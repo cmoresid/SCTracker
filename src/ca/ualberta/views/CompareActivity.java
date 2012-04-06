@@ -15,6 +15,9 @@ import ca.ualberta.R;
 import ca.ualberta.models.PhotoEntry;
 import ca.ualberta.persistence.SqlPhotoStorage;
 
+/**
+ * Activity that responsibile for Compare two Photos
+ * */
 public class CompareActivity extends Activity {
 	
 	private TextView tag_of_compare;

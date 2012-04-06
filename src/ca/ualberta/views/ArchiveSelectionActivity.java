@@ -48,7 +48,14 @@ public class ArchiveSelectionActivity extends BaseSelectionActivity implements
 		mController.handleMessage(ArchiveController.GET_PHOTO_ENTRIES, null);
 	}
 	
-	
+	/**
+	 * Retrieve a list of all the photos that are
+	 * currently selected.
+	 * @param 
+	 * @return
+	 * 		Array containing the two selected
+	 * 		photos.
+	 */
 	public ArrayList<PhotoEntry> getSelectedPhotos() {
 		ArrayList<PhotoEntry> entries = new ArrayList<PhotoEntry>(2);
 		
@@ -63,7 +70,13 @@ public class ArchiveSelectionActivity extends BaseSelectionActivity implements
 		return entries;
 		
 	}
-
+	/**
+	 * check if the check box is selected or not
+	 * @param view
+	 * 
+	 * @return
+	 * 		void
+	 */
 	@Override
 	public void onClick(View v) {
 		CheckBox cb = (CheckBox) v;
@@ -77,7 +90,13 @@ public class ArchiveSelectionActivity extends BaseSelectionActivity implements
 			mSelectedEntries.set(cbId, true);
 		}
 	}
-	
+	/**
+	 * Handle the Message which is shared with controller
+	 * @param message
+	 * @return boolean
+	 * 		true if the message handled correctly 
+	 * 		false if the message handled not correctly
+	 */
 	@Override
 	public boolean handleMessage(Message msg) {
 		switch (msg.what) {

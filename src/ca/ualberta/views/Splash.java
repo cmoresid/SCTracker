@@ -6,6 +6,11 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
+/**
+ * Activity responsible for showing the Songs and Images before actually
+ * Go to Application
+ * 
+ * */
 public class Splash extends Activity {
 
 	MediaPlayer our_song;

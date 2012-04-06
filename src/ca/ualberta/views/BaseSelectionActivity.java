@@ -15,7 +15,7 @@ import ca.ualberta.persistence.SqlPhotoStorage;
 /**
  * Activity that is encapsulates some common functionality
  * between the {@code ArchiveSelectionActivity} and
- * {@code CompareSelectionActivity}.
+ * {@code CompareSelectionActivity}. 
  */
 public class BaseSelectionActivity extends Activity {
 	

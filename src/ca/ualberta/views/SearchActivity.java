@@ -34,15 +34,8 @@ public class SearchActivity extends ListActivity {
     private ListView mListView;
     
     SqlPhotoStorage sql = new SqlPhotoStorage();
-    
-    /**
-	 * Responsible for populating the grid view with the {@code PhotoEntry}
-	 * objects.
-	 */
 
-	/**
-	 * The controller that does all the work basically.
-	 */
+
 	private TagGalleryController mController;
 	
 	@Override
@@ -124,7 +117,14 @@ public class SearchActivity extends ListActivity {
         }
 		
 	}
-	
+	/**
+	 * @param menu
+	 * @return 
+	 * 		Boolean 
+	 * 		true if menu search is added
+	 * 		false if menu search is not added
+	 * 
+	 * */
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add(0, MENU_SEARCH, 0, R.string.menu_search)
@@ -134,6 +134,13 @@ public class SearchActivity extends ListActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+	/**
+	 * @param item in the menu
+	 * @return 
+	 * 		Boolean
+	 * 		true if the search is selected 
+	 * 		false if the search is not selected
+	 * */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

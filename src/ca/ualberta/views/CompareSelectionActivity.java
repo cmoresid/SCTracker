@@ -109,7 +109,13 @@ public class CompareSelectionActivity extends BaseSelectionActivity
 			mSelectedEntries.set(cbId, true);
 		}
 	}
-
+	/**
+	 * Handle the Message which is shared with controller
+	 * @param message
+	 * @return boolean
+	 * 		true if the message handled correctly 
+	 * 		false if the message handled not correctly
+	 */
 	@Override
 	public boolean handleMessage(Message msg) {
 		switch (msg.what) {

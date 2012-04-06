@@ -30,6 +30,11 @@ import ca.ualberta.persistence.SqlPhotoStorage;
 import ca.ualberta.prefs.MainPreferenceActivity;
 import ca.ualberta.utils.ApplicationUtil;
 
+/**
+ * This Activity is responsible for Show the Main Page of the Application 
+ * and also the Search option and Help documentation is visible  here
+ * */
+
 public class TagGalleryActivity extends Activity implements Handler.Callback {
 
 	private TagGroup mContextTagGroup;
@@ -160,6 +165,14 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 		}
 	}
 
+	/**
+	 * Method that show the Preference menu when Press Menu
+	 * @param menu
+	 * @return 
+	 * 		Boolean
+	 * 		True if the Menu show successfully
+	 * 		False if the Menu not show successfully
+	 * */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = this.getMenuInflater();
@@ -183,6 +196,9 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 		return super.onPrepareOptionsMenu(menu);
 	}
 
+	/**Check which Item is selected from the Menu
+	 * True if one item is selected
+	 * */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent;
@@ -268,6 +284,8 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 		mController.handleMessage(TagGalleryController.GET_TAGS, null);
 	}
 
+	/**set up a pop up Context Menu if 
+	 * which associate the Menu with Delete whole tag group options*/
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
@@ -283,6 +301,7 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 		}
 	}
 
+	/**if select the Delete tag Group option*/
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 
