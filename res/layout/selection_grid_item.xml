@@ -20,6 +20,7 @@
         android:id="@+id/selection_text"
         android:paddingBottom="10dp"
         android:textStyle="bold"
+        android:textColor="#ffe97e"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

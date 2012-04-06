@@ -69,6 +69,8 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 	
 	/** The tag. */
 	private String mTag;
+	
+	public static final int MENU_VIEW_ENTRY = 0;
 
 	public static final int MENU_ARCHIVE_ENTRY = 2;
 	
@@ -76,7 +78,7 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 	public static final int MENU_DELETE_ENTRY = 1;
 
 	/** Refers to the context menu item for retag photo. */
-	public static final int MENU_COMPARE_ENTRY = 0;
+	public static final int MENU_COMPARE_ENTRY = 3;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -110,16 +112,21 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 			public void onItemClick(AdapterView<?> parent, View v, int position,
 					long id) {
 				
-				Intent i = new Intent(PhotoGalleryActivity.this,
-						ViewPhotoActivity.class);
-
-				PhotoEntry e = mPhotos.get(position);
-
-				i.putExtra(SqlPhotoStorage.KEY_ID, e.getId());
-				i.putExtra(SqlPhotoStorage.KEY_TAG, e.getTag());
-				i.putExtra(SqlPhotoStorage.KEY_TIMESTAMP, e.getTimeStamp());
-				i.putExtra(SqlPhotoStorage.KEY_FILENAME, e.getFilePath());
-				startActivity(i);
+//				Intent i = new Intent(PhotoGalleryActivity.this,
+//						ViewPhotoActivity.class);
+//
+//				PhotoEntry e = mPhotos.get(position);
+//
+//				i.putExtra(SqlPhotoStorage.KEY_ID, e.getId());
+//				i.putExtra(SqlPhotoStorage.KEY_TAG, e.getTag());
+//				i.putExtra(SqlPhotoStorage.KEY_TIMESTAMP, e.getTimeStamp());
+//				i.putExtra(SqlPhotoStorage.KEY_FILENAME, e.getFilePath());
+//				startActivity(i);
+				
+				registerForContextMenu(mGridView);
+				retrieveData();
+				v.showContextMenu();
+				
 			}
 			
 		});
@@ -159,6 +166,8 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 			mContextPhotoEntry = (PhotoEntry) mGridAdapter
 					.getItem(info.position);
 			mContextPhotoEntryPosition = info.position;
+			menu.add(Menu.NONE,PhotoGalleryActivity.MENU_VIEW_ENTRY,
+					PhotoGalleryActivity.MENU_VIEW_ENTRY,"View Photo");
 			if(mPhotos.size() != 1){
 				menu.add(Menu.NONE, PhotoGalleryActivity.MENU_COMPARE_ENTRY,
 						PhotoGalleryActivity.MENU_COMPARE_ENTRY, "Compare With");
@@ -170,6 +179,7 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 				menu.add(Menu.NONE, PhotoGalleryActivity.MENU_ARCHIVE_ENTRY,
 					PhotoGalleryActivity.MENU_ARCHIVE_ENTRY, "Archive");
 			}
+
 		}
 	}
 
@@ -195,6 +205,13 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 			intent.putExtra(SqlPhotoStorage.KEY_TAG, mTag);
 			startActivity(intent);
 			return true;
+		case PhotoGalleryActivity.MENU_VIEW_ENTRY:
+			intent = new Intent(this, ViewPhotoActivity.class);
+			intent.putExtra(SqlPhotoStorage.KEY_ID, mContextPhotoEntry.getId());
+			intent.putExtra(SqlPhotoStorage.KEY_TAG,  mContextPhotoEntry.getTag());
+			intent.putExtra(SqlPhotoStorage.KEY_TIMESTAMP,  mContextPhotoEntry.getTimeStamp());
+			intent.putExtra(SqlPhotoStorage.KEY_FILENAME,  mContextPhotoEntry.getFilePath());
+			startActivity(intent);
 		default:
 			return super.onContextItemSelected(item);
 

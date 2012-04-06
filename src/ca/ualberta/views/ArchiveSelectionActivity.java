@@ -34,6 +34,7 @@ public class ArchiveSelectionActivity extends BaseSelectionActivity implements
 			public void onClick(View arg0) {
 				// FIXME
 				mController.handleMessage(ArchiveController.ARCHIVE_PHOTOS, null);
+				finish();
 			}
 		});
 		
@@ -79,7 +80,7 @@ public class ArchiveSelectionActivity extends BaseSelectionActivity implements
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					Toast.makeText(ArchiveSelectionActivity.this, "Archive Callback", Toast.LENGTH_SHORT).show();
+				//	Toast.makeText(ArchiveSelectionActivity.this, "Archive Callback", Toast.LENGTH_SHORT).show();
 				}
 			});
 			return true;
