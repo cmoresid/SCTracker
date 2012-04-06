@@ -31,8 +31,9 @@
     <string name="archive_button">Archive</string>
     <string name="search_results">Search Results: </string>
     <string name="menu_search">Search</string>
-    <string name="search_instructions">Enter a Tag to Search</string>
+    <string name="search_instructions">Search Results</string>
     <string name="search_label">Tag</string>
     <string name="settings_description">Photos</string>
+    <string name="menu_help_title">Help</string>
 
 </resources>
