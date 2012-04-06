@@ -70,6 +70,8 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 	
 	private TextView mEmptyView;
 
+
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -80,7 +82,7 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 		mPreferences = this.getSharedPreferences("ca.ualberta_preferences",
 				MODE_PRIVATE);
 
-		checkFirstRun();
+		checkFirstRun(); //
 		checkAuthenticate();
 
 		// assign the newPhotoButton to the button in the layout
@@ -142,6 +144,12 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 		});
 
 	}
+	
+	/**
+	 * Sets the empty message. If count = 0, makes the message visible and put
+	 * text in it. Otherwise set it's visibility to GONE.
+	 * @param count the number of {@code TagGroup} in the database
+	 */
 	
 	private void setEmptyMessage(int count) {
 		if (count == 0) {
