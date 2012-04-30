@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import ca.ualberta.R;
+import ca.ualberta.SCApplication;
 import ca.ualberta.models.TagGroup;
 
 /**
@@ -48,8 +49,8 @@ public class TagGalleryListAdapter extends BaseAdapter {
 	 *            the view (TagGalleryActivity) and the controller
 	 *            (TagGalleryController) in this particular case.
 	 */
-	public TagGalleryListAdapter(Context c, ArrayList<TagGroup> tags) {
-		mContext = c;
+	public TagGalleryListAdapter(ArrayList<TagGroup> tags) {
+		mContext = SCApplication.getContext();
 		mTags = tags;
 	}
 

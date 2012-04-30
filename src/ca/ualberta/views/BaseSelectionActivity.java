@@ -58,7 +58,7 @@ public class BaseSelectionActivity extends Activity {
 		mPhotos = new ArrayList<PhotoEntry>();
 		mSelectedEntries = new ArrayList<Boolean>();
 		
-		mAdapter = new SelectionGridAdapter(this, mPhotos, mSelectedEntries);
+		mAdapter = new SelectionGridAdapter(mPhotos, mSelectedEntries);
 		mGridView.setAdapter(mAdapter);
 		
 		mTagTextView = (TextView) this.findViewById(R.id.selection_tag_text_view);

@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import ca.ualberta.R;
+import ca.ualberta.SCApplication;
 import ca.ualberta.models.PhotoEntry;
 
 /**
@@ -39,7 +40,7 @@ public class PhotoGalleryGridAdapter extends BaseAdapter {
 	private ArrayList<PhotoEntry> mPhotos;
 	/** Reference to the parent context if we need it. */
 	private Context mContext;
-	
+	/** Used to inflate the layouts. */
 	private LayoutInflater mInflater;
 
 	/**
@@ -56,40 +57,18 @@ public class PhotoGalleryGridAdapter extends BaseAdapter {
 	 * 		(PhotoGalleryActivity) and the controller (PhotoGalleryController)
 	 * 		in this particular case.
 	 */
-	
-//	public PhotoGalleryGridAdapter(Context c, ArrayList<PhotoEntry> photos) {
-//		mContext = c;
-//		mPhotos = photos;
-//		mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//	}
-	
-	/**
-	 * Photo {@code GalleryGridAdapter} constructor.
-	 * @param c Context from the calling class
-	 * @param photos The array list of photos that the {@code GalleryGridAdapter}
-	 * will be updating
-	 * @param checkBoxes The array list of checkboxes. This needs to be refactored out.
-	 */
-	public PhotoGalleryGridAdapter(Context c, ArrayList<PhotoEntry> photos, ArrayList<CheckBox> checkBoxes){
-		mContext = c;
+	public PhotoGalleryGridAdapter(ArrayList<PhotoEntry> photos) {
+		mContext = SCApplication.getContext();
 		mPhotos = photos;
 		mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
-
 	
-	/**
-	 * Populates each cell of the {@code GridView}.
-	 * @param position Position of the grid cell in the {@code GridView}
-	 * @param convertView The view that does stuff.
-	 * @param parent Doesn't do anyting. Refactor this out.
-	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 
 		PhotoEntry e = (PhotoEntry) this.getItem(position);
 
-		
 		if(convertView == null){
 			holder = new ViewHolder();
 			// inflate the layout.
@@ -102,7 +81,7 @@ public class PhotoGalleryGridAdapter extends BaseAdapter {
 			try {
 				image = BitmapFactory.decodeStream(mContext.openFileInput(e.getFilePath()));
 			} catch (FileNotFoundException e1) {
-				Log.i("ProblemOpeningFile", e.getFilePath());
+				Log.i("Problem Opening File", e.getFilePath());
 			}
 			
 			holder.imageView.setImageBitmap(image);
@@ -114,7 +93,7 @@ public class PhotoGalleryGridAdapter extends BaseAdapter {
 			
 			convertView.setTag(holder);
 
-		}else {
+		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		
@@ -133,8 +112,6 @@ public class PhotoGalleryGridAdapter extends BaseAdapter {
         int id;
     }
 	
-
-
 	/*
 	 * The following methods have to be implemented
 	 * in order for the adapter to work properly.
@@ -142,59 +119,31 @@ public class PhotoGalleryGridAdapter extends BaseAdapter {
 	 * details
 	 */
 
-    /**
-     * Returns the position of the item
-     * @param position The position of the item
-     * @return The position of the Item
-     */
 	@Override
 	public long getItemId(int position) { //wtf
 		return (long)position;
 	}
 	
-	/**
-	 * Gets the number of photos in the arrayList
-	 * @return The number of photo's in the arraylist
-	 */
 	@Override
 	public int getCount() {
 		return (mPhotos != null) ? mPhotos.size() : 0;
 	}
 
-	/**
-	 * Returns the {@code PhotoEntry} at positon idx in the arraylist
-	 * @param idx The desires Position of the {@code PhotoEntry} to retrieve
-	 * @return The {@code PhotoEntry} at index idx
-	 */
 	@Override
 	public Object getItem(int idx) {
 		return (mPhotos != null) ? mPhotos.get(idx) : null;
 	}
-
 	
-	/**
-	 * Indicates that the ID's are indeed stable
-	 * @return Always True
-	 */
 	@Override
 	public boolean hasStableIds() {
 		return true;
 	}
 
-	
-	/**
-	 * Indicates that the item view type should be ignored
-	 * @return android.widget.Adapter.IGNORE_ITEM_VIEW_TYPE constant
-	 */
 	@Override
 	public int getItemViewType(int pos) {
 		return IGNORE_ITEM_VIEW_TYPE;
 	}
 
-	/**
-	 * indicates that there is one item view type
-	 * @return Always returns 1
-	 */
 	@Override
 	public int getViewTypeCount() {
 		return 1;

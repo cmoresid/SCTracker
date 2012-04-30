@@ -32,8 +32,6 @@ import ca.ualberta.persistence.SqlPhotoStorage;
  */
 public class CameraActivity extends Activity implements Handler.Callback
 {
-
-
 	private Bitmap ourBMP;
 	private CameraController cameraController;
 

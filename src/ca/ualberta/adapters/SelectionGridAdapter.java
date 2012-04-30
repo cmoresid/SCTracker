@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import ca.ualberta.R;
+import ca.ualberta.SCApplication;
 import ca.ualberta.models.PhotoEntry;
 
 
@@ -62,11 +63,11 @@ public class SelectionGridAdapter extends BaseAdapter {
       *     A shared list of booleans, where each position refers to the state  	
       *     of a checkbox for a photo cell. 	
       */
-	public SelectionGridAdapter(Context c, ArrayList<PhotoEntry> list, ArrayList<Boolean> selected) {
+	public SelectionGridAdapter(ArrayList<PhotoEntry> list, ArrayList<Boolean> selected) {
 		positionFixedChecked = -1;
 		mPhotos = list;
 		mSelected = selected;
-		mContext = c;
+		mContext = SCApplication.getContext();
 		mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
@@ -81,7 +82,6 @@ public class SelectionGridAdapter extends BaseAdapter {
     	mCurrentListener = listener;
 	}
 	
-
     /**  	
       * Sets the position of the checkbox that is to be 	
       * checked, but don't allow the user to change it's 	

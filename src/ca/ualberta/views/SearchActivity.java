@@ -84,7 +84,7 @@ public class SearchActivity extends ListActivity {
             		tagList.add(new TagGroup(matches[i]));
             }
             
-            TagGalleryListAdapter tagAdapter = new TagGalleryListAdapter(this, tagList);
+            TagGalleryListAdapter tagAdapter = new TagGalleryListAdapter(tagList);
             
 
     		// The controller shares the reference to the mPhotos list.

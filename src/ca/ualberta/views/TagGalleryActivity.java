@@ -126,7 +126,7 @@ public class TagGalleryActivity extends Activity implements Handler.Callback {
 		// handleMessage(Message msg) callback method).
 		mController.addHandler(new Handler(this));
 		// Uses the mPhotos list as it's data source
-		mListAdapter = new TagGalleryListAdapter(this, mTags);
+		mListAdapter = new TagGalleryListAdapter(mTags);
 
 		// Uses the adapter to populate itself.
 		mListView.setAdapter(mListAdapter);
