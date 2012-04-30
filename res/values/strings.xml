@@ -6,12 +6,9 @@
     <string name="delete_menu">Delete Photo</string>
     <string name="project_name">Skin Condition Tracker</string>
     <string name="takenewphoto">Take A New Photo</string>
-    <string name="tmp">tmptmptmp</string>
-    <string name="space">" "</string>
     <string name="tag_instructions">Please enter a tag for the new photo:</string>
     <string name="ok_button">OK</string>
     <string name="tag_completion_hint">e.g. mole on right hand</string>
-    <string name="space5">"     "</string>
     <string name="menu_prefs_title">Preferences</string>
     <string name="first_time_dialog_title">Welcome to Skin Condition Tracker!</string>
     <string name="first_time_dialog_set_password"></string>

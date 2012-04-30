@@ -16,8 +16,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import ca.ualberta.R;
-import ca.ualberta.adapters.TagGalleryListAdapter;
-import ca.ualberta.controllers.TagGalleryController;
+import ca.ualberta.adapters.AlbumGalleryListAdapter;
+import ca.ualberta.controllers.AlbumGalleryController;
 import ca.ualberta.models.PhotoEntry;
 import ca.ualberta.models.TagGroup;
 import ca.ualberta.persistence.SqlPhotoStorage;
@@ -41,7 +41,7 @@ public class SearchActivity extends ListActivity {
 	/**
 	 * The controller acts as a layer between the Photo Gallery and persistence layer.
 	 */
-	private TagGalleryController mController;
+	private AlbumGalleryController mController;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,12 +84,12 @@ public class SearchActivity extends ListActivity {
             		tagList.add(new TagGroup(matches[i]));
             }
             
-            TagGalleryListAdapter tagAdapter = new TagGalleryListAdapter(tagList);
+            AlbumGalleryListAdapter tagAdapter = new AlbumGalleryListAdapter(tagList);
             
 
     		// The controller shares the reference to the mPhotos list.
     		// The controller will be responsible for updating mTags.
-    		mController = new TagGalleryController(tagList);
+    		mController = new AlbumGalleryController(tagList);
 
 
     		// Uses the adapter to populate itself.

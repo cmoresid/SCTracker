@@ -42,7 +42,7 @@
       		</intent-filter>
         </activity>
         <activity android:name=".views.CompareActivity"></activity>
-        <activity android:name=".views.TagGalleryActivity">
+        <activity android:name=".views.AlbumGalleryActivity">
             <meta-data android:name="android.app.default_searchable"
                    android:value=".views.SearchActivity" />
             <intent-filter>

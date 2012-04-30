@@ -12,7 +12,7 @@
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:gravity="center_vertical"
-            android:text="@string/tmp"
+            android:text="tmptmptmp"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:typeface="serif"
             android:textStyle="bold"
@@ -37,7 +37,7 @@
                 android:layout_weight="1"
                 android:maxWidth="100dp"
                 android:layout_marginRight="10dp"
-                android:contentDescription="@string/space"
+                android:contentDescription=" "
                 android:src="@drawable/ic_launcher" />
 
             <ImageView
@@ -47,7 +47,7 @@
                 android:layout_weight="1"
                 android:maxWidth="100dp"
                 android:layout_marginRight="5dp"
-                android:contentDescription="@string/space" />
+                android:contentDescription=" " />
 
         </LinearLayout>
 
