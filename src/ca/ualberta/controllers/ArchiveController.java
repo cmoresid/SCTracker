@@ -1,24 +1,15 @@
 package ca.ualberta.controllers;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.Reader;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Environment;
-
 import android.os.Environment;
 import android.util.Log;
-
 import ca.ualberta.models.PhotoEntry;
 import ca.ualberta.utils.ApplicationUtil;
 
@@ -145,6 +136,7 @@ public class ArchiveController extends BaseSelectionController {
 	 * 		true if the message handled correctly 
 	 * 		false if the message handled not correctly
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean handleMessage(int what, Object data) {
 		// If the parent can't handle it, let the ArchiveController

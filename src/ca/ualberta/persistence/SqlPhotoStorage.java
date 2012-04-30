@@ -1,7 +1,6 @@
 package ca.ualberta.persistence;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import android.content.ContentValues;

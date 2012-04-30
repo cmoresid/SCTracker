@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.widget.CheckBox;
 import ca.ualberta.models.PhotoEntry;
 import ca.ualberta.persistence.SqlPhotoStorage;
 

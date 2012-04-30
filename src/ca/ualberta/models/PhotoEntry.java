@@ -2,6 +2,8 @@ package ca.ualberta.models;
 
 import java.util.Date;
 
+import ca.ualberta.persistence.SqlPhotoStorage;
+
 
 /**
  * POD (Plain Old Data) model that represents a
@@ -17,7 +19,6 @@ import java.util.Date;
  * Serves as the main model in the MVC paradigm.
  * @see SCModel
  */
-@SuppressWarnings("rawtypes")
 public class PhotoEntry {
 	/** Unique identifier of a photo entry. */
 	private long id;

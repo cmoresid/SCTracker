@@ -2,7 +2,6 @@ package ca.ualberta.models;
 
 import java.util.ArrayList;
 
-import ca.ualberta.adapters.TagGalleryListAdapter;
 import ca.ualberta.persistence.SqlPhotoStorage;
 
 
@@ -15,8 +14,6 @@ public class TagGroup
 	private PhotoEntry firstImage;
 	private PhotoEntry lastImage;
 	private String tag;
-	
-	
 	
 	/**
 	 * Constructs a TagGroup using the given tag. Finds and assignes the 

@@ -8,7 +8,6 @@ import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
-import android.widget.Toast;
 import ca.ualberta.controllers.ArchiveController;
 import ca.ualberta.models.PhotoEntry;
 

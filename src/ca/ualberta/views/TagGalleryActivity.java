@@ -3,8 +3,6 @@ package ca.ualberta.views;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -21,14 +19,12 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import ca.ualberta.R;
 import ca.ualberta.adapters.TagGalleryListAdapter;
 import ca.ualberta.controllers.TagGalleryController;
 import ca.ualberta.models.TagGroup;
 import ca.ualberta.persistence.SqlPhotoStorage;
 import ca.ualberta.prefs.MainPreferenceActivity;
-import ca.ualberta.utils.ApplicationUtil;
 
 /**
  * This Activity is responsible for Show the Main Page of the Application 
