@@ -294,7 +294,7 @@ public class AlbumGalleryActivity extends Activity implements Handler.Callback {
 			mContextTagGroup = (TagGroup) mListAdapter
 					.getItem(info.position);
 			menu.add(Menu.NONE, AlbumGalleryActivity.MENU_DELETE_TAG_AND_PHOTOS,
-					AlbumGalleryActivity.MENU_DELETE_TAG_AND_PHOTOS, "Delete Tag Group");
+					AlbumGalleryActivity.MENU_DELETE_TAG_AND_PHOTOS, "Delete Album");
 		}
 	}
 

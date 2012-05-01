@@ -108,37 +108,6 @@ public class ApplicationUtil {
 		return f; 
 	}
 	
-	/**this method are used to create sample object for testing the application*/
-	public static void createSampleObjects(String tag) throws Exception {
-		
-		File p1 = copyPhotoToSDCard(R.drawable.sample_0);
-		File p2 = copyPhotoToSDCard(R.drawable.sample_1);
-		
-		Date d = new Date();
-		
-		SimpleDateFormat fm = new SimpleDateFormat("MM/dd/yyy", Locale.CANADA);
-		
-		PhotoEntry e1 = new PhotoEntry();
-		e1.setId(image_count++);
-		e1.setTag(tag);
-		e1.setTimeStamp(fm.format(d));
-		e1.setFilePath(p1.getPath());
-
-		d = new Date();
-		d.setDate(9);
-		
-		PhotoEntry e2 = new PhotoEntry();
-		e2.setId(image_count++);
-		e2.setTag(tag);
-		e2.setTimeStamp(fm.format(d));
-		e2.setFilePath(p2.getPath());
-		
-		SqlPhotoStorage ps = new SqlPhotoStorage();
-		
-		ps.insertPhotoEntry(e1);
-		ps.insertPhotoEntry(e2);
-	}
-	
 	public static void deleteAllPhotoEntries() {
 		new SqlPhotoStorage().deleteAllPhotoEntries();
 	}
