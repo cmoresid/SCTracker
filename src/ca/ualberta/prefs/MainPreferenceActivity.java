@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import ca.ualberta.R;
+import ca.ualberta.views.ACPasswordActivity;
 import ca.ualberta.views.PasswordActivity;
+import ca.ualberta.views.UVPasswordActivity;
 
 /**
  * Provides a visual view of the {@code SharedPreference} object. Right
@@ -36,12 +38,20 @@ public class MainPreferenceActivity extends PreferenceActivity {
 			public boolean onPreferenceChange(Preference preference, Object newValue) {
 				// Grab current state of check box
 				boolean currentState = (Boolean) newValue;
-				// Based on currentState, set appropriate behavior of password activity
-				int passwordActivityBehavior = currentState ? PasswordActivity.ADD_PASSWORD : PasswordActivity.VERIFY_REMOVE_PASSWORD;
-				// Start the PasswordActivity, with given behavior.
-				Intent i = new Intent(MainPreferenceActivity.this, PasswordActivity.class);
-				i.putExtra(PasswordActivity.KEY_PASSWORD_FUNCTION, passwordActivityBehavior);
-				startActivityForResult(i, PASSWORD_CODE);
+				
+				Intent intent = new Intent(MainPreferenceActivity.this, ACPasswordActivity.class);
+				
+				if (currentState) {
+					intent = new Intent(MainPreferenceActivity.this, ACPasswordActivity.class);
+					intent.putExtra(ACPasswordActivity.KEY_PASSWORD_FUNCTION, 
+							ACPasswordActivity.ADD_PASSWORD);
+				} else {
+					intent = new Intent(MainPreferenceActivity.this, UVPasswordActivity.class);
+					intent.putExtra(UVPasswordActivity.KEY_PASSWORD_FUNCTION, 
+							UVPasswordActivity.VERIFY_PASSWORD);
+				}
+
+				startActivityForResult(intent, PASSWORD_CODE);
 				
 				return true;
 			}

@@ -35,9 +35,12 @@ public class PasswordActivity extends Activity implements Handler.Callback {
 	private EditText mPassword1;
 	/**
 	 * Refers to the Verify Password field, which only
-	 * exists if this activity is in ADD_PASSWORD mode.
+	 * exists if this activity is in ADD_PASSWORD and
+	 * CHANGE_PASSWORD mode.
 	 */
 	private EditText mPassword2;
+	
+	private EditText mPassword3;
 	/**
 	 * Used to notify user of any errors/issues that
 	 * might have occurred.
@@ -62,6 +65,8 @@ public class PasswordActivity extends Activity implements Handler.Callback {
 	public static final int VERIFY_REMOVE_PASSWORD = 1;
 	/** Constant that tells {@code PasswordActivity} to unlock the application. */
 	public static final int UNLOCK_APPLICTION = 2;
+	/** Constant that tells {@code PasswordActivity} to change the application's password. */
+	public static final int CHANGE_PASSWORD = 3;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +96,39 @@ public class PasswordActivity extends Activity implements Handler.Callback {
 		case UNLOCK_APPLICTION:
 			unlockBehavior();
 			break;
+		case CHANGE_PASSWORD:
+			changeBehavior();
+			break;
 		}
+	}
+
+	private void changeBehavior() {
+		//this.setContentView(R.layout.password_activity_add);
+		
+		//mResultsTextView = (TextView) this.findViewById(R.id.statusLabelAdd);
+		mErrorString = "Passwords do not match!";
+		
+		//mPassword1 = (EditText) this.findViewById(R.id.newPassword);
+		mPassword1.setRawInputType(Configuration.KEYBOARD_12KEY);
+		//mPassword2 = (EditText) this.findViewById(R.id.verifyPassword1);
+		mPassword2.setRawInputType(Configuration.KEYBOARD_12KEY);
+		//mPassword3 = (EditText) this.findViewById(R.id.oldPassword);
+		
+		mOKButton = (Button) this.findViewById(R.id.addPasswordButton);
+		mOKButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mResultsTextView.setText("");
+				
+				// If passwords do not match, don't allow user to proceed.
+				if (!mPassword1.getText().toString().equals(mPassword2.getText().toString())) {
+					mResultsTextView.setText(mErrorString);
+					return;
+				}
+				
+				mController.handleMessage(PasswordActivityController.UPDATE_PASSWORD, mPassword2.getText().toString());
+			}
+		});
 	}
 
 	/**
@@ -104,16 +141,15 @@ public class PasswordActivity extends Activity implements Handler.Callback {
 		return;
 	}
 
-
 	private void unlockBehavior() {
-		this.setContentView(R.layout.password_activity_unlock);
-		mResultsTextView = (TextView) this.findViewById(R.id.statusLabelUnlock);
+		//this.setContentView(R.layout.password_activity_unlock);
+		//mResultsTextView = (TextView) this.findViewById(R.id.statusLabelUnlock);
 		mErrorString = "Invalid Password!";
 		
-		mPassword1 = (EditText) this.findViewById(R.id.verifyPassword3);
+		//mPassword1 = (EditText) this.findViewById(R.id.verifyPassword3);
 		mPassword1.setRawInputType(Configuration.KEYBOARD_12KEY);
 		
-		mOKButton = (Button) this.findViewById(R.id.unlockButton);
+		//mOKButton = (Button) this.findViewById(R.id.unlockButton);
 		mOKButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -131,15 +167,15 @@ public class PasswordActivity extends Activity implements Handler.Callback {
 	 */
 	private void verifyPasswordBehavior() {
 		// Sets appropriate layout.
-		this.setContentView(R.layout.password_activity_verify);
+		//this.setContentView(R.layout.password_activity_verify);
 		
-		mResultsTextView = (TextView) this.findViewById(R.id.statusLabelVerify);
+		//mResultsTextView = (TextView) this.findViewById(R.id.statusLabelVerify);
 		mErrorString = "Invalid password!";
 		
-		mPassword1 = (EditText) this.findViewById(R.id.verifyPassword2);
+		//mPassword1 = (EditText) this.findViewById(R.id.verifyPassword2);
 		mPassword1.setRawInputType(Configuration.KEYBOARD_12KEY);
 		
-		mOKButton = (Button) this.findViewById(R.id.verifyPasswordButton);
+		//mOKButton = (Button) this.findViewById(R.id.verifyPasswordButton);
 		mOKButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -155,14 +191,14 @@ public class PasswordActivity extends Activity implements Handler.Callback {
 	 * add a password.
 	 */
 	private void addPasswordBehavior() {
-		this.setContentView(R.layout.password_activity_add);
+		//this.setContentView(R.layout.password_activity_add);
 		
-		mResultsTextView = (TextView) this.findViewById(R.id.statusLabelAdd);
+		//mResultsTextView = (TextView) this.findViewById(R.id.statusLabelAdd);
 		mErrorString = "Passwords do not match!";
 		
-		mPassword1 = (EditText) this.findViewById(R.id.newPassword);
+		//mPassword1 = (EditText) this.findViewById(R.id.newPassword);
 		mPassword1.setRawInputType(Configuration.KEYBOARD_12KEY);
-		mPassword2 = (EditText) this.findViewById(R.id.verifyPassword1);
+		//mPassword2 = (EditText) this.findViewById(R.id.verifyPassword1);
 		mPassword2.setRawInputType(Configuration.KEYBOARD_12KEY);
 		
 		mOKButton = (Button) this.findViewById(R.id.addPasswordButton);

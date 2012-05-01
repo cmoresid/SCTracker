@@ -205,8 +205,8 @@ public class AlbumGalleryActivity extends Activity implements Handler.Callback {
 			this.startActivityForResult(intent, RESULT_OK);
 			break;
 		case R.id.menu_lock:
-			intent = new Intent(this, PasswordActivity.class);
-			intent.putExtra(PasswordActivity.KEY_PASSWORD_FUNCTION, PasswordActivity.UNLOCK_APPLICTION);
+			intent = new Intent(this, UVPasswordActivity.class);
+			intent.putExtra(UVPasswordActivity.KEY_PASSWORD_FUNCTION, UVPasswordActivity.UNLOCK_APPLICATION);
 			this.startActivity(intent);
 			break;
 		case R.id.menu_help:
@@ -247,9 +247,10 @@ public class AlbumGalleryActivity extends Activity implements Handler.Callback {
 				"password_preferences", false);
 		
 		if (passwordAuthenticate) {
-			Intent i = new Intent(this, PasswordActivity.class);
-			i.putExtra(PasswordActivity.KEY_PASSWORD_FUNCTION,
-					PasswordActivity.UNLOCK_APPLICTION);
+			Intent i = new Intent(this, UVPasswordActivity.class);
+			i.putExtra(UVPasswordActivity.KEY_PASSWORD_FUNCTION, 
+					UVPasswordActivity.UNLOCK_APPLICATION);
+			
 			startActivity(i);
 		}
 	}

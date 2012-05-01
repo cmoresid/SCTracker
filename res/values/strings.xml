@@ -17,6 +17,7 @@
         your photos. See Menu --> Help for more information.
     </string>
     <string name="empty_gallery">No photos yet :\'(</string>
+    <string name="change_password_message">Change Password</string>
     <string name="menu_lock_title">Lock Application</string>
     <string name="unlock_button">Unlock</string>
     <string name="locked_app_message">SC Tracker is Locked</string>
@@ -24,6 +25,7 @@
     <string name="password_label">Password:</string>
     <string name="new_password_label">New Password:</string>
     <string name="verify_password_label">Verify Password:</string>
+     <string name="old_password_label">Old Password:</string>
     <string name="new_password_message">Adding New Password</string>
     <string name="archive_button">Archive</string>
     <string name="search_results">Search Results: </string>
