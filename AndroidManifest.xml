@@ -58,6 +58,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".views.UVPasswordActivity"></activity>
+        <activity android:name=".views.ACPasswordActivity"></activity>
+        <activity android:name=".views.ChangePasswordActivity">
+            <intent-filter>
+                <action android:name="ca.ualberta.views.CHANGE_PASSWORD" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".views.CompareSelectionActivity"></activity>
         <activity android:name=".views.ArchiveSelectionActivity"></activity>
         <activity android:name=".views.HelpActivity"></activity>

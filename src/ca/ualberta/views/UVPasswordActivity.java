@@ -99,6 +99,7 @@ public class UVPasswordActivity extends Activity implements Handler.Callback {
 					mShakeAnimation = AnimationUtils.loadAnimation(this, R.anim.shake);
 				}
 				
+				mPasswordField.setText("");
 				mPasswordField.startAnimation(mShakeAnimation);
 			} else {
 				setResult(RESULT_OK);

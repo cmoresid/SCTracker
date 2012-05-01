@@ -50,7 +50,10 @@ public class ACPasswordActivity extends Activity implements Handler.Callback {
 						mShakeAnimation = AnimationUtils.loadAnimation(ACPasswordActivity.this, R.anim.shake);
 					}
 					
+					mVerifyPasswordField.setText("");
 					mVerifyPasswordField.startAnimation(mShakeAnimation);
+					
+					return;
 				}
 				
 				mController.handleMessage(PasswordActivityController.UPDATE_PASSWORD, 

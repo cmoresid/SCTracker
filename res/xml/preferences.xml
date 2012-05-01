@@ -1,13 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:key="sc_prefs_screen"
-    android:title="Skin Condition Preferences"
-    android:summary="Set your Preferences" >
 
-	<CheckBoxPreference
-	    android:key="password_preferences"
-	    android:title="Use Password"
-	    android:summary="Check to password protect photos" />
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
     
+    <PreferenceCategory
+        android:title="Password Preferences" >
+    	
+		<CheckBoxPreference
+	    	android:key="password_preferences"
+	    	android:title="Use Password"
+	    	android:summary="Check to password protect photos" />
+		
+		<PreferenceScreen 
+		    xmlns:android="http://schemas.android.com/apk/res/android"
+    		android:key="sc_prefs_screen"
+    		android:dependency="password_preferences"
+    		android:title="Change Password"
+    		android:summary="Enables One To Change Their Password" >
+		    
+			<intent 
+				android:action="ca.ualberta.views.CHANGE_PASSWORD">
+			</intent>
+		</PreferenceScreen>
+	</PreferenceCategory>
 </PreferenceScreen>
