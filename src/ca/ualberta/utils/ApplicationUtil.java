@@ -33,7 +33,7 @@ public class ApplicationUtil {
 	//should this be a boolean function or throw an exception? ~David
 	//I think either one would work. Less overhead if it is just
 	//a boolean function though ~Connor
-	public static boolean checkSdCard() {
+	public static boolean isSDCardMounted() {
 		
 		boolean value = true;
 		
@@ -69,7 +69,7 @@ public class ApplicationUtil {
 	 * returns the file object created while doing that. 
 	 */
 	public static File copyPhotoToSDCard(int imageResource) throws Exception {
-		checkSdCard();
+		isSDCardMounted();
 		
 		//create the new file/file path on the sd card
 		File f = new File(Environment.getExternalStorageDirectory().getPath()

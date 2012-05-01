@@ -1,12 +1,18 @@
 package ca.ualberta.prefs;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.util.Log;
 import ca.ualberta.R;
+import ca.ualberta.utils.ApplicationUtil;
 import ca.ualberta.views.ACPasswordActivity;
-import ca.ualberta.views.PasswordActivity;
 import ca.ualberta.views.UVPasswordActivity;
 
 /**
@@ -18,8 +24,11 @@ import ca.ualberta.views.UVPasswordActivity;
  */
 public class MainPreferenceActivity extends PreferenceActivity {
 
+	private BroadcastReceiver mReceiver;
 	/** Refers to the password protect check box. */
-	private Preference checkBoxPassword;
+	private Preference mCheckBoxPassword;
+	
+	private Preference mCheckBoxArchive;
 	/** Result code for used to start PasswordActivity. */
 	public static final int PASSWORD_CODE = 100;
 	
@@ -30,10 +39,11 @@ public class MainPreferenceActivity extends PreferenceActivity {
 		// Populate the activity with the preferences found in the
 		this.addPreferencesFromResource(R.xml.preferences);
 		
-		checkBoxPassword = this.findPreference("password_preferences");
+		mCheckBoxPassword = this.findPreference("password_preferences");
+		mCheckBoxArchive = this.findPreference("archive_checkbox");
 		
 		// Attach listener to see when check box is changed.
-		checkBoxPassword.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+		mCheckBoxPassword.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 			@Override
 			public boolean onPreferenceChange(Preference preference, Object newValue) {
 				// Grab current state of check box
@@ -56,6 +66,38 @@ public class MainPreferenceActivity extends PreferenceActivity {
 				return true;
 			}
 		});
+		
+		// Can't really test this in the emulator, but will test later
+		/*mReceiver = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				Log.i("PREFERENCES", intent.getAction());
+			}
+		};
+		
+		this.registerReceiver(mReceiver, new IntentFilter("android.intent.action.ACTION_MEDIA_MOUNTED"));
+		*/
+		setArchivingState();
+	}
+
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		
+		setArchivingState();
+	}
+	
+	private void setArchivingState() {
+		SharedPreferences.Editor editor = mCheckBoxArchive.getEditor();
+		if (Environment.MEDIA_MOUNTED.equals(Environment
+				.getExternalStorageState())) {
+			editor.putBoolean("archive_checkbox", true);
+		} else {
+			editor.putBoolean("archive_checkbox", false);
+		}
+		
+		editor.commit();
 	}
 
 	@Override

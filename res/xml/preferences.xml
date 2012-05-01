@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     
     <PreferenceCategory
-        android:title="Password Preferences" >
+        android:title="Passwords" >
     	
 		<CheckBoxPreference
 	    	android:key="password_preferences"
@@ -23,4 +23,13 @@
 			</intent>
 		</PreferenceScreen>
 	</PreferenceCategory>
+	
+    <PreferenceCategory 
+        android:title="Archiving">
+        	<CheckBoxPreference
+	    		android:key="archive_checkbox"
+	    		android:title="Archiving Allowed"
+	    		android:summary="Enabled if SD card is inserted and mounted"
+	    		android:enabled="false" />
+    </PreferenceCategory>
 </PreferenceScreen>

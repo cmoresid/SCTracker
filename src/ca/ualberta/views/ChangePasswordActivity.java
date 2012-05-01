@@ -8,8 +8,6 @@ public class ChangePasswordActivity extends Activity {
 
 	public static final int VERIFY_PASSWORD = 7000;
 	public static final int ADD_PASSWORD = 7001;
-
-	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

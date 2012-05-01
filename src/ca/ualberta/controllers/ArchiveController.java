@@ -83,7 +83,7 @@ public class ArchiveController extends BaseSelectionController {
 			@Override
 			public void run() {
 
-				if(ApplicationUtil.checkSdCard()){
+				if(ApplicationUtil.isSDCardMounted()){
 					
 
 					File sdCard = Environment.getExternalStorageDirectory();

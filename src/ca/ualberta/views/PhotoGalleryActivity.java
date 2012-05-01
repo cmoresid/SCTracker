@@ -161,7 +161,7 @@ public class PhotoGalleryActivity extends Activity implements Handler.Callback {
 			menu.add(Menu.NONE, PhotoGalleryActivity.MENU_DELETE_ENTRY,
 					PhotoGalleryActivity.MENU_DELETE_ENTRY, "Delete Photo");
 			
-			if (ApplicationUtil.checkSdCard()) {
+			if (ApplicationUtil.isSDCardMounted()) {
 				menu.add(Menu.NONE, PhotoGalleryActivity.MENU_ARCHIVE_ENTRY,
 					PhotoGalleryActivity.MENU_ARCHIVE_ENTRY, "Archive");
 			}
