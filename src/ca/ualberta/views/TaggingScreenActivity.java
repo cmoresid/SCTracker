@@ -70,7 +70,7 @@ public class TaggingScreenActivity extends Activity implements Handler.Callback 
 					i.putExtra(SqlPhotoStorage.KEY_TAG, tagFromField.trim());
 					startActivity(i);
 					finish();
-				}else{
+				} else{
 					// Prepare data intent 
 					Intent data = new Intent();
 					data.putExtra("newTag", tagFromField);

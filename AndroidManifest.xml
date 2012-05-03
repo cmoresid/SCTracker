@@ -68,6 +68,16 @@
         <activity android:name=".views.CompareSelectionActivity"></activity>
         <activity android:name=".views.ArchiveSelectionActivity"></activity>
         <activity android:name=".views.HelpActivity"></activity>
+        <activity android:name=".camera.CameraActivity">
+        	<intent-filter>
+        		<action android:name="android.media.action.IMAGE_CAPTURE"/>
+         		<category android:name="android.intent.category.DEFAULT"/>
+      		</intent-filter>
+       		<intent-filter>
+         		<action android:name="android.media.action.STILL_IMAGE_CAPTURE"/>
+         		<category android:name="android.intent.category.DEFAULT"/>
+       		</intent-filter>
+        </activity>
     </application>
 
 </manifest>
