@@ -13,6 +13,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 import ca.ualberta.R;
+import ca.ualberta.camera.PreCameraActivity;
 import ca.ualberta.controllers.TaggingScreenController;
 import ca.ualberta.persistence.SqlPhotoStorage;
 
@@ -66,7 +67,7 @@ public class TaggingScreenActivity extends Activity implements Handler.Callback 
 				
 				if(primeIntent.getExtras() == null){
 					Intent i = new Intent(TaggingScreenActivity.this,
-						CameraActivity.class);
+						PreCameraActivity.class);
 					i.putExtra(SqlPhotoStorage.KEY_TAG, tagFromField.trim());
 					startActivity(i);
 					finish();

@@ -32,7 +32,7 @@ public class CameraActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.mycamera_activity);
+        setContentView(R.layout.camera_activity);
 
         // Create an instance of Camera
         mCamera = getCameraInstance();
@@ -42,7 +42,6 @@ public class CameraActivity extends Activity {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // get an image from the camera
                     mCamera.takePicture(null, null, mPicture);
                 }
             }
@@ -83,18 +82,30 @@ public class CameraActivity extends Activity {
     private PictureCallback mPicture = new PictureCallback() {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
-        	Uri theUri = (Uri) getIntent().getExtras().get(MediaStore.ACTION_IMAGE_CAPTURE);
+        	Uri theUri = (Uri) getIntent().getExtras().get(MediaStore.EXTRA_OUTPUT);
             File pictureFile = new File(theUri.getPath());
 
             try {
                 FileOutputStream fos = new FileOutputStream(pictureFile);
                 fos.write(data);
                 fos.close();
+                setResult(RESULT_OK);
             } catch (FileNotFoundException e) {
                 Log.d(TAG, "File not found: " + e.getMessage());
+                setResult(RESULT_CANCELED);
             } catch (IOException e) {
                 Log.d(TAG, "Error accessing file: " + e.getMessage());
+                setResult(RESULT_CANCELED);
             }
+
+            try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            
+            finish();
         }
     };
 }

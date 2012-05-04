@@ -3,20 +3,24 @@ package ca.ualberta.camera;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import ca.ualberta.persistence.SqlPhotoStorage;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
-import android.util.Log;
+import ca.ualberta.controllers.CameraController;
+import ca.ualberta.models.PhotoEntry;
+import ca.ualberta.persistence.SqlPhotoStorage;
 
-public class PreCameraActivity extends Activity {
+public class PreCameraActivity extends Activity implements Handler.Callback {
 	
 	private Uri mFileUri;
 	private String mAlbumName;
+	private CameraController mController;
 	
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 	
@@ -25,6 +29,8 @@ public class PreCameraActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		
 		mAlbumName = getIntent().getStringExtra(SqlPhotoStorage.KEY_TAG);
+		mController = new CameraController();
+		mController.addHandler(new Handler(this));
 		
 	    // create Intent to take a picture and return control to the calling application
 	    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -40,18 +46,10 @@ public class PreCameraActivity extends Activity {
 	}
 	
 	private File getOutputMediaFile() {
-		File mediaStorageDir = new File(this.getFilesDir(), "SC_IMAGES");
-	    if (! mediaStorageDir.exists()){
-	        if (! mediaStorageDir.mkdirs()){
-	            Log.d("MyCameraApp", "failed to create directory");
-	            return null;
-	        }
-	    }
-
 	    // Create a media file name
 	    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 	    File mediaFile;
-	    mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+	    mediaFile = new File(this.getFilesDir() + File.separator +
 	        "IMG_"+ timeStamp + ".jpg");
 
 	    return mediaFile;
@@ -64,10 +62,31 @@ public class PreCameraActivity extends Activity {
 		
 		if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
 			if (resultCode == RESULT_OK) {
-				// TODO: Write the code
+				Date currentDate = new Date();
+				SimpleDateFormat niceDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.CANADA);
+				String currentDateString = niceDateFormat.format(currentDate);
+				
+				PhotoEntry entry = new PhotoEntry();
+				entry.setTag(mAlbumName);
+				entry.setTimeStamp(currentDateString);
+				entry.setFilePath(new File(mFileUri.getPath()).getName());
+				
+				mController.handleMessage(CameraController.STORE_PHOTO_ENTRY, entry);
 			} else {
 				finish();
 			}
 		}
+	}
+
+	@Override
+	public boolean handleMessage(Message msg) {
+		switch (msg.what) {
+			case CameraController.FINISH_STORE_PHOTO:
+				setResult(RESULT_OK);
+				finish();
+				return true;
+		}
+
+		return false;
 	}
 }
